@@ -10,6 +10,12 @@ function cslider_shortcodes_init() {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' ) {
+
+	// Enqueue scripts
+	wp_enqueue_script('react');
+	wp_enqueue_script('react-dom');
+	//wp_enqueue_script('cinza-slider');
+	include_once( CSLIDER_PATH . 'components/CinzaSliderDEV.php' );
 	
     // Normalize attribute keys, lowercase
     $atts = array_change_key_case( (array) $atts, CASE_LOWER );
@@ -32,6 +38,6 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
     $o = '';
     $o .= '<h3>'. $slider_title .'</h3>';
     $o .= '<div class="cslider-container cslider-'. esc_html__($slider_id) .'"></div>';
- 
+		
     return $o;
 }

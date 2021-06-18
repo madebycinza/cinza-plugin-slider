@@ -113,7 +113,6 @@ function cinza_slider_meta_boxes(){
 			<div class="cslider-field">
 				<label>Image</label>
 				<input type="text" id="cinza_slide_X_image" name="_cinza_slide_X_image" value="<?php echo htmlspecialchars_decode( $slide_image ); ?>" />
-				<input type="button" id="cinza_slide_X_button" class="button" value="Choose image" />
 			</div>
 			
 			<div class="cslider-field">
@@ -124,59 +123,5 @@ function cinza_slider_meta_boxes(){
 			</div>
 		</div>
 	</div>
-	
-	<script>
-
-		jQuery(document).ready(function($){
-			// WP media modal
-			$('#cinza_slide_X_button').click( function(event) {open_wp_media_modal(event, '#cinza_slide_X_image');});
-			//$('#login_bg_btn').click(function(event) {open_wp_media_modal(event, '#login_bg_img');});
-		});
-		
-		function open_wp_media_modal(event, id) {
-			var logo_selection;
-			
-			// Befault action of the button event will not be triggered
-			event.preventDefault();
-			
-			// If the upload object has already been created, reopen the dialog
-			if (logo_selection) {
-				logo_selection.open();
-				return;
-			}
-			// Extend the wp.media object
-			logo_selection = wp.media.frames.file_frame = wp.media({
-				title: 'Select media',
-				button: {
-				text: 'Select media'
-			}, multiple: false });
-			
-			// When a file is selected, grab the URL and set it as the text field's value
-			logo_selection.on('select', function() {
-				var attachment = logo_selection.state().get('selection').first().toJSON();
-				jQuery(id).val(attachment.url);
-			});
-			
-			// Open the upload dialog
-			logo_selection.open();
-		}
-	</script>
 	<?php
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
