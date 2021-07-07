@@ -47,7 +47,7 @@
 		render() {
 			return (
 				<div>
-					<p>Are you okay with Cookies? {this.state.name}</p>
+					{/* <p>I guess this is working? {this.state.name}</p> */}
 				</div>
 			)
 		}

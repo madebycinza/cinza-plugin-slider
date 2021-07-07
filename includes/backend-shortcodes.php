@@ -35,9 +35,11 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
 	$slider_post = get_post( $slider_id ); 
 	$slider_title = $slider_post->post_title;
     
+    /*
     $o = '';
     $o .= '<h3>'. $slider_title .'</h3>';
     $o .= '<div class="cslider-container cslider-'. esc_html__($slider_id) .'"></div>';
-		
+	*/
+    	
     return $o;
 }
