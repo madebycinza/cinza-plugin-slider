@@ -61,7 +61,7 @@ function cslider_register_post_type() {
 		'menu_icon'           => 'dashicons-admin-generic',
 		'menu_position'       => '',
 		'capability_type'     => 'post',
-		'supports'            => ['title', 'revisions'],
+		'supports'            => ['title', 'revisions', 'custom-fields'],
 		'taxonomies'          => [],
 		'rewrite'             => [
 			'with_front' => false,
@@ -87,23 +87,27 @@ function add_cinza_slider_meta_boxes() {
     );
 }
 
-add_action( 'save_post', 'save_cinza_slider_meta_boxes' );
-function save_cinza_slider_meta_boxes(){
-    global $post;
-    
-    if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || ( get_post_status( $post->ID ) === 'auto-draft' ) ) {
-        return;
-    }
-    
-    update_post_meta( $post->ID, "_cinza_slide_X_image", sanitize_text_field( $_POST[ "_cinza_slide_X_image" ] ) );
-    update_post_meta( $post->ID, "_cinza_slide_X_content", sanitize_text_field( $_POST[ "_cinza_slide_X_content" ] ) );
-}
+$meta_args = array(
+    'type'         => 'string',
+    'description'  => 'A meta key associated with a string meta value.',
+    'single'       => true,
+    'show_in_rest' => true,
+);
+register_post_meta( 'cinza_slider', '_cinza_slide_images', $meta_args );
+
+$meta_args = array(
+    'type'         => 'string',
+    'description'  => 'A meta key associated with a string meta value.',
+    'single'       => true,
+    'show_in_rest' => true,
+);
+register_post_meta( 'cinza_slider', '_cinza_slide_contents', $meta_args );
 
 function cinza_slider_meta_boxes(){
     global $post;
     $slide = get_post_custom( $post->ID );
-    $slide_image = $slide[ "_cinza_slide_X_image" ][ 0 ];
-    $slide_content = $slide[ "_cinza_slide_X_content" ][ 0 ];
+    $slide_image = $slide[ "_cinza_slide_images" ][ 0 ];
+    $slide_content = $slide[ "_cinza_slide_contents" ][ 0 ];
 
 	?>
 	<div id="tab-login-content" class="cslider-tab-container">
@@ -112,16 +116,28 @@ function cinza_slider_meta_boxes(){
 			
 			<div class="cslider-field">
 				<label>Image</label>
-				<input type="text" id="cinza_slide_X_image" name="_cinza_slide_X_image" value="<?php echo htmlspecialchars_decode( $slide_image ); ?>" />
+				<input type="text" id="cinza_slide_X_image" name="_cinza_slide_images" value="<?php echo htmlspecialchars_decode( $slide_image ); ?>" />
 			</div>
 			
 			<div class="cslider-field">
 				<label>Content</label>
-				<textarea id="cinza_slide_X_content" name="_cinza_slide_X_content" rows="4" cols="50"><?php 
+				<textarea id="cinza_slide_X_content" name="_cinza_slide_contents" rows="4" cols="50"><?php 
 					echo htmlspecialchars_decode( $slide_content ); 
 				?></textarea>
 			</div>
 		</div>
 	</div>
 	<?php
+}
+
+add_action( 'save_post', 'save_cinza_slider_meta_boxes' );
+function save_cinza_slider_meta_boxes(){
+    global $post;
+    
+    if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || ( get_post_status( $post->ID ) === 'auto-draft' ) ) {
+        return;
+    }
+    
+    update_post_meta( $post->ID, "_cinza_slide_images", sanitize_text_field( $_POST[ "_cinza_slide_images" ] ) );
+    update_post_meta( $post->ID, "_cinza_slide_contents", sanitize_text_field( $_POST[ "_cinza_slide_contents" ] ) );
 }

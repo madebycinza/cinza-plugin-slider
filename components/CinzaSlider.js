@@ -9,7 +9,7 @@ class CinzaSlider extends React.Component {
   }
 
   render() {
-    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", null, "Are you okay with Cookies? ", this.state.name));
+    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", null, "Are you okay with Cookies??? ", this.state.name));
   }
 
 }
