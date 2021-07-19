@@ -75,69 +75,105 @@ function cslider_register_post_type() {
 // Add Meta Box: cinza_slider_meta_boxes
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-add_action( "admin_init", "add_cinza_slider_meta_boxes" );
-function add_cinza_slider_meta_boxes() {
-    add_meta_box(
-        "cinza_slider_meta_boxes", 	// $id
-        "Slides", 					// $title
-        "cinza_slider_meta_boxes", 	// $callback
-        "cinza_slider", 			// $screen
-        "normal", 					// $context
-        "high" 						// $priority
-    );
+add_action('admin_init', 'cslider_add_meta_boxes', 1);
+function cslider_add_meta_boxes() {
+	add_meta_box( 'cslider-fields', 'Cinza Slider Fields', 'cslider_meta_box_display', 'cinza_slider', 'normal', 'default');
 }
 
-$meta_args = array(
-    'type'         => 'string',
-    'description'  => 'A meta key associated with a string meta value.',
-    'single'       => true,
-    'show_in_rest' => true,
-);
-register_post_meta( 'cinza_slider', '_cinza_slide_images', $meta_args );
-
-$meta_args = array(
-    'type'         => 'string',
-    'description'  => 'A meta key associated with a string meta value.',
-    'single'       => true,
-    'show_in_rest' => true,
-);
-register_post_meta( 'cinza_slider', '_cinza_slide_contents', $meta_args );
-
-function cinza_slider_meta_boxes(){
-    global $post;
-    $slide = get_post_custom( $post->ID );
-    $slide_image = $slide[ "_cinza_slide_images" ][ 0 ];
-    $slide_content = $slide[ "_cinza_slide_contents" ][ 0 ];
-
+function cslider_meta_box_display() {
+	global $post;
+	$cslider_fields = get_post_meta($post->ID, '_cslider_fields', true);
+	wp_nonce_field( 'cslider_meta_box_nonce', 'cslider_meta_box_nonce' );
+	
 	?>
-	<div id="tab-login-content" class="cslider-tab-container">
-		<div class="cslider-tab-section">
-			<h3>Slide 1</h3>
+	<script type="text/javascript">
+	jQuery(document).ready(function( $ ){
+		$( '#add-row' ).on('click', function() {
+			var row = $( '.empty-row.screen-reader-text' ).clone(true);
+			row.removeClass( 'empty-row screen-reader-text' );
+			row.insertBefore( '#cslider-fieldset tbody>tr:last' );
+			return false;
+		});
+  	
+		$( '.remove-row' ).on('click', function() {
+			$(this).parents('tr').remove();
+			return false;
+		});
+	});
+	</script>
+  
+	<table id="cslider-fieldset" width="100%">
+		<tbody><?php
+			if ( $cslider_fields ) :
+				foreach ( $cslider_fields as $field ) {?>
+					<tr>
+						<td>
+							<input type="text" class="widefat" name="url[]" value="<?php if ($field['url'] != '') echo esc_attr( $field['url'] ); else echo 'http://'; ?>" />
+							<textarea type="text" class="widefat" name="name[]" rows="4" cols="50"><?php if($field['name'] != '') echo esc_attr( $field['name'] ); ?></textarea>
+							<a class="button remove-row" href="#">Remove</a>
+						</td>
+					</tr><?php
+				}
+			else : ?>
 			
-			<div class="cslider-field">
-				<label>Image</label>
-				<input type="text" id="cinza_slide_X_image" name="_cinza_slide_images" value="<?php echo htmlspecialchars_decode( $slide_image ); ?>" />
-			</div>
+			<!-- show a blank one -->
+				<tr>
+					<td>
+						<input type="text" class="widefat" name="url[]" value="http://" />
+						<textarea type="text" class="widefat" name="name[]" rows="4" cols="50"></textarea>
+						<a class="button remove-row" href="#">Remove</a>
+					</td>
+				</tr><?php 
+			endif; ?>
 			
-			<div class="cslider-field">
-				<label>Content</label>
-				<textarea id="cinza_slide_X_content" name="_cinza_slide_contents" rows="4" cols="50"><?php 
-					echo htmlspecialchars_decode( $slide_content ); 
-				?></textarea>
-			</div>
-		</div>
-	</div>
+			<!-- empty hidden one for jQuery -->
+			<tr class="empty-row screen-reader-text">
+				<td>
+					<input type="text" class="widefat" name="url[]" value="http://" />
+					<textarea type="text" class="widefat" name="name[]" rows="4" cols="50"></textarea>
+					<a class="button remove-row" href="#">Remove</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<p><a id="add-row" class="button" href="#">Add another</a></p>
 	<?php
 }
 
-add_action( 'save_post', 'save_cinza_slider_meta_boxes' );
-function save_cinza_slider_meta_boxes(){
-    global $post;
-    
-    if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || ( get_post_status( $post->ID ) === 'auto-draft' ) ) {
-        return;
-    }
-    
-    update_post_meta( $post->ID, "_cinza_slide_images", sanitize_text_field( $_POST[ "_cinza_slide_images" ] ) );
-    update_post_meta( $post->ID, "_cinza_slide_contents", sanitize_text_field( $_POST[ "_cinza_slide_contents" ] ) );
+add_action('save_post', 'cslider_meta_box_save');
+function cslider_meta_box_save($post_id) {
+	if ( ! isset( $_POST['cslider_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['cslider_meta_box_nonce'], 'cslider_meta_box_nonce' ) )
+		return;
+	
+	if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
+		return;
+	
+	if (!current_user_can('edit_post', $post_id))
+		return;
+	
+	$old = get_post_meta($post_id, '_cslider_fields', true);
+	$new = array();
+	
+	$names = $_POST['name'];
+	$urls = $_POST['url'];
+	
+	$count = count( $names );
+	
+	for ( $i = 0; $i < $count; $i++ ) {
+		if ( $names[$i] != '' ) :
+			$new[$i]['name'] = stripslashes( strip_tags( $names[$i] ) );
+		
+			if ( $urls[$i] == 'http://' )
+				$new[$i]['url'] = '';
+			else
+				$new[$i]['url'] = stripslashes( $urls[$i] ); // and however you want to sanitize
+		endif;
+	}
+
+	if ( !empty( $new ) && $new != $old )
+		update_post_meta( $post_id, '_cslider_fields', $new );
+	elseif ( empty($new) && $old )
+		delete_post_meta( $post_id, '_cslider_fields', $old );
 }
+?>

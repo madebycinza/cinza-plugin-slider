@@ -14,6 +14,8 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
 	// Enqueue scripts
 	wp_enqueue_script('react');
 	wp_enqueue_script('react-dom');
+	//wp_enqueue_script('flickity-css');
+	//wp_enqueue_script('flickity-js');
 	//wp_enqueue_script('cinza-slider');
 	include_once( CSLIDER_PATH . 'components/CinzaSliderDEV.php' );
 	
@@ -29,17 +31,10 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
     
 	// Validation
 	$slider_id = intval( $cslider_atts['id'] );
-    if ( $slider_id == 'Empty' || !is_int($slider_id) ) return "Please enter a valid slider ID." . gettype($slider_id);
+    if ( $slider_id == 'Empty' || !is_int($slider_id) ) return "Please enter a valid slider ID.";
  
     // Output
-	$slider_post = get_post( $slider_id ); 
-	$slider_title = $slider_post->post_title;
-    
-    /*
-    $o = '';
-    $o .= '<h3>'. $slider_title .'</h3>';
-    $o .= '<div class="cslider-container cslider-'. esc_html__($slider_id) .'"></div>';
-	*/
+    $o = '<div id="cslider-container" class="cslider-'. esc_html__($slider_id) .'"></div>';
     	
     return $o;
 }

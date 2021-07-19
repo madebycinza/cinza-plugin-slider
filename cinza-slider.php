@@ -29,6 +29,9 @@ function cslider_scripts_frontend_init( $hook ) {
 	wp_register_script('react', 'https://unpkg.com/react@17/umd/react.production.min.js');
 	wp_register_script('react-dom', 'https://unpkg.com/react-dom@17/umd/react-dom.production.min.js');
 	
+    //wp_register_script('flickity-css', 'https://unpkg.com/flickity@2/dist/flickity.min.css');
+    //wp_register_script('flickity-js', 'https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js');
+
 	// Register Cinza Slider component, with dependencies
 	wp_register_script('cinza-slider', 'http://plugins.local/wp-content/plugins/cinza-slider/components/CinzaSlider.js', array( 'react', 'react-dom' ) );
 }
