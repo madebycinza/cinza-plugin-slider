@@ -25,15 +25,33 @@ function cslider_scripts_frontend_init( $hook ) {
 	// Register scripts only on frontend
 	if ( is_admin() ) return;
 	
-	// Register React - https://reactjs.org/docs/cdn-links.html
-	wp_register_script('react', 'https://unpkg.com/react@17/umd/react.production.min.js');
-	wp_register_script('react-dom', 'https://unpkg.com/react-dom@17/umd/react-dom.production.min.js');
-	
-    //wp_register_script('flickity-css', 'https://unpkg.com/flickity@2/dist/flickity.min.css');
-    //wp_register_script('flickity-js', 'https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js');
+    // CSS
+    wp_register_style('flickity-css', 'https://unpkg.com/flickity@2/dist/flickity.min.css');
+    wp_register_style('cslider-frontend-css', plugins_url('/assets/css/frontend-style.css', __FILE__), array(), '1.0.0', false);
 
-	// Register Cinza Slider component, with dependencies
-	wp_register_script('cinza-slider', 'http://plugins.local/wp-content/plugins/cinza-slider/components/CinzaSlider.js', array( 'react', 'react-dom' ) );
+    // JS
+    wp_register_script('flickity-js', 'https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js');
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Register scrips for backend
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+add_action( 'admin_enqueue_scripts', 'add_script_to_cslider_cpt' );
+function add_script_to_cslider_cpt() {
+    global $post_type;
+ 
+    // Register scripts only on cinza_slider CPT posts
+	if( $post_type != 'cinza_slider' ) return;
+
+    // CSS
+    wp_register_style('cslider-backend-css', plugins_url('/assets/css/backend-style.css', __FILE__), array(), '1.0.0', false);
+    wp_enqueue_style('cslider-backend-css');
+
+    // JS
+    wp_enqueue_script('cslider-jquery', 'https://code.jquery.com/jquery-1.12.4.js', array('jquery'), '1.12.4', true);
+    wp_enqueue_script('cslider-jquery-ui', 'https://code.jquery.com/ui/1.12.1/jquery-ui.js', array('jquery'), '1.12.1', true);
+    wp_enqueue_script('cslider-backend-js', plugins_url('/assets/js/backend-script.js', __FILE__), array('jquery'), '1.0.0', false);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

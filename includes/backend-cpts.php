@@ -72,7 +72,11 @@ function cslider_register_post_type() {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Add Meta Box: cinza_slider_meta_boxes
+// Add Meta Box: _cslider_settings
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Add Meta Box: _cslider_fields
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 add_action('admin_init', 'cslider_add_meta_boxes', 1);
@@ -84,33 +88,25 @@ function cslider_meta_box_display() {
 	global $post;
 	$cslider_fields = get_post_meta($post->ID, '_cslider_fields', true);
 	wp_nonce_field( 'cslider_meta_box_nonce', 'cslider_meta_box_nonce' );
-	
 	?>
-	<script type="text/javascript">
-	jQuery(document).ready(function( $ ){
-		$( '#add-row' ).on('click', function() {
-			var row = $( '.empty-row.screen-reader-text' ).clone(true);
-			row.removeClass( 'empty-row screen-reader-text' );
-			row.insertBefore( '#cslider-fieldset tbody>tr:last' );
-			return false;
-		});
-  	
-		$( '.remove-row' ).on('click', function() {
-			$(this).parents('tr').remove();
-			return false;
-		});
-	});
-	</script>
   
 	<table id="cslider-fieldset" width="100%">
 		<tbody><?php
+			$icon_sort = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/icon-sort.png';
+			$icon_remove = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/icon-remove.png';
+
 			if ( $cslider_fields ) :
 				foreach ( $cslider_fields as $field ) {?>
 					<tr>
-						<td>
-							<input type="text" class="widefat" name="url[]" value="<?php if ($field['url'] != '') echo esc_attr( $field['url'] ); else echo 'http://'; ?>" />
-							<textarea type="text" class="widefat" name="name[]" rows="4" cols="50"><?php if($field['name'] != '') echo esc_attr( $field['name'] ); ?></textarea>
-							<a class="button remove-row" href="#">Remove</a>
+						<td class="cslider-fields">
+							<label>Image URL</label>
+							<input type="text" class="widefat cslider-img-url" name="url[]" value="<?php if ($field['url'] != '') echo esc_attr( $field['url'] ); else echo 'http://'; ?>" />
+							<label>Content</label>
+							<textarea type="text" class="widefat cslider-content" name="name[]" rows="4" cols="50"><?php if($field['name'] != '') echo esc_attr( $field['name'] ); ?></textarea>
+						</td>
+						<td class="cslider-buttons">
+							<a class="button button-primary sort-row" href="#"><img src="<?php echo $icon_sort; ?>" alt="Sort Row" /></a>
+							<a class="button button-primary remove-row" href="#"><img src="<?php echo $icon_remove; ?>" alt="Remove Row" /></a>
 						</td>
 					</tr><?php
 				}
@@ -118,20 +114,30 @@ function cslider_meta_box_display() {
 			
 			<!-- show a blank one -->
 				<tr>
-					<td>
-						<input type="text" class="widefat" name="url[]" value="http://" />
-						<textarea type="text" class="widefat" name="name[]" rows="4" cols="50"></textarea>
-						<a class="button remove-row" href="#">Remove</a>
+					<td class="cslider-fields">
+						<label>Image URL</label>
+						<input type="text" class="widefat cslider-img-url" name="url[]" />
+						<label>Content</label>
+						<textarea type="text" class="widefat cslider-content" name="name[]" rows="4" cols="50"></textarea>
+					</td>
+					<td class="cslider-buttons">
+						<a class="button button-primary sort-row" href="#"><img src="<?php echo $icon_sort; ?>" alt="Sort Row" /></a>
+						<a class="button button-primary remove-row" href="#"><img src="<?php echo $icon_remove; ?>" alt="Remove Row" /></a>
 					</td>
 				</tr><?php 
 			endif; ?>
 			
 			<!-- empty hidden one for jQuery -->
 			<tr class="empty-row screen-reader-text">
-				<td>
-					<input type="text" class="widefat" name="url[]" value="http://" />
-					<textarea type="text" class="widefat" name="name[]" rows="4" cols="50"></textarea>
-					<a class="button remove-row" href="#">Remove</a>
+				<td class="cslider-fields">
+					<label>Image URL</label>
+					<input type="text" class="widefat cslider-img-url" name="url[]" />
+					<label>Content</label>
+					<textarea type="text" class="widefat cslider-content" name="name[]" rows="4" cols="50"></textarea>
+				</td>
+				<td class="cslider-buttons">
+					<a class="button button-primary sort-row" href="#"><img src="<?php echo $icon_sort; ?>" alt="Sort Row" /></a>
+					<a class="button button-primary remove-row" href="#"><img src="<?php echo $icon_remove; ?>" alt="Remove Row" /></a>
 				</td>
 			</tr>
 		</tbody>
@@ -176,4 +182,5 @@ function cslider_meta_box_save($post_id) {
 	elseif ( empty($new) && $old )
 		delete_post_meta( $post_id, '_cslider_fields', $old );
 }
+
 ?>

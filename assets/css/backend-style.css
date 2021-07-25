@@ -1,0 +1,40 @@
+#cslider-fieldset tr {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background: #f6f7f7;
+    border: 1px solid #c3c4c7;
+    box-sizing: border-box;
+}
+
+#cslider-fieldset td.cslider-fields {
+    display: inline-block;
+    width: calc(100% - 40px);
+}
+#cslider-fieldset td.cslider-fields label {
+    display: block;
+    margin-bottom: 5px;
+}
+#cslider-fieldset td.cslider-fields input.cslider-img-url {
+    margin: 0 0 10px;
+}
+#cslider-fieldset td.cslider-fields textarea.cslider-content {
+    height: 75px;
+}
+
+#cslider-fieldset td.cslider-buttons {
+    display: inline-block;
+    width: 40px;
+    text-align: right;
+    padding-bottom: 5px;
+}
+#cslider-fieldset td.cslider-buttons a.button {
+    padding: 8px;
+    margin: 5px 0 0;
+    line-height: 1;
+}
+#cslider-fieldset td.cslider-buttons a.button img {
+    width: 15px;
+}
