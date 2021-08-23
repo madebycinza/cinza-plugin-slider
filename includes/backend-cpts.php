@@ -72,24 +72,54 @@ function cslider_register_post_type() {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Add Meta Box: _cslider_settings
+// Add Meta Boxex
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Add Meta Box: _cslider_fields
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-add_action('admin_init', 'cslider_add_meta_boxes', 1);
-function cslider_add_meta_boxes() {
+add_action('add_meta_boxes', 'cslider_add_fields_meta_boxes');
+function cslider_add_fields_meta_boxes() {
+	add_meta_box('cslider-options', 'Cinza Slider Options', 'cslider_meta_box_options', 'cinza_slider', 'normal', 'default');
 	add_meta_box( 'cslider-fields', 'Cinza Slider Fields', 'cslider_meta_box_display', 'cinza_slider', 'normal', 'default');
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Meta Box: _cslider_settings
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function cslider_meta_box_options( $post ) {
+	global $post;
+    $cslider_options = get_post_meta( $post->ID, '_cslider_options', true );
+	wp_nonce_field( 'cslider_meta_box_nonce', 'cslider_meta_box_nonce' );
+	
+    ?>
+	<table id="cslider-optionset" width="100%">
+		<tbody>
+			<tr>
+				<td class="cslider-options">
+					<input type="checkbox" name="cslider_autoplay" class="widefat cslider-autoplay" value="1" <?php checked('1', $cslider_options['cslider_autoplay']); ?> />
+					<label for="cslider_autoplay">Autoplay</label>
+				</td>
+			</tr>
+			<tr>
+				<td class="cslider-options">
+					<input type="checkbox" name="cslider_something" class="widefat cslider-something" value="1" <?php checked('1', $cslider_options['cslider_something']); ?> />
+					<label for="cslider_something">Something</label>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+    <?php
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Meta Box: _cslider_fields
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function cslider_meta_box_display() {
 	global $post;
 	$cslider_fields = get_post_meta($post->ID, '_cslider_fields', true);
 	wp_nonce_field( 'cslider_meta_box_nonce', 'cslider_meta_box_nonce' );
+
 	?>
-  
 	<table id="cslider-fieldset" width="100%">
 		<tbody><?php
 			$icon_sort = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/icon-sort.png';
@@ -100,7 +130,7 @@ function cslider_meta_box_display() {
 					<tr>
 						<td class="cslider-fields">
 							<label>Image URL</label>
-							<input type="text" class="widefat cslider-img-url" name="url[]" value="<?php if ($field['url'] != '') echo esc_attr( $field['url'] ); else echo 'http://'; ?>" />
+							<input type="text" class="widefat cslider-img-url" name="cslider_url[]" value="<?php if ($field['cslider_url'] != '') echo esc_attr( $field['cslider_url'] ); else echo 'http://'; ?>" />
 							<label>Content</label>
 							<textarea type="text" class="widefat cslider-content" name="name[]" rows="4" cols="50"><?php if($field['name'] != '') echo esc_attr( $field['name'] ); ?></textarea>
 						</td>
@@ -116,7 +146,7 @@ function cslider_meta_box_display() {
 				<tr>
 					<td class="cslider-fields">
 						<label>Image URL</label>
-						<input type="text" class="widefat cslider-img-url" name="url[]" />
+						<input type="text" class="widefat cslider-img-url" name="cslider_url[]" />
 						<label>Content</label>
 						<textarea type="text" class="widefat cslider-content" name="name[]" rows="4" cols="50"></textarea>
 					</td>
@@ -131,7 +161,7 @@ function cslider_meta_box_display() {
 			<tr class="empty-row screen-reader-text">
 				<td class="cslider-fields">
 					<label>Image URL</label>
-					<input type="text" class="widefat cslider-img-url" name="url[]" />
+					<input type="text" class="widefat cslider-img-url" name="cslider_url[]" />
 					<label>Content</label>
 					<textarea type="text" class="widefat cslider-content" name="name[]" rows="4" cols="50"></textarea>
 				</td>
@@ -147,8 +177,12 @@ function cslider_meta_box_display() {
 	<?php
 }
 
-add_action('save_post', 'cslider_meta_box_save');
-function cslider_meta_box_save($post_id) {
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Save Meta Boxes
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+add_action('save_post', 'cslider_save_fields_meta_boxes');
+function cslider_save_fields_meta_boxes($post_id) {
 	if ( ! isset( $_POST['cslider_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['cslider_meta_box_nonce'], 'cslider_meta_box_nonce' ) )
 		return;
 	
@@ -157,23 +191,29 @@ function cslider_meta_box_save($post_id) {
 	
 	if (!current_user_can('edit_post', $post_id))
 		return;
-	
-	$old = get_post_meta($post_id, '_cslider_fields', true);
+
+	// Save _cslider_options
+	$cslider_autoplay = $_POST['cslider_autoplay'];
+	$cslider_something = $_POST['cslider_something'];
+
 	$new = array();
-	
-	$names = $_POST['name'];
-	$urls = $_POST['url'];
-	
-	$count = count( $names );
+	$new['cslider_autoplay'] = $cslider_autoplay ? '1' : '0';
+	$new['cslider_something'] = $cslider_something ? '1' : '0';
+
+	update_post_meta($post_id, '_cslider_options', $new);
+
+	// Save _cslider_fields
+	$cslider_urls = $_POST['cslider_url'];
+	$contents = $_POST['name'];
+
+	$new = array();
+	$old = get_post_meta($post_id, '_cslider_fields', true);
+	$count = count( $cslider_urls );
 	
 	for ( $i = 0; $i < $count; $i++ ) {
-		if ( $names[$i] != '' ) :
-			$new[$i]['name'] = stripslashes( strip_tags( $names[$i] ) );
-		
-			if ( $urls[$i] == 'http://' )
-				$new[$i]['url'] = '';
-			else
-				$new[$i]['url'] = stripslashes( $urls[$i] ); // and however you want to sanitize
+		if ( $cslider_urls[$i] != '' ) :
+			$new[$i]['cslider_url'] = stripslashes( $cslider_urls[$i] );
+			$new[$i]['name'] = stripslashes( strip_tags( $contents[$i] ) );
 		endif;
 	}
 

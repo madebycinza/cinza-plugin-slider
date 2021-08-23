@@ -1,3 +1,16 @@
+/* Options */
+
+#cslider-optionset {
+    padding: 7px 0;
+}
+
+#cslider-optionset .cslider-options {
+    display: block;
+    margin: 3px 0;
+}
+
+/* Fields */
+
 #cslider-fieldset tr {
     display: flex;
     align-items: flex-end;
