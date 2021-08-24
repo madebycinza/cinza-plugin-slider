@@ -94,15 +94,40 @@ function cslider_meta_box_options( $post ) {
 	<table id="cslider-optionset" width="100%">
 		<tbody>
 			<tr>
-				<td class="cslider-options">
-					<input type="checkbox" name="cslider_autoplay" class="widefat cslider-autoplay" value="1" <?php checked('1', $cslider_options['cslider_autoplay']); ?> />
-					<label for="cslider_autoplay">Autoplay</label>
+				<td class="cslider-heading">
+					<p class="no-margin-top">Behavior</p>
+				</td>
+			</tr>
+			<tr>
+				<td class="cslider-heading">
+					<p>Images</p>
+				</td>
+			</tr>
+			<tr>
+				<td class="cslider-heading">
+					<p>Setup</p>
+				</td>
+			</tr>
+			<tr>
+				<td class="cslider-heading">
+					<p>Cell position</p>
+				</td>
+			</tr>
+			<tr>
+				<td class="cslider-heading">
+					<p>UI</p>
 				</td>
 			</tr>
 			<tr>
 				<td class="cslider-options">
-					<input type="checkbox" name="cslider_something" class="widefat cslider-something" value="1" <?php checked('1', $cslider_options['cslider_something']); ?> />
-					<label for="cslider_something">Something</label>
+					<input type="checkbox" name="cslider_prevNextButtons" id="cslider_prevNextButtons" class="widefat cslider-prevNextButtons" value="1" <?php checked('1', $cslider_options['cslider_prevNextButtons']); ?> />
+					<label for="cslider_prevNextButtons">prevNextButtons</label>
+				</td>
+			</tr>
+			<tr>
+				<td class="cslider-options">
+					<input type="checkbox" name="cslider_pageDots" id="cslider_pageDots" class="widefat cslider-pageDots" value="1" <?php checked('1', $cslider_options['cslider_pageDots']); ?> />
+					<label for="cslider_pageDots">pageDots</label>
 				</td>
 			</tr>
 		</tbody>
@@ -193,12 +218,12 @@ function cslider_save_fields_meta_boxes($post_id) {
 		return;
 
 	// Save _cslider_options
-	$cslider_autoplay = $_POST['cslider_autoplay'];
-	$cslider_something = $_POST['cslider_something'];
+	$cslider_prevNextButtons = $_POST['cslider_prevNextButtons'];
+	$cslider_pageDots = $_POST['cslider_pageDots'];
 
 	$new = array();
-	$new['cslider_autoplay'] = $cslider_autoplay ? '1' : '0';
-	$new['cslider_something'] = $cslider_something ? '1' : '0';
+	$new['cslider_prevNextButtons'] = $cslider_prevNextButtons ? '1' : '0';
+	$new['cslider_pageDots'] = $cslider_pageDots ? '1' : '0';
 
 	update_post_meta($post_id, '_cslider_options', $new);
 

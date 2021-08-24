@@ -1,12 +1,21 @@
 /* Options */
 
 #cslider-optionset {
-    padding: 7px 0;
+    padding: 10px 0;
 }
 
 #cslider-optionset .cslider-options {
     display: block;
-    margin: 3px 0;
+    margin: 5px 0;
+}
+
+#cslider-optionset .cslider-heading p {
+    margin: 15px 0 5px;
+    font-weight: bold;
+}
+
+#cslider-optionset .cslider-heading p.no-margin-top {
+    margin-top: 0;
 }
 
 /* Fields */

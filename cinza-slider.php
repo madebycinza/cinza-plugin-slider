@@ -27,10 +27,12 @@ function cslider_scripts_frontend_init( $hook ) {
 	
     // CSS
     wp_register_style('flickity-css', 'https://unpkg.com/flickity@2/dist/flickity.min.css');
+    wp_register_style('flickity-fade-css', 'https://unpkg.com/flickity-fade@1/flickity-fade.css');
     wp_register_style('cslider-frontend-css', plugins_url('/assets/css/frontend-style.css', __FILE__), array(), '1.0.0', false);
 
     // JS
     wp_register_script('flickity-js', 'https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js');
+    wp_register_script('flickity-fade-js', 'https://unpkg.com/flickity-fade@1/flickity-fade.js');
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
