@@ -35,14 +35,17 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
     // Query: _cslider_options
 	$cslider_options = get_post_meta($slider_id, '_cslider_options', true);
     $options = ' \'{ ';
-        $options .= '"prevNextButtons": '. (boolval($cslider_options['cslider_prevNextButtons']) ? 'true' : 'false') . ',';
-        $options .= '"pageDots": '. (boolval($cslider_options['cslider_pageDots']) ? 'true' : 'false') . ',';
-        $options .= '"fade": true';
+        $options .= '"cellSelector": "' . $cslider_options['cslider_cellSelector'] . '",';
+        $options .= '"initialIndex": "' . $cslider_options['cslider_initialIndex'] . '",';
+        $options .= '"accessibility": ' . (boolval($cslider_options['cslider_accessibility']) ? "true" : "false") . ',';
+        $options .= '"setGallerySize": ' . (boolval($cslider_options['cslider_setGallerySize']) ? "true" : "false") . ',';
+        $options .= '"resize": ' . (boolval($cslider_options['cslider_resize']) ? "true" : "false") . ',';
+        $options .= '"cellAlign": "' . $cslider_options['cslider_cellAlign'] . '",';
+        $options .= '"contain": ' . (boolval($cslider_options['cslider_contain']) ? "true" : "false") . ',';
+        $options .= '"prevNextButtons": ' . (boolval($cslider_options['cslider_prevNextButtons']) ? "true" : "false") . ',';
+        $options .= '"pageDots": ' . (boolval($cslider_options['cslider_pageDots']) ? "true" : "false") . ',';
+        $options .= '"fade": "true"';
     $options .= ' }\' ';
-
-    // For ttoubleshooting
-    echo 'cslider_prevNextButtons: '. (boolval($cslider_options['cslider_prevNextButtons']) ? 'true' : 'false');
-    echo '<br />cslider_pageDots: '. (boolval($cslider_options['cslider_pageDots']) ? 'true' : 'false');
 
     // Query: _cslider_fields
     $cslider_fields = get_post_meta($slider_id, '_cslider_fields', true);

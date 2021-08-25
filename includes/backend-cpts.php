@@ -109,8 +109,60 @@ function cslider_meta_box_options( $post ) {
 				</td>
 			</tr>
 			<tr>
+				<td class="cslider-options">
+					<label for="cslider_cellSelector">cellSelector</label>
+					<input type="text" name="cslider_cellSelector" id="cslider_cellSelector" class="cslider-cellSelector" value="<?php echo $cslider_options['cslider_cellSelector']; ?>" />
+				</td>
+			</tr>
+			<tr>
+				<td class="cslider-options">
+					<label for="cslider_initialIndex">initialIndex</label>
+					<input type="number" name="cslider_initialIndex" id="cslider_initialIndex" class="cslider-initialIndex" value="<?php echo $cslider_options['cslider_initialIndex']; ?>" />
+				</td>
+			</tr>
+			<tr>
+				<td class="cslider-options">
+					<input type="checkbox" name="cslider_accessibility" id="cslider_accessibility" class="widefat cslider-accessibility" value="1" <?php checked('1', $cslider_options['cslider_accessibility']); ?> />
+					<label for="cslider_accessibility">accessibility</label>
+				</td>
+			</tr>
+			<tr>
+				<td class="cslider-options">
+					<input type="checkbox" name="cslider_setGallerySize" id="cslider_setGallerySize" class="widefat cslider-setGallerySize" value="1" <?php checked('1', $cslider_options['cslider_setGallerySize']); ?> />
+					<label for="cslider_setGallerySize">setGallerySize</label>
+				</td>
+			</tr>
+			<tr>
+				<td class="cslider-options">
+					<input type="checkbox" name="cslider_resize" id="cslider_resize" class="widefat cslider-resize" value="1" <?php checked('1', $cslider_options['cslider_resize']); ?> />
+					<label for="cslider_resize">resize</label>
+				</td>
+			</tr>
+			<tr>
 				<td class="cslider-heading">
 					<p>Cell position</p>
+				</td>
+			</tr>
+			<tr>
+				<td class="cslider-options">
+					<label for="cslider_cellAlign">cellAlign</label>
+					<select name="cslider_cellAlign" id="cslider_cellAlign" class="cslider-cellAlign">
+						<option value="center" <?php selected( $cslider_options['cslider_cellAlign'], 'center' ); ?>>Center</option>
+						<option value="left" <?php selected( $cslider_options['cslider_cellAlign'], 'left' ); ?>>Left</option>
+						<option value="right" <?php selected( $cslider_options['cslider_cellAlign'], 'right' ); ?>>Right</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="cslider-options">
+					<input type="checkbox" name="cslider_contain" id="cslider_contain" class="widefat cslider-contain" value="1" <?php checked('1', $cslider_options['cslider_contain']); ?> />
+					<label for="cslider_contain">contain</label>
+				</td>
+			</tr>
+			<tr>
+				<td class="cslider-options">
+					<input type="checkbox" name="cslider_percentPosition" id="cslider_percentPosition" class="widefat cslider-percentPosition" value="1" <?php checked('1', $cslider_options['cslider_percentPosition']); ?> />
+					<label for="cslider_percentPosition">percentPosition</label>
 				</td>
 			</tr>
 			<tr>
@@ -218,10 +270,26 @@ function cslider_save_fields_meta_boxes($post_id) {
 		return;
 
 	// Save _cslider_options
+	$cslider_cellSelector = $_POST['cslider_cellSelector'];
+	$cslider_initialIndex = $_POST['cslider_initialIndex'];
+	$cslider_accessibility = $_POST['cslider_accessibility'];
+	$cslider_setGallerySize = $_POST['cslider_setGallerySize'];
+	$cslider_resize = $_POST['cslider_resize'];
+	$cslider_cellAlign = $_POST['cslider_cellAlign'];
+	$cslider_contain = $_POST['cslider_contain'];
+	$cslider_percentPosition = $_POST['cslider_percentPosition'];
 	$cslider_prevNextButtons = $_POST['cslider_prevNextButtons'];
 	$cslider_pageDots = $_POST['cslider_pageDots'];
 
 	$new = array();
+	$new['cslider_cellSelector'] = $cslider_cellSelector;
+	$new['cslider_initialIndex'] = $cslider_initialIndex;
+	$new['cslider_accessibility'] = $cslider_accessibility ? '1' : '0';
+	$new['cslider_setGallerySize'] = $cslider_setGallerySize;
+	$new['cslider_resize'] = $cslider_resize;
+	$new['cslider_cellAlign'] = $cslider_cellAlign;
+	$new['cslider_contain'] = $cslider_contain ? '1' : '0';
+	$new['cslider_percentPosition'] = $cslider_percentPosition ? '1' : '0';
 	$new['cslider_prevNextButtons'] = $cslider_prevNextButtons ? '1' : '0';
 	$new['cslider_pageDots'] = $cslider_pageDots ? '1' : '0';
 

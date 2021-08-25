@@ -11,11 +11,20 @@
 
 #cslider-optionset .cslider-heading p {
     margin: 15px 0 5px;
+    padding: 15px 0 0;
     font-weight: bold;
+    border-top: 1px solid #c3c4c7;
 }
 
 #cslider-optionset .cslider-heading p.no-margin-top {
     margin-top: 0;
+    border-top: 0;
+}
+
+#cslider-optionset .cslider-options select,
+#cslider-optionset .cslider-options input[type="text"],
+#cslider-optionset .cslider-options input[type="number"] {
+    margin: 0 0 0 10px;
 }
 
 /* Fields */
