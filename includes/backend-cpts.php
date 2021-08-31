@@ -98,32 +98,103 @@ function cslider_meta_box_options( $post ) {
 					<p class="no-margin-top">Behavior</p>
 				</td>
 			</tr>
+            <tr>
+                <td class="cslider-options">
+                    <input type="checkbox" name="cslider_draggable" id="cslider_draggable" class="widefat cslider-draggable" value="1" <?php checked('1', $cslider_options['cslider_draggable']); ?> />
+				</td>
+				<td class="cslider-options">
+                    <label for="cslider_draggable">draggable</label>
+                </td>
+            </tr>
+            <tr>
+                <td class="cslider-options">
+                    <input type="checkbox" name="cslider_freeScroll" id="cslider_freeScroll" class="widefat cslider-freeScroll" value="1" <?php checked('1', $cslider_options['cslider_freeScroll']); ?> />
+                    <label for="cslider_freeScroll">freeScroll</label>
+                </td>
+            </tr>
+            <tr>
+                <td class="cslider-options">
+                    <input type="checkbox" name="cslider_wrapAround" id="cslider_wrapAround" class="widefat cslider-wrapAround" value="1" <?php checked('1', $cslider_options['cslider_wrapAround']); ?> />
+                    <label for="cslider_wrapAround">wrapAround</label>
+                </td>
+            </tr>
+            <tr>
+                <td class="cslider-options">
+					<label for="cslider_groupCells">groupCells</label>
+                    <input type="text" name="cslider_groupCells" id="cslider_groupCells" class="cslider-groupCells" value="<?php echo($cslider_options['cslider_groupCells']); ?>" />
+                </td>
+            </tr>
+            <tr>
+                <td class="cslider-options">
+					<label for="cslider_autoPlay">autoPlay</label>
+                    <input type="text" name="cslider_autoPlay" id="cslider_autoPlay" class="cslider-autoPlay" value="<?php echo($cslider_options['cslider_autoPlay']); ?>" /> <span>milliseconds</span>
+                </td>
+            </tr>
+			<tr>
+				<td class="cslider-options">
+					<label for="cslider_animation">animation</label>
+					<select name="cslider_animation" id="cslider_animation" class="cslider-animation">
+						<option value="slide" <?php selected( $cslider_options['cslider_animation'], 'slide' ); ?>>Slide</option>
+						<option value="fade" <?php selected( $cslider_options['cslider_animation'], 'fade' ); ?>>Fade</option>
+					</select>
+				</td>
+			</tr>
+            <tr>
+                <td class="cslider-options">
+                    <input type="checkbox" name="cslider_pauseAutoPlayOnHover" id="cslider_pauseAutoPlayOnHover" class="widefat cslider-pauseAutoPlayOnHover" value="1" <?php checked('1', $cslider_options['cslider_pauseAutoPlayOnHover']); ?> />
+                    <label for="cslider_pauseAutoPlayOnHover">pauseAutoPlayOnHover</label>
+                </td>
+            </tr>
+            <tr>
+                <td class="cslider-options">
+                    <input type="checkbox" name="cslider_adaptiveHeight" id="cslider_adaptiveHeight" class="widefat cslider-adaptiveHeight" value="1" <?php checked('1', $cslider_options['cslider_adaptiveHeight']); ?> />
+                    <label for="cslider_adaptiveHeight">adaptiveHeight</label>
+                </td>
+            </tr>
+            <tr>
+                <td class="cslider-options">
+                    <input type="checkbox" name="cslider_watchCSS" id="cslider_watchCSS" class="widefat cslider-watchCSS" value="1" <?php checked('1', $cslider_options['cslider_watchCSS']); ?> />
+                    <label for="cslider_watchCSS">watchCSS</label>
+                </td>
+            </tr>
+            <tr>
+                <td class="cslider-options">
+					<label for="cslider_dragThreshold">dragThreshold</label>
+                    <input type="text" name="cslider_dragThreshold" id="cslider_dragThreshold" class="cslider-dragThreshold" value="<?php echo($cslider_options['cslider_dragThreshold']); ?>" /> <span>px</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="cslider-options">
+                    <label for="cslider_selectedAttraction">selectedAttraction</label>
+                    <input type="text" name="cslider_selectedAttraction" id="cslider_selectedAttraction" class="cslider-selectedAttraction" value="<?php echo($cslider_options['cslider_selectedAttraction']); ?>" />
+                </td>
+            </tr>
+            <tr>
+                <td class="cslider-options">
+                    <label for="cslider_friction">friction</label>
+                    <input type="text" name="cslider_friction" id="cslider_friction" class="cslider-friction" value="<?php echo($cslider_options['cslider_friction']); ?>" />
+                </td>
+            </tr>
+            <tr>
+                <td class="cslider-options">
+                    <label for="cslider_freeScrollFriction">freeScrollFriction</label>
+                    <input type="text" name="cslider_freeScrollFriction" id="cslider_freeScrollFriction" class="cslider-freeScrollFriction" value="<?php echo($cslider_options['cslider_freeScrollFriction']); ?>" />
+                </td>
+            </tr>
 			<tr>
 				<td class="cslider-heading">
 					<p>Images</p>
 				</td>
 			</tr>
 			<tr>
+				<td class="cslider-options">
+					<input type="checkbox" name="cslider_lazyLoad" id="cslider_lazyLoad" class="widefat cslider-lazyLoad" value="1" <?php checked('1', $cslider_options['cslider_lazyLoad']); ?> />
+					<label for="cslider_lazyLoad">lazyLoad</label>
+				</td>
+			</tr>
+			<tr>
 				<td class="cslider-heading">
 					<p>Setup</p>
-				</td>
-			</tr>
-			<tr>
-				<td class="cslider-options">
-					<label for="cslider_cellSelector">cellSelector</label>
-					<input type="text" name="cslider_cellSelector" id="cslider_cellSelector" class="cslider-cellSelector" value="<?php echo $cslider_options['cslider_cellSelector']; ?>" />
-				</td>
-			</tr>
-			<tr>
-				<td class="cslider-options">
-					<label for="cslider_initialIndex">initialIndex</label>
-					<input type="number" name="cslider_initialIndex" id="cslider_initialIndex" class="cslider-initialIndex" value="<?php echo $cslider_options['cslider_initialIndex']; ?>" />
-				</td>
-			</tr>
-			<tr>
-				<td class="cslider-options">
-					<input type="checkbox" name="cslider_accessibility" id="cslider_accessibility" class="widefat cslider-accessibility" value="1" <?php checked('1', $cslider_options['cslider_accessibility']); ?> />
-					<label for="cslider_accessibility">accessibility</label>
 				</td>
 			</tr>
 			<tr>
@@ -140,7 +211,7 @@ function cslider_meta_box_options( $post ) {
 			</tr>
 			<tr>
 				<td class="cslider-heading">
-					<p>Cell position</p>
+					<p>Cell</p>
 				</td>
 			</tr>
 			<tr>
@@ -270,9 +341,20 @@ function cslider_save_fields_meta_boxes($post_id) {
 		return;
 
 	// Save _cslider_options
-	$cslider_cellSelector = $_POST['cslider_cellSelector'];
-	$cslider_initialIndex = $_POST['cslider_initialIndex'];
-	$cslider_accessibility = $_POST['cslider_accessibility'];
+	$cslider_draggable = $_POST['cslider_draggable'];
+	$cslider_freeScroll = $_POST['cslider_freeScroll'];
+	$cslider_wrapAround = $_POST['cslider_wrapAround'];
+	$cslider_groupCells = $_POST['cslider_groupCells'];
+	$cslider_autoPlay = $_POST['cslider_autoPlay'];
+	$cslider_animation = $_POST['cslider_animation'];
+	$cslider_pauseAutoPlayOnHover = $_POST['cslider_pauseAutoPlayOnHover'];
+	$cslider_adaptiveHeight = $_POST['cslider_adaptiveHeight'];
+	$cslider_watchCSS = $_POST['cslider_watchCSS'];
+	$cslider_dragThreshold = $_POST['cslider_dragThreshold'];
+	$cslider_selectedAttraction = $_POST['cslider_selectedAttraction'];
+	$cslider_friction = $_POST['cslider_friction'];
+	$cslider_freeScrollFriction = $_POST['cslider_freeScrollFriction'];
+	$cslider_lazyLoad = $_POST['cslider_lazyLoad'];
 	$cslider_setGallerySize = $_POST['cslider_setGallerySize'];
 	$cslider_resize = $_POST['cslider_resize'];
 	$cslider_cellAlign = $_POST['cslider_cellAlign'];
@@ -282,9 +364,20 @@ function cslider_save_fields_meta_boxes($post_id) {
 	$cslider_pageDots = $_POST['cslider_pageDots'];
 
 	$new = array();
-	$new['cslider_cellSelector'] = $cslider_cellSelector;
-	$new['cslider_initialIndex'] = $cslider_initialIndex;
-	$new['cslider_accessibility'] = $cslider_accessibility ? '1' : '0';
+	$new['cslider_draggable'] = $cslider_draggable ? '1' : '0';
+	$new['cslider_freeScroll'] = $cslider_freeScroll ? '1' : '0';
+	$new['cslider_wrapAround'] = $cslider_wrapAround ? '1' : '0';
+	$new['cslider_groupCells'] = $cslider_groupCells;
+	$new['cslider_autoPlay'] = $cslider_autoPlay;
+	$new['cslider_animation'] = $cslider_animation;
+	$new['cslider_pauseAutoPlayOnHover'] = $cslider_pauseAutoPlayOnHover ? '1' : '0';
+	$new['cslider_adaptiveHeight'] = $cslider_adaptiveHeight ? '1' : '0';
+	$new['cslider_watchCSS'] = $cslider_watchCSS ? '1' : '0';
+	$new['cslider_dragThreshold'] = $cslider_dragThreshold;
+	$new['cslider_selectedAttraction'] = $cslider_selectedAttraction;
+	$new['cslider_friction'] = $cslider_friction;
+	$new['cslider_freeScrollFriction'] = $cslider_freeScrollFriction;
+	$new['cslider_lazyLoad'] = $cslider_lazyLoad ? '1' : '0';
 	$new['cslider_setGallerySize'] = $cslider_setGallerySize;
 	$new['cslider_resize'] = $cslider_resize;
 	$new['cslider_cellAlign'] = $cslider_cellAlign;

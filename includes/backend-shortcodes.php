@@ -27,35 +27,74 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
             'id' => 'Empty',
         ), $atts, $tag
     );
-    
-	// Validation
+
+	// Shortcode validation
 	$slider_id = intval( $cslider_atts['id'] );
     if ( $slider_id == 'Empty' || !is_int($slider_id) ) return "Please enter a valid slider ID.";
 
     // Query: _cslider_options
 	$cslider_options = get_post_meta($slider_id, '_cslider_options', true);
     $options = ' \'{ ';
-        $options .= '"cellSelector": "' . $cslider_options['cslider_cellSelector'] . '",';
-        $options .= '"initialIndex": "' . $cslider_options['cslider_initialIndex'] . '",';
-        $options .= '"accessibility": ' . (boolval($cslider_options['cslider_accessibility']) ? "true" : "false") . ',';
+
+        // Query validations
+        if (intval($cslider_options['autoPlay']) <= 0) $valid_autoPlay = '"autoPlay": true,'; 
+        else $valid_autoPlay = '"autoPlay": false,'; 
+
+        if ($cslider_options['cslider_animation'] == "fade") $valid_fade = '"fade": true,'; 
+        else $valid_fade = '';
+
+        if (boolval($cslider_options['cslider_lazyLoad']) && ($cslider_options['cslider_animation'] != "fade")) $valid_lazyLoad = '"lazyLoad": true,'; 
+        else $valid_lazyLoad = '"lazyLoad": false,'; 
+
+        // Behavior
+        $options .= '"draggable": ' . (boolval($cslider_options['cslider_draggable']) ? "true" : "false") . ',';
+        $options .= '"freeScroll": ' . (boolval($cslider_options['cslider_freeScroll']) ? "true" : "false") . ',';
+        $options .= '"wrapAround": ' . (boolval($cslider_options['cslider_wrapAround']) ? "true" : "false") . ',';
+        $options .= '"groupCells": ' . $cslider_options['cslider_groupCells'] . ',';
+        $options .= $valid_autoPlay;
+        $options .= $valid_fade;
+        $options .= '"pauseAutoPlayOnHover": ' . (boolval($cslider_options['cslider_pauseAutoPlayOnHover']) ? "true" : "false") . ',';
+        $options .= '"adaptiveHeight": ' . (boolval($cslider_options['cslider_adaptiveHeight']) ? "true" : "false") . ',';
+        $options .= '"watchCSS": ' . (boolval($cslider_options['cslider_watchCSS']) ? "true" : "false") . ',';
+        $options .= '"dragThreshold": "' . $cslider_options['cslider_dragThreshold'] . '",';
+        $options .= '"selectedAttraction": "' . $cslider_options['cslider_selectedAttraction'] . '",';
+        $options .= '"friction": "' . $cslider_options['cslider_friction'] . '",';
+        $options .= '"freeScrollFriction": "' . $cslider_options['cslider_freeScrollFriction'] . '",';
+        
+        // Images
+        $options .= '"imagesLoaded": "true",';
+        $options .= $valid_lazyLoad;
+
+        // Setup
+        $options .= '"cellSelector": ".carousel-cell",';
+        $options .= '"initialIndex": 0,';
+        $options .= '"accessibility": "true",';
         $options .= '"setGallerySize": ' . (boolval($cslider_options['cslider_setGallerySize']) ? "true" : "false") . ',';
         $options .= '"resize": ' . (boolval($cslider_options['cslider_resize']) ? "true" : "false") . ',';
+
+        // Cell
         $options .= '"cellAlign": "' . $cslider_options['cslider_cellAlign'] . '",';
         $options .= '"contain": ' . (boolval($cslider_options['cslider_contain']) ? "true" : "false") . ',';
+        $options .= '"percentPosition": ' . (boolval($cslider_options['cslider_percentPosition']) ? "true" : "false") . ',';
+
+        // UI
         $options .= '"prevNextButtons": ' . (boolval($cslider_options['cslider_prevNextButtons']) ? "true" : "false") . ',';
-        $options .= '"pageDots": ' . (boolval($cslider_options['cslider_pageDots']) ? "true" : "false") . ',';
-        $options .= '"fade": "true"';
+        $options .= '"pageDots": ' . (boolval($cslider_options['cslider_pageDots']) ? "true" : "false");
+
     $options .= ' }\' ';
 
     // Query: _cslider_fields
     $cslider_fields = get_post_meta($slider_id, '_cslider_fields', true);
     $slides = '';
     foreach ( $cslider_fields as $field ) {
-        $slides .= '<div class="carousel-cell" style="background-image:url('. $field['cslider_url'] .')">'. $field['name'] .'</div>';
+        $slides .= '<div class="carousel-cell">
+                        <img class="carousel-cell-image" src="'. $field['cslider_url'] .'" alt="'. $field['name'] .'" />
+                        <div class="carousel-cell-content">'. $field['name'] .'</div>
+                    </div>';
     }
  
     // Output
     $o = '<div class="carousel" data-flickity='. $options .'>'. $slides .'</div>';
-    	
+    
     return $o;
 }

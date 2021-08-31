@@ -5,7 +5,8 @@
 }
 
 #cslider-optionset .cslider-options {
-    display: block;
+    display: flex;
+    align-items: center;
     margin: 5px 0;
 }
 
@@ -24,7 +25,7 @@
 #cslider-optionset .cslider-options select,
 #cslider-optionset .cslider-options input[type="text"],
 #cslider-optionset .cslider-options input[type="number"] {
-    margin: 0 0 0 10px;
+    margin: 0 10px;
 }
 
 /* Fields */
