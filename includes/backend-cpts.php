@@ -93,165 +93,243 @@ function cslider_meta_box_options( $post ) {
     ?>
 	<table id="cslider-optionset" width="100%">
 		<tbody>
-			<tr>
-				<td class="cslider-heading">
-					<p class="no-margin-top">Behavior</p>
-				</td>
-			</tr>
             <tr>
-                <td class="cslider-options">
-                    <input type="checkbox" name="cslider_draggable" id="cslider_draggable" class="widefat cslider-draggable" value="1" <?php checked('1', $cslider_options['cslider_draggable']); ?> />
-				</td>
-				<td class="cslider-options">
+                <td class="cslider-options col-1">
                     <label for="cslider_draggable">draggable</label>
+				</td>
+				<td class="cslider-options col-2">
+                    <input type="checkbox" name="cslider_draggable" id="cslider_draggable" class="widefat cslider-draggable" value="1" <?php checked('1', $cslider_options['cslider_draggable']); ?> />
+                </td>
+                <td class="cslider-options col-3">
+					Enables dragging and flicking. Enabled by default when carousel has 2 or more slides draggable: '>1'.
                 </td>
             </tr>
             <tr>
-                <td class="cslider-options">
-                    <input type="checkbox" name="cslider_freeScroll" id="cslider_freeScroll" class="widefat cslider-freeScroll" value="1" <?php checked('1', $cslider_options['cslider_freeScroll']); ?> />
+                <td class="cslider-options col-1">
                     <label for="cslider_freeScroll">freeScroll</label>
+				</td>
+				<td class="cslider-options col-2">
+                    <input type="checkbox" name="cslider_freeScroll" id="cslider_freeScroll" class="widefat cslider-freeScroll" value="1" <?php checked('1', $cslider_options['cslider_freeScroll']); ?> />
+                </td>
+                <td class="cslider-options col-3">
+                    Enables content to be freely scrolled and flicked without aligning cells to an end position.
                 </td>
             </tr>
             <tr>
-                <td class="cslider-options">
-                    <input type="checkbox" name="cslider_wrapAround" id="cslider_wrapAround" class="widefat cslider-wrapAround" value="1" <?php checked('1', $cslider_options['cslider_wrapAround']); ?> />
+                <td class="cslider-options col-1">
                     <label for="cslider_wrapAround">wrapAround</label>
+				</td>
+				<td class="cslider-options col-2">
+                    <input type="checkbox" name="cslider_wrapAround" id="cslider_wrapAround" class="widefat cslider-wrapAround" value="1" <?php checked('1', $cslider_options['cslider_wrapAround']); ?> />
+                </td>
+                <td class="cslider-options col-3">
+                    At the end of cells, wrap-around to the other end for infinite scrolling.
                 </td>
             </tr>
             <tr>
-                <td class="cslider-options">
+                <td class="cslider-options col-1">
 					<label for="cslider_groupCells">groupCells</label>
+				</td>
+				<td class="cslider-options col-2">
                     <input type="text" name="cslider_groupCells" id="cslider_groupCells" class="cslider-groupCells" value="<?php echo($cslider_options['cslider_groupCells']); ?>" />
                 </td>
+                <td class="cslider-options col-3">
+                    Groups cells together in slides. Flicking, page dots, and previous/next buttons are mapped to group slides, not individual cells. is-selected class is added to the multiple cells in the selected slide.
+                </td>
             </tr>
             <tr>
-                <td class="cslider-options">
+                <td class="cslider-options col-1">
 					<label for="cslider_autoPlay">autoPlay</label>
-                    <input type="text" name="cslider_autoPlay" id="cslider_autoPlay" class="cslider-autoPlay" value="<?php echo($cslider_options['cslider_autoPlay']); ?>" /> <span>milliseconds</span>
+				</td>
+				<td class="cslider-options col-2">
+                    <input type="text" name="cslider_autoPlay" id="cslider_autoPlay" class="cslider-autoPlay" value="<?php echo($cslider_options['cslider_autoPlay']); ?>" /> <span>ms</span>
+                </td>
+                <td class="cslider-options col-3">
+                    Automatically advances to the next cell. Set value to zero to disable autoPlay.
                 </td>
             </tr>
 			<tr>
-				<td class="cslider-options">
+				<td class="cslider-options col-1">
 					<label for="cslider_animation">animation</label>
+				</td>
+				<td class="cslider-options col-2">
 					<select name="cslider_animation" id="cslider_animation" class="cslider-animation">
 						<option value="slide" <?php selected( $cslider_options['cslider_animation'], 'slide' ); ?>>Slide</option>
 						<option value="fade" <?php selected( $cslider_options['cslider_animation'], 'fade' ); ?>>Fade</option>
 					</select>
 				</td>
+                <td class="cslider-options col-3">
+                    Slides or fades between transitioning. Fade functionality uses the flickity-fade package.
+                </td>
 			</tr>
             <tr>
-                <td class="cslider-options">
-                    <input type="checkbox" name="cslider_pauseAutoPlayOnHover" id="cslider_pauseAutoPlayOnHover" class="widefat cslider-pauseAutoPlayOnHover" value="1" <?php checked('1', $cslider_options['cslider_pauseAutoPlayOnHover']); ?> />
+                <td class="cslider-options col-1">
                     <label for="cslider_pauseAutoPlayOnHover">pauseAutoPlayOnHover</label>
+				</td>
+				<td class="cslider-options col-2">
+                    <input type="checkbox" name="cslider_pauseAutoPlayOnHover" id="cslider_pauseAutoPlayOnHover" class="widefat cslider-pauseAutoPlayOnHover" value="1" <?php checked('1', $cslider_options['cslider_pauseAutoPlayOnHover']); ?> />
+                </td>
+                <td class="cslider-options col-3">
+                    Auto-playing will pause when the user hovers over the carousel.
                 </td>
             </tr>
             <tr>
-                <td class="cslider-options">
-                    <input type="checkbox" name="cslider_adaptiveHeight" id="cslider_adaptiveHeight" class="widefat cslider-adaptiveHeight" value="1" <?php checked('1', $cslider_options['cslider_adaptiveHeight']); ?> />
+                <td class="cslider-options col-1">
                     <label for="cslider_adaptiveHeight">adaptiveHeight</label>
+				</td>
+				<td class="cslider-options col-2">
+                    <input type="checkbox" name="cslider_adaptiveHeight" id="cslider_adaptiveHeight" class="widefat cslider-adaptiveHeight" value="1" <?php checked('1', $cslider_options['cslider_adaptiveHeight']); ?> />
+                </td>
+                <td class="cslider-options col-3">
+                    Changes height of carousel to fit height of selected slide.
                 </td>
             </tr>
             <tr>
-                <td class="cslider-options">
-                    <input type="checkbox" name="cslider_watchCSS" id="cslider_watchCSS" class="widefat cslider-watchCSS" value="1" <?php checked('1', $cslider_options['cslider_watchCSS']); ?> />
+                <td class="cslider-options col-1">
                     <label for="cslider_watchCSS">watchCSS</label>
+				</td>
+				<td class="cslider-options col-2">
+                    <input type="checkbox" name="cslider_watchCSS" id="cslider_watchCSS" class="widefat cslider-watchCSS" value="1" <?php checked('1', $cslider_options['cslider_watchCSS']); ?> />
+                </td>
+                <td class="cslider-options col-3">
+                    You can enable and disable Flickity with CSS. watchCSS option watches the content of :after of the carousel element. Flickity is enabled if :after content is 'flickity'.
                 </td>
             </tr>
             <tr>
-                <td class="cslider-options">
+                <td class="cslider-options col-1">
 					<label for="cslider_dragThreshold">dragThreshold</label>
+				</td>
+				<td class="cslider-options col-2">
                     <input type="text" name="cslider_dragThreshold" id="cslider_dragThreshold" class="cslider-dragThreshold" value="<?php echo($cslider_options['cslider_dragThreshold']); ?>" /> <span>px</span>
                 </td>
+                <td class="cslider-options col-3">
+					The number of pixels a mouse or touch has to move before dragging begins. Increase dragThreshold to allow for more wiggle room for vertical page scrolling on touch devices. Default dragThreshold: 3.
+                </td>
             </tr>
             <tr>
-                <td class="cslider-options">
+                <td class="cslider-options col-1">
                     <label for="cslider_selectedAttraction">selectedAttraction</label>
+				</td>
+				<td class="cslider-options col-2">
                     <input type="text" name="cslider_selectedAttraction" id="cslider_selectedAttraction" class="cslider-selectedAttraction" value="<?php echo($cslider_options['cslider_selectedAttraction']); ?>" />
                 </td>
+                <td class="cslider-options col-3">
+                    selectedAttraction attracts the position of the slider to the selected cell. Higher attraction makes the slider move faster. Lower makes it move slower. Default selectedAttraction: 0.025.
+                </td>
             </tr>
             <tr>
-                <td class="cslider-options">
+                <td class="cslider-options col-1">
                     <label for="cslider_friction">friction</label>
+				</td>
+				<td class="cslider-options col-2">
                     <input type="text" name="cslider_friction" id="cslider_friction" class="cslider-friction" value="<?php echo($cslider_options['cslider_friction']); ?>" />
                 </td>
+                <td class="cslider-options col-3">
+                    friction slows the movement of slider. Higher friction makes the slider feel stickier and less bouncy. Lower friction makes the slider feel looser and more wobbly. Default friction: 0.28.
+                </td>
             </tr>
             <tr>
-                <td class="cslider-options">
+                <td class="cslider-options col-1">
                     <label for="cslider_freeScrollFriction">freeScrollFriction</label>
+				</td>
+				<td class="cslider-options col-2">
                     <input type="text" name="cslider_freeScrollFriction" id="cslider_freeScrollFriction" class="cslider-freeScrollFriction" value="<?php echo($cslider_options['cslider_freeScrollFriction']); ?>" />
+                </td>
+                <td class="cslider-options col-3">
+                    Slows movement of slider when freeScroll: true. Higher friction makes the slider feel stickier. Lower friction makes the slider feel looser. Default freeScrollFriction: 0.075.
                 </td>
             </tr>
 			<tr>
-				<td class="cslider-heading">
-					<p>Images</p>
-				</td>
-			</tr>
-			<tr>
-				<td class="cslider-options">
-					<input type="checkbox" name="cslider_lazyLoad" id="cslider_lazyLoad" class="widefat cslider-lazyLoad" value="1" <?php checked('1', $cslider_options['cslider_lazyLoad']); ?> />
+				<td class="cslider-options col-1">
 					<label for="cslider_lazyLoad">lazyLoad</label>
 				</td>
-			</tr>
-			<tr>
-				<td class="cslider-heading">
-					<p>Setup</p>
+				<td class="cslider-options col-2">
+					<input type="checkbox" name="cslider_lazyLoad" id="cslider_lazyLoad" class="widefat cslider-lazyLoad" value="1" <?php checked('1', $cslider_options['cslider_lazyLoad']); ?> />
 				</td>
+                <td class="cslider-options col-3">
+                    Set the image's src URL to load with data-flickity-lazyload-src.
+                </td>
 			</tr>
 			<tr>
-				<td class="cslider-options">
-					<input type="checkbox" name="cslider_setGallerySize" id="cslider_setGallerySize" class="widefat cslider-setGallerySize" value="1" <?php checked('1', $cslider_options['cslider_setGallerySize']); ?> />
+				<td class="cslider-options col-1">
 					<label for="cslider_setGallerySize">setGallerySize</label>
 				</td>
+				<td class="cslider-options col-2">
+					<input type="checkbox" name="cslider_setGallerySize" id="cslider_setGallerySize" class="widefat cslider-setGallerySize" value="1" <?php checked('1', $cslider_options['cslider_setGallerySize']); ?> />
+				</td>
+                <td class="cslider-options col-3">
+					Sets the height of the carousel to the height of the tallest cell. Disablle it if you prefer to size the carousel with CSS, rather than using the size of cells.
+                </td>
 			</tr>
 			<tr>
-				<td class="cslider-options">
-					<input type="checkbox" name="cslider_resize" id="cslider_resize" class="widefat cslider-resize" value="1" <?php checked('1', $cslider_options['cslider_resize']); ?> />
+				<td class="cslider-options col-1">
 					<label for="cslider_resize">resize</label>
 				</td>
-			</tr>
-			<tr>
-				<td class="cslider-heading">
-					<p>Cell</p>
+				<td class="cslider-options col-2">
+					<input type="checkbox" name="cslider_resize" id="cslider_resize" class="widefat cslider-resize" value="1" <?php checked('1', $cslider_options['cslider_resize']); ?> />
 				</td>
+                <td class="cslider-options col-3">
+                    Adjusts sizes and positions when window is resized. Enabled by default resize: true.
+                </td>
 			</tr>
 			<tr>
-				<td class="cslider-options">
+				<td class="cslider-options col-1">
 					<label for="cslider_cellAlign">cellAlign</label>
+				</td>
+				<td class="cslider-options col-2">
 					<select name="cslider_cellAlign" id="cslider_cellAlign" class="cslider-cellAlign">
 						<option value="center" <?php selected( $cslider_options['cslider_cellAlign'], 'center' ); ?>>Center</option>
 						<option value="left" <?php selected( $cslider_options['cslider_cellAlign'], 'left' ); ?>>Left</option>
 						<option value="right" <?php selected( $cslider_options['cslider_cellAlign'], 'right' ); ?>>Right</option>
 					</select>
 				</td>
+                <td class="cslider-options col-3">
+                    Align cells within the carousel element.
+                </td>
 			</tr>
 			<tr>
-				<td class="cslider-options">
-					<input type="checkbox" name="cslider_contain" id="cslider_contain" class="widefat cslider-contain" value="1" <?php checked('1', $cslider_options['cslider_contain']); ?> />
+				<td class="cslider-options col-1">
 					<label for="cslider_contain">contain</label>
 				</td>
+				<td class="cslider-options col-2">
+					<input type="checkbox" name="cslider_contain" id="cslider_contain" class="widefat cslider-contain" value="1" <?php checked('1', $cslider_options['cslider_contain']); ?> />
+				</td>
+                <td class="cslider-options col-3">
+                    Contains cells to carousel element to prevent excess scroll at beginning or end. Has no effect if wrapAround: true.
+                </td>
 			</tr>
 			<tr>
-				<td class="cslider-options">
-					<input type="checkbox" name="cslider_percentPosition" id="cslider_percentPosition" class="widefat cslider-percentPosition" value="1" <?php checked('1', $cslider_options['cslider_percentPosition']); ?> />
+				<td class="cslider-options col-1">
 					<label for="cslider_percentPosition">percentPosition</label>
 				</td>
-			</tr>
-			<tr>
-				<td class="cslider-heading">
-					<p>UI</p>
+				<td class="cslider-options col-2">
+					<input type="checkbox" name="cslider_percentPosition" id="cslider_percentPosition" class="widefat cslider-percentPosition" value="1" <?php checked('1', $cslider_options['cslider_percentPosition']); ?> />
 				</td>
+                <td class="cslider-options col-3">
+                    Sets positioning in percent values, rather than pixel values. If your cells do not have percent widths, we recommended percentPosition: false.
+                </td>
 			</tr>
 			<tr>
-				<td class="cslider-options">
-					<input type="checkbox" name="cslider_prevNextButtons" id="cslider_prevNextButtons" class="widefat cslider-prevNextButtons" value="1" <?php checked('1', $cslider_options['cslider_prevNextButtons']); ?> />
+				<td class="cslider-options col-1">
 					<label for="cslider_prevNextButtons">prevNextButtons</label>
 				</td>
+				<td class="cslider-options col-2">
+					<input type="checkbox" name="cslider_prevNextButtons" id="cslider_prevNextButtons" class="widefat cslider-prevNextButtons" value="1" <?php checked('1', $cslider_options['cslider_prevNextButtons']); ?> />
+				</td>
+                <td class="cslider-options col-3">
+                    Creates and enables previous & next buttons. Enabled by default prevNextButtons: true.
+                </td>
 			</tr>
 			<tr>
-				<td class="cslider-options">
-					<input type="checkbox" name="cslider_pageDots" id="cslider_pageDots" class="widefat cslider-pageDots" value="1" <?php checked('1', $cslider_options['cslider_pageDots']); ?> />
+				<td class="cslider-options col-1">
 					<label for="cslider_pageDots">pageDots</label>
 				</td>
+				<td class="cslider-options col-2">
+					<input type="checkbox" name="cslider_pageDots" id="cslider_pageDots" class="widefat cslider-pageDots" value="1" <?php checked('1', $cslider_options['cslider_pageDots']); ?> />
+				</td>
+                <td class="cslider-options col-3">
+                    Creates and enables page dots. Enabled by default pageDots: true.
+                </td>
 			</tr>
 		</tbody>
 	</table>

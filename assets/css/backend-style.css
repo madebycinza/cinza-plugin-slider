@@ -4,12 +4,6 @@
     padding: 10px 0;
 }
 
-#cslider-optionset .cslider-options {
-    display: flex;
-    align-items: center;
-    margin: 5px 0;
-}
-
 #cslider-optionset .cslider-heading p {
     margin: 15px 0 5px;
     padding: 15px 0 0;
@@ -22,10 +16,29 @@
     border-top: 0;
 }
 
-#cslider-optionset .cslider-options select,
+#cslider-optionset .cslider-options {
+    padding: 10px;
+}
+
+#cslider-optionset tr:nth-child(odd) {
+    background: #f1f1f1;
+}
+
+#cslider-optionset .cslider-options.col-1 {
+    width: 200px;
+}
+
+#cslider-optionset .cslider-options.col-2 {
+    width: 150px;
+}
+
+#cslider-optionset .cslider-options.col-3 {
+    width: calc(100% - 200px - 150px);
+}
+
 #cslider-optionset .cslider-options input[type="text"],
-#cslider-optionset .cslider-options input[type="number"] {
-    margin: 0 10px;
+#cslider-optionset .cslider-options select {
+    width: 80px;
 }
 
 /* Fields */
