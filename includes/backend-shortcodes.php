@@ -14,9 +14,7 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
 	// Enqueue scripts
     wp_enqueue_style('cslider-frontend-css');
 	wp_enqueue_style('flickity-css');
-    wp_enqueue_style('flickity-fade-css');
 	wp_enqueue_script('flickity-js');
-    wp_enqueue_script('flickity-fade-js');
 	
     // Normalize attribute keys, lowercase
     $atts = array_change_key_case( (array) $atts, CASE_LOWER );
@@ -37,14 +35,24 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
     $options = ' \'{ ';
 
         // Query validations
-        if (intval($cslider_options['autoPlay']) <= 0) $valid_autoPlay = '"autoPlay": true,'; 
+        if (intval($cslider_options['cslider_autoPlay']) > 0) $valid_autoPlay = '"autoPlay": '. $cslider_options['cslider_autoPlay'] .','; 
         else $valid_autoPlay = '"autoPlay": false,'; 
 
-        if ($cslider_options['cslider_animation'] == "fade") $valid_fade = '"fade": true,'; 
-        else $valid_fade = '';
+        if ($cslider_options['cslider_animation'] == "fade") {
+            wp_enqueue_style('flickity-fade-css');
+            wp_enqueue_script('flickity-fade-js');
+            $valid_fade = '"fade": true,'; 
+        } else {
+            $valid_fade = '';
+        }
 
-        if (boolval($cslider_options['cslider_lazyLoad']) && ($cslider_options['cslider_animation'] != "fade")) $valid_lazyLoad = '"lazyLoad": true,'; 
-        else $valid_lazyLoad = '"lazyLoad": false,'; 
+        if (boolval($cslider_options['cslider_lazyLoad']) && ($cslider_options['cslider_animation'] != "fade")) {
+            $valid_lazyLoad = '"lazyLoad": 2,'; // load images in selected slide, next 2 slides and previous 2 slides
+            $img_load = 'data-flickity-lazyload';
+        } else {
+            $valid_lazyLoad = '"lazyLoad": false,'; 
+            $img_load = 'src';
+        }
 
         // Behavior
         $options .= '"draggable": ' . (boolval($cslider_options['cslider_draggable']) ? "true" : "false") . ',';
@@ -88,13 +96,19 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
     $slides = '';
     foreach ( $cslider_fields as $field ) {
         $slides .= '<div class="carousel-cell">
-                        <img class="carousel-cell-image" src="'. $field['cslider_url'] .'" alt="'. $field['name'] .'" />
-                        <div class="carousel-cell-content">'. $field['name'] .'</div>
+                        <img class="carousel-cell-image" '. $img_load .'="'. $field['cslider_url'] .'" alt="'. $field['cslider_content'] .'" />
+                        <div class="carousel-cell-content">'. $field['cslider_content'] .'</div>
                     </div>';
     }
  
+    // Dynamic style 
+    $cslider_style = "<style>";
+    if (intval($cslider_options['cslider_minHeight']) > 0) $cslider_style .= ".carousel .flickity-viewport, .carousel .carousel-cell, .carousel .carousel-cell-image {min-height: ". $cslider_options['cslider_minHeight'] ."px;}";
+    if (intval($cslider_options['cslider_maxHeight']) > 0) $cslider_style .= ".carousel .flickity-viewport, .carousel .carousel-cell, .carousel .carousel-cell-image {max-height: ". $cslider_options['cslider_maxHeight'] ."px;}";
+    $cslider_style .= "</style>";
+
     // Output
-    $o = '<div class="carousel" data-flickity='. $options .'>'. $slides .'</div>';
-    
+    $o = '<div class="carousel" data-flickity='. $options .'>'. $slides .'</div>'. $cslider_style;
+
     return $o;
 }

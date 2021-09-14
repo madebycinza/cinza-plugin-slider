@@ -2,13 +2,26 @@
     position: relative;
 }
 
-.carousel-cell {
-    width: 40%;
+.carousel .carousel-cell {
+    width: 100%;
     overflow: hidden;
 }
 
-.carousel-cell-content {
+.carousel .carousel-cell-image {
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.carousel .carousel-cell-content {
     position: absolute;
     top: 0;
-    left: 0;   
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #FFF;
 }

@@ -11,17 +11,8 @@
     border-top: 1px solid #c3c4c7;
 }
 
-#cslider-optionset .cslider-heading p.no-margin-top {
-    margin-top: 0;
-    border-top: 0;
-}
-
 #cslider-optionset .cslider-options {
     padding: 10px;
-}
-
-#cslider-optionset tr:nth-child(odd) {
-    background: #f1f1f1;
 }
 
 #cslider-optionset .cslider-options.col-1 {
@@ -41,11 +32,19 @@
     width: 80px;
 }
 
+#cslider-optionset thead {
+    background: #f1f1f1;
+}
+
+#cslider-optionset thead p {
+    margin: 5px 0;
+    font-weight: bold;
+}
+
 /* Fields */
 
 #cslider-fieldset tr {
-    display: flex;
-    align-items: flex-end;
+    display: table;
     width: 100%;
     padding: 10px;
     margin: 10px 0;
@@ -54,32 +53,53 @@
     box-sizing: border-box;
 }
 
-#cslider-fieldset td.cslider-fields {
-    display: inline-block;
-    width: calc(100% - 40px);
+#cslider-fieldset td.cslider-preview {
+    width: 265px;
 }
-#cslider-fieldset td.cslider-fields label {
+
+#cslider-fieldset td.cslider-preview div {
+    background-size: cover;
+    background-position: center;
+    height: 160px;
+    width: 100%;
+}
+
+#cslider-fieldset td.cslider-content {
+    padding: 0 0 0 20px;
+}
+#cslider-fieldset td.cslider-content label {
     display: block;
     margin-bottom: 5px;
 }
-#cslider-fieldset td.cslider-fields input.cslider-img-url {
+#cslider-fieldset td.cslider-content input.cslider-img-url {
     margin: 0 0 10px;
 }
-#cslider-fieldset td.cslider-fields textarea.cslider-content {
+#cslider-fieldset td.cslider-content textarea.cslider-content {
     height: 75px;
 }
 
 #cslider-fieldset td.cslider-buttons {
-    display: inline-block;
-    width: 40px;
-    text-align: right;
-    padding-bottom: 5px;
+    width: 35px;
+    padding: 0 0 0 20px;
 }
 #cslider-fieldset td.cslider-buttons a.button {
     padding: 8px;
-    margin: 5px 0 0;
+    margin: 3px 0;
     line-height: 1;
 }
 #cslider-fieldset td.cslider-buttons a.button img {
     width: 15px;
+}
+
+/* Documentation */
+
+#cslider-documentation .inside {
+    overflow: hidden;
+    padding: 12px;
+    margin: 0;
+}
+
+#cslider-documentation .button {
+    width: 100%;
+    text-align: center;
 }
