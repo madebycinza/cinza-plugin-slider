@@ -3,6 +3,13 @@
     overflow: hidden;
 }
 
+.cinza-carousel .static-cell {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
 .cinza-carousel .carousel-cell {
     width: 100%;
     overflow: hidden;
@@ -21,14 +28,15 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 2;
 }
 
 .cinza-carousel .carousel-cell-link {
     display: flex;
+    width: 100%;
     height: 100%;   
 }
 
+.cinza-carousel .carousel-cell-content,
 .cinza-carousel .flickity-prev-next-button, 
 .cinza-carousel .flickity-page-dots {
     z-index: 2;
@@ -55,22 +63,7 @@
     transition: 0.3s all ease-in-out;
 }
 
-.cinza-carousel .flickity-page-dots .dot:hover,
+.cinza-carousel .flickity-page-dots .dot:hover, 
 .cinza-carousel .flickity-page-dots .dot.is-selected {
     background: #FFF;
-}
-
-.cinza-carousel .static-cell {
-    display: flex;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    pointer-events: none;
-    z-index: 1;
 }
