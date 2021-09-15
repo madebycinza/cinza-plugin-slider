@@ -48,10 +48,10 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
 
         if (boolval($cslider_options['cslider_lazyLoad']) && ($cslider_options['cslider_animation'] != "fade")) {
             $valid_lazyLoad = '"lazyLoad": 2,'; // load images in selected slide, next 2 slides and previous 2 slides
-            $img_load = 'data-flickity-lazyload';
+            $img_load_method = 'data-flickity-lazyload';
         } else {
             $valid_lazyLoad = '"lazyLoad": false,'; 
-            $img_load = 'src';
+            $img_load_method = 'src';
         }
 
         // Behavior
@@ -91,24 +91,79 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
 
     $options .= ' }\' ';
 
+    // Query: _cslider_static
+    $cslider_static = get_post_meta($slider_id, '_cslider_static', true);
+    $static = "";
+    if(!empty($cslider_static['cslider_static_content'])) {
+        $static .=  '<div class="static-cell"><div class="carousel-cell-content">'. $cslider_static['cslider_static_content'] .'</div></div>';
+    }
+
     // Query: _cslider_fields
     $cslider_fields = get_post_meta($slider_id, '_cslider_fields', true);
     $slides = '';
     foreach ( $cslider_fields as $field ) {
-        $slides .= '<div class="carousel-cell">
-                        <img class="carousel-cell-image" '. $img_load .'="'. $field['cslider_url'] .'" alt="'. $field['cslider_content'] .'" />
-                        <div class="carousel-cell-content">'. $field['cslider_content'] .'</div>
-                    </div>';
+        $layer_link_target = '';
+        if($field['cslider_link_target'] == 'new') {
+            $layer_link_target = 'target="_blank"';
+        }
+
+        $layer_begin = '<div class="carousel-cell">';
+        $layer_end = '</div>';
+        if(!empty($field['cslider_link'])) {
+            $layer_begin .= '<a href="'. $field['cslider_link'] .'" '. $layer_link_target .' class="carousel-cell-link">';
+            $layer_end = '</a></div>';
+        }
+
+        $layer_img = '';
+        if(!empty($field['cslider_img'])) {
+            $layer_img = '<img class="carousel-cell-image" '. $img_load_method .'="'. $field['cslider_img'] .'" />';
+        }
+
+        $layer_content = '';
+        if(!empty($field['cslider_content'])) {
+            $layer_content = '<div class="carousel-cell-content">'. $field['cslider_content'] .'</div>';
+        }
+
+        $slides .=  $layer_begin . $layer_img . $layer_content . $layer_end;
     }
- 
+
     // Dynamic style 
-    $cslider_style = "<style>";
-    if (intval($cslider_options['cslider_minHeight']) > 0) $cslider_style .= ".carousel .flickity-viewport, .carousel .carousel-cell, .carousel .carousel-cell-image {min-height: ". $cslider_options['cslider_minHeight'] ."px;}";
-    if (intval($cslider_options['cslider_maxHeight']) > 0) $cslider_style .= ".carousel .flickity-viewport, .carousel .carousel-cell, .carousel .carousel-cell-image {max-height: ". $cslider_options['cslider_maxHeight'] ."px;}";
-    $cslider_style .= "</style>";
+    $style = "<style>";
+    if (intval($cslider_options['cslider_minHeight']) > 0) {
+        $style .=  ".cinza-carousel, 
+                    .cinza-carousel .flickity-viewport, 
+                    .cinza-carousel .carousel-cell, 
+                    .cinza-carousel .carousel-cell-image {
+                        min-height: ". $cslider_options['cslider_minHeight'] ."px;
+                    }";
+    }
+    
+    if (intval($cslider_options['cslider_maxHeight']) > 0) {
+        $style .=  ".cinza-carousel, 
+                    .cinza-carousel .flickity-viewport, 
+                    .cinza-carousel .carousel-cell, 
+                    .cinza-carousel .carousel-cell-image {
+                        max-height: ". $cslider_options['cslider_maxHeight'] ."px;
+                    }";
+    }
+
+    if(!empty($cslider_static['cslider_static_overlay'])) {
+        $style .=  ".cinza-carousel .carousel-cell:after {
+                    content: '';
+                    position: absolute;
+                    display: block;
+                    top: 0;
+                    bottom: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: ". $cslider_static['cslider_static_overlay'] .";
+                    z-index: 1;
+                }";
+    }
+    $style .= "</style>";
 
     // Output
-    $o = '<div class="carousel" data-flickity='. $options .'>'. $slides .'</div>'. $cslider_style;
+    $o = '<div class="cinza-carousel" data-flickity='. $options .'>'. $static . $slides .'</div>'. $style;
 
     return $o;
 }

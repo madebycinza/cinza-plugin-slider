@@ -1,27 +1,76 @@
-.carousel {
+.cinza-carousel {
     position: relative;
+    overflow: hidden;
 }
 
-.carousel .carousel-cell {
+.cinza-carousel .carousel-cell {
     width: 100%;
     overflow: hidden;
 }
 
-.carousel .carousel-cell-image {
+.cinza-carousel .carousel-cell-image {
     width: 100%;
     object-fit: cover;
     object-position: center;
 }
 
-.carousel .carousel-cell-content {
+.cinza-carousel .carousel-cell-content {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+.cinza-carousel .carousel-cell-link {
+    display: flex;
+    height: 100%;   
+}
+
+.cinza-carousel .flickity-prev-next-button, 
+.cinza-carousel .flickity-page-dots {
+    z-index: 2;
+}
+
+.cinza-carousel .flickity-prev-next-button {
+    color: #FFF;
+    background: transparent;
+    transition: 0.3s all ease-in-out;
+}
+
+.cinza-carousel .flickity-prev-next-button:hover {
+    color: rgba(255, 255, 255, 0.5);
+    background: transparent;
+}
+
+.cinza-carousel .flickity-page-dots {
+    bottom: 20px;
+}
+
+.cinza-carousel .flickity-page-dots .dot {
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 1;
+    transition: 0.3s all ease-in-out;
+}
+
+.cinza-carousel .flickity-page-dots .dot:hover,
+.cinza-carousel .flickity-page-dots .dot.is-selected {
+    background: #FFF;
+}
+
+.cinza-carousel .static-cell {
+    display: flex;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     text-align: center;
-    color: #FFF;
+    pointer-events: none;
+    z-index: 1;
 }

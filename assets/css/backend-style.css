@@ -45,6 +45,7 @@
 
 #cslider-fieldset tr {
     display: table;
+    vertical-align: top;
     width: 100%;
     padding: 10px;
     margin: 10px 0;
@@ -53,42 +54,72 @@
     box-sizing: border-box;
 }
 
-#cslider-fieldset td.cslider-preview {
-    width: 265px;
-}
-
-#cslider-fieldset td.cslider-preview div {
-    background-size: cover;
-    background-position: center;
-    height: 160px;
-    width: 100%;
-}
-
-#cslider-fieldset td.cslider-content {
-    padding: 0 0 0 20px;
-}
-#cslider-fieldset td.cslider-content label {
+#cslider-fieldset label {
     display: block;
     margin-bottom: 5px;
 }
-#cslider-fieldset td.cslider-content input.cslider-img-url {
-    margin: 0 0 10px;
-}
-#cslider-fieldset td.cslider-content textarea.cslider-content {
-    height: 75px;
+
+#cslider-fieldset td.cslider-preview {
+    width: 250px;
 }
 
-#cslider-fieldset td.cslider-buttons {
-    width: 35px;
+#cslider-fieldset td.cslider-preview div.cslider-preview {
+    height: 160px;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #8c8f94;
+    background-size: cover;
+    background-position: center;
+}
+
+#cslider-fieldset div.cslider-buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0 0 0;
+}
+
+#cslider-fieldset div.cslider-buttons a.button {
+    padding: 8px;
+    line-height: 1;
+    text-align: center;
+    display: flex;
+    width: calc(50% - 5px);
+    align-items: center;
+    justify-content: center;
+}
+
+#cslider-fieldset div.cslider-buttons a.button img {
+    width: 15px;
+    margin-right: 8px;
+}
+
+#cslider-fieldset .slide-row td.cslider-content {
     padding: 0 0 0 20px;
 }
-#cslider-fieldset td.cslider-buttons a.button {
-    padding: 8px;
-    margin: 3px 0;
-    line-height: 1;
+
+#cslider-fieldset td.cslider-content input.cslider-img,
+#cslider-fieldset td.cslider-content textarea.cslider-content,
+#cslider-fieldset td.cslider-content div.link-details:not(:last-child) {
+    margin: 0 0 10px;
 }
-#cslider-fieldset td.cslider-buttons a.button img {
-    width: 15px;
+
+#cslider-fieldset td.cslider-content textarea.cslider-content {
+    height: 86px;
+}
+
+#cslider-fieldset td.cslider-content div.link-details {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+#cslider-fieldset td.cslider-content input.cslider-link {
+    width: calc(100% - 172px);
+    margin-right: 10px;   
+}
+
+#cslider-fieldset td.cslider-content div.link-details select {
+    width: 160px;
 }
 
 /* Documentation */

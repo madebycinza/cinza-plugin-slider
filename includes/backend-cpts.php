@@ -77,8 +77,9 @@ function cslider_register_post_type() {
 
 add_action('add_meta_boxes', 'cslider_add_fields_meta_boxes');
 function cslider_add_fields_meta_boxes() {
-	add_meta_box('cslider-options', 'Slider Options', 'cslider_meta_box_options', 'cinza_slider', 'normal', 'default');
-	add_meta_box('cslider-fields', 'Slider Fields', 'cslider_meta_box_display', 'cinza_slider', 'normal', 'default');
+	add_meta_box('cslider-options', 'Options', 'cslider_meta_box_options', 'cinza_slider', 'normal', 'default');
+	add_meta_box('cslider-fields', 'Slider Cells', 'cslider_meta_box_display', 'cinza_slider', 'normal', 'default');
+	add_meta_box('cslider-static', 'Static Layer', 'cslider_meta_box_static', 'cinza_slider', 'normal', 'default');
 	add_meta_box('cslider-documentation', 'Documentation', 'cslider_meta_box_doc', 'cinza_slider', 'side', 'default');
 }
 
@@ -438,72 +439,124 @@ function cslider_meta_box_display() {
 	?>
 	<table id="cslider-fieldset" width="100%">
 		<tbody><?php
-			$icon_sort = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/icon-sort.png';
-			$icon_remove = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/icon-remove.png';
+			$icon_sort = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/icon-move.png';
+			$icon_remove = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/icon-delete.png';
 			$preview_placeholder = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/preview-placeholder.jpg';
 
 			if ( $cslider_fields ) :
 				foreach ( $cslider_fields as $field ) {?>
-					<tr>
+					<tr class="slide-row">
 						<td class="cslider-preview">
 							<?php 
-							if (empty($field['cslider_url'])) $preview_img = $preview_placeholder;
-							else $preview_img = esc_attr( $field['cslider_url'] );
+							if (empty($field['cslider_img'])) $preview_img = $preview_placeholder;
+							else $preview_img = esc_attr( $field['cslider_img'] );
 							?>
-							<div style="background-image: url('<?php echo $preview_img; ?>');"></div>
+							<label>Image Preview</label>
+							<div class="cslider-preview" style="background-image: url('<?php echo $preview_img; ?>');"></div>
+							<div class="cslider-buttons">
+								<a class="button button-primary move-slide" href="#"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
+								<a class="button button-primary delete-slide" href="#"><img src="<?php echo $icon_remove; ?>" alt="Delete Slide" />Delete</a>
+							</div>
 						</td>
 						<td class="cslider-content">
 							<label>Image URL</label>
-							<input type="text" class="widefat cslider-img-url" name="cslider_url[]" value="<?php if ($field['cslider_url'] != '') echo esc_attr( $field['cslider_url'] ); ?>" />
+							<input type="text" class="widefat cslider-img" name="cslider_img[]" value="<?php echo esc_attr( $field['cslider_img'] ); ?>" />
 							<label>Content</label>
-							<textarea type="text" class="widefat cslider-content" name="cslider_content[]" rows="4" cols="50"><?php if($field['cslider_content'] != '') echo esc_attr( $field['cslider_content'] ); ?></textarea>
-						</td>
-						<td class="cslider-buttons">
-							<a class="button button-primary sort-row" href="#"><img src="<?php echo $icon_sort; ?>" alt="Sort Row" /></a>
-							<a class="button button-primary remove-row" href="#"><img src="<?php echo $icon_remove; ?>" alt="Remove Row" /></a>
+							<textarea type="text" class="widefat cslider-content" name="cslider_content[]"><?php echo esc_attr( $field['cslider_content'] ); ?></textarea>
+							<label>Layer Link URL</label>
+							<div class="link-details">
+								<input type="text" class="widefat cslider-link" name="cslider_link[]" value="<?php echo esc_attr( $field['cslider_link'] ); ?>" />
+								<select name="cslider_link_target[]" class="cslider-link-target">
+									<option value="same" <?php selected( $field['cslider_link_target'], 'same' ); ?>>Open in same tab</option>
+									<option value="new" <?php selected( $field['cslider_link_target'], 'new' ); ?>>Open in new tab</option>
+								</select>
+							</div>
 						</td>
 					</tr><?php
 				}
 			else : ?>
 			
 			<!-- show a blank one -->
-			<tr>
+			<tr class="slide-row">
 				<td class="cslider-preview">
-					<div style="background-image: url('<?php echo $preview_placeholder; ?>');"></div>
+					<label>Image Preview</label>
+					<div class="cslider-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');"></div>
+					<div class="cslider-buttons">
+						<a class="button button-primary move-slide" href="#"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
+						<a class="button button-primary delete-slide" href="#"><img src="<?php echo $icon_remove; ?>" alt="Delete Slide" />Delete</a>
+					</div>
 				</td>
 				<td class="cslider-content">
 					<label>Image URL</label>
-					<input type="text" class="widefat cslider-img-url" name="cslider_url[]" />
+					<input type="text" class="widefat cslider-img" name="cslider_img[]" />
 					<label>Content</label>
-					<textarea type="text" class="widefat cslider-content" name="cslider_content[]" rows="4" cols="50"></textarea>
-				</td>
-				<td class="cslider-buttons">
-					<a class="button button-primary sort-row" href="#"><img src="<?php echo $icon_sort; ?>" alt="Sort Row" /></a>
-					<a class="button button-primary remove-row" href="#"><img src="<?php echo $icon_remove; ?>" alt="Remove Row" /></a>
+					<textarea type="text" class="widefat cslider-content" name="cslider_content[]"></textarea>
+					<label>Layer Link URL</label>
+					<div class="link-details">
+						<input type="text" class="widefat cslider-link" name="cslider_link[]" />
+						<select name="cslider_link_target[]" class="cslider-link-target">
+							<option value="same">Open in same tab</option>
+							<option value="new">Open in new tab</option>
+						</select>
+					</div>
 				</td>
 			</tr><?php 
 			endif; ?>
 			
 			<!-- empty hidden one for jQuery -->
-			<tr class="empty-row screen-reader-text">
+			<tr class="empty-row screen-reader-text slide-row">
 				<td class="cslider-preview">
-					<div style="background-image: url('<?php echo $preview_placeholder; ?>');"></div>
+					<label>Image Preview</label>
+					<div class="cslider-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');"></div>
+					<div class="cslider-buttons">
+						<a class="button button-primary move-slide" href="#"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
+						<a class="button button-primary delete-slide" href="#"><img src="<?php echo $icon_remove; ?>" alt="Delete Slide" />Delete</a>
+					</div>
 				</td>
 				<td class="cslider-content">
 					<label>Image URL</label>
-					<input type="text" class="widefat cslider-img-url" name="cslider_url[]" />
+					<input type="text" class="widefat cslider-img" name="cslider_img[]" />
 					<label>Content</label>
-					<textarea type="text" class="widefat cslider-content" name="cslider_content[]" rows="4" cols="50"></textarea>
-				</td>
-				<td class="cslider-buttons">
-					<a class="button button-primary sort-row" href="#"><img src="<?php echo $icon_sort; ?>" alt="Sort Row" /></a>
-					<a class="button button-primary remove-row" href="#"><img src="<?php echo $icon_remove; ?>" alt="Remove Row" /></a>
+					<textarea type="text" class="widefat cslider-content" name="cslider_content[]"></textarea>
+					<label>Layer Link URL</label>
+					<div class="link-details">
+						<input type="text" class="widefat cslider-link" name="cslider_link[]" />
+						<select name="cslider_link_target[]" class="cslider-link-target">
+							<option value="same">Open in same tab</option>
+							<option value="new">Open in new tab</option>
+						</select>
+					</div>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 	
-	<p><a id="add-row" class="button" href="#">Add slide</a></p>
+	<p><a id="add-slide" class="button" href="#">Add slide</a></p>
+	<?php
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Meta Box: _cslider_static
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function cslider_meta_box_static() {
+	global $post;
+    $cslider_static = get_post_meta( $post->ID, '_cslider_static', true );
+	wp_nonce_field( 'cslider_meta_box_nonce', 'cslider_meta_box_nonce' );
+
+	?>
+	<table id="cslider-fieldset" width="100%">
+		<tbody>
+			<tr class="slide-static">
+				<td class="cslider-content">
+					<label>Content</label>
+					<textarea type="text" class="widefat cslider-content" name="cslider_static_content"><?php echo esc_attr( $cslider_static['cslider_static_content'] ); ?></textarea>
+					<label>Overlay Color</label>
+					<input type="text" class="widefat cslider-overlay" name="cslider_static_overlay" value="<?php echo esc_attr( $cslider_static['cslider_static_overlay'] ); ?>" />
+				</td>
+			</tr>
+		</tbody>
+	</table>
 	<?php
 }
 
@@ -512,9 +565,7 @@ function cslider_meta_box_display() {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function cslider_meta_box_doc( $post ) {
-	?>
-	<a href="https://flickity.metafizzy.co/options.html" target="_blank" class="preview button">Flickity documentation</a>
-	<?php
+	?><a href="https://flickity.metafizzy.co/options.html" target="_blank" class="preview button">Flickity documentation</a><?php
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -585,21 +636,25 @@ function cslider_save_fields_meta_boxes($post_id) {
 	update_post_meta($post_id, '_cslider_options', $new);
 
 	// Save _cslider_fields
-	$cslider_urls = $_POST['cslider_url'];
+	$cslider_imgs = $_POST['cslider_img'];
 	$cslider_contents = $_POST['cslider_content'];
+	$cslider_links = $_POST['cslider_link'];
+	$cslider_link_targets = $_POST['cslider_link_target'];
 
 	$new = array();
 	$old = get_post_meta($post_id, '_cslider_fields', true);
-	$count_urls = count( $cslider_urls );
-	$count_contents = count( $cslider_contents );
+	$count_imgs = count($cslider_imgs);
+	$count_contents = count($cslider_contents);
 
-	if ($count_urls > $count_contents) $count = $count_urls;
+	if ($count_imgs > $count_contents) $count = $count_imgs;
 	else $count = $count_contents;
-	
+
 	for ( $i = 0; $i < $count; $i++ ) {
-		if ( $cslider_urls[$i] != '' || $cslider_contents[$i] != '' ) :
-			$new[$i]['cslider_url'] = stripslashes( $cslider_urls[$i] );
+		if ( $cslider_imgs[$i] != '' || $cslider_contents[$i] != '' ) :
+			$new[$i]['cslider_img'] = stripslashes( $cslider_imgs[$i] );
 			$new[$i]['cslider_content'] = stripslashes( $cslider_contents[$i] );
+			$new[$i]['cslider_link'] = stripslashes( $cslider_links[$i] );
+			$new[$i]['cslider_link_target'] = stripslashes( $cslider_link_targets[$i] );
 		endif;
 	}
 
@@ -607,6 +662,16 @@ function cslider_save_fields_meta_boxes($post_id) {
 		update_post_meta( $post_id, '_cslider_fields', $new );
 	elseif ( empty($new) && $old )
 		delete_post_meta( $post_id, '_cslider_fields', $old );
+
+	// Save _cslider_static
+	$cslider_static_content = $_POST['cslider_static_content'];
+	$cslider_static_overlay = $_POST['cslider_static_overlay'];
+
+	$new = array();
+	$new['cslider_static_content'] = $cslider_static_content;
+	$new['cslider_static_overlay'] = $cslider_static_overlay;
+
+	update_post_meta($post_id, '_cslider_static', $new);
 }
 
 ?>
