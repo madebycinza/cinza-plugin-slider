@@ -121,7 +121,7 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
 
         $layer_content = '';
         if(!empty($field['cslider_content'])) {
-            $layer_content = '<div class="carousel-cell-content">'. $field['cslider_content'] .'</div>';
+            $layer_content = '<div class="carousel-cell-content"><div class="carousel-cell-content-inner">'. $field['cslider_content'] .'</div></div>';
         }
 
         $slides .=  $layer_begin . $layer_img . $layer_content . $layer_end;
@@ -130,25 +130,25 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
     // Dynamic style 
     $style = "<style>";
     if (intval($cslider_options['cslider_minHeight']) > 0) {
-        $style .=  ".cinza-carousel, 
-                    .cinza-carousel .flickity-viewport, 
-                    .cinza-carousel .carousel-cell, 
-                    .cinza-carousel .carousel-cell-image {
+        $style .=  ".cinza-carousel-".$slider_id.", 
+                    .cinza-carousel-".$slider_id." .flickity-viewport, 
+                    .cinza-carousel-".$slider_id." .carousel-cell, 
+                    .cinza-carousel-".$slider_id." .carousel-cell-image {
                         min-height: ". $cslider_options['cslider_minHeight'] ."px;
                     }";
     }
     
     if (intval($cslider_options['cslider_maxHeight']) > 0) {
-        $style .=  ".cinza-carousel, 
-                    .cinza-carousel .flickity-viewport, 
-                    .cinza-carousel .carousel-cell, 
-                    .cinza-carousel .carousel-cell-image {
+        $style .=  ".cinza-carousel-".$slider_id.", 
+                    .cinza-carousel-".$slider_id." .flickity-viewport, 
+                    .cinza-carousel-".$slider_id." .carousel-cell, 
+                    .cinza-carousel-".$slider_id." .carousel-cell-image {
                         max-height: ". $cslider_options['cslider_maxHeight'] ."px;
                     }";
     }
 
     if(!empty($cslider_static['cslider_static_overlay'])) {
-        $style .=  ".cinza-carousel .carousel-cell:after {
+        $style .=  ".cinza-carousel-".$slider_id." .carousel-cell:after {
                     content: '';
                     position: absolute;
                     display: block;
@@ -163,7 +163,7 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
     $style .= "</style>";
 
     // Output
-    $o = '<div class="cinza-carousel" data-flickity='. $options .'>'. $static . $slides .'</div>'. $style;
+    $o = '<div class="cinza-carousel cinza-carousel-'.$slider_id.'" data-flickity='. $options .'>'. $static . $slides .'</div>'. $style;
 
     return $o;
 }
