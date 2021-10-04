@@ -107,24 +107,22 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
             $layer_link_target = 'target="_blank"';
         }
 
-        $layer_begin = '<div class="carousel-cell">';
-        $layer_end = '</div>';
-        if(!empty($field['cslider_link'])) {
-            $layer_begin .= '<a href="'. $field['cslider_link'] .'" '. $layer_link_target .' class="carousel-cell-link">';
-            $layer_end = '</a></div>';
-        }
-
         $layer_img = '';
         if(!empty($field['cslider_img'])) {
             $layer_img = '<img class="carousel-cell-image" '. $img_load_method .'="'. $field['cslider_img'] .'" />';
         }
 
-        $layer_content = '';
-        if(!empty($field['cslider_content'])) {
-            $layer_content = '<div class="carousel-cell-content"><div class="carousel-cell-content-inner">'. $field['cslider_content'] .'</div></div>';
+        $layer_link = '';
+        if(!empty($field['cslider_link'])) {
+            $layer_link .= '<a href="'. $field['cslider_link'] .'" '. $layer_link_target .' class="carousel-cell-link"></a>';
         }
 
-        $slides .=  $layer_begin . $layer_img . $layer_content . $layer_end;
+        $layer_content = '';
+        if(!empty($field['cslider_content'])) {
+            $layer_content = '<div class="carousel-cell-content"><div class="carousel-cell-content-inner">'. $field['cslider_content'] .'</div>'. $layer_link .'</div>';
+        }
+
+        $slides .=  '<div class="carousel-cell">' . $layer_img . $layer_content . '</div>';
     }
 
     // Dynamic style 

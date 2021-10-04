@@ -70,6 +70,35 @@ function cslider_register_post_type() {
 	register_post_type( 'cinza_slider', $args );
 }
 
+
+add_filter( 'manage_cinza_slider_posts_columns', 'set_custom_edit_cinza_slider_columns' );
+function set_custom_edit_cinza_slider_columns($columns) {
+    $columns['shortcode'] = __( 'Shortcode', 'your_text_domain' );
+    return $columns;
+}
+
+add_action( 'manage_cinza_slider_posts_custom_column' , 'custom_cinza_slider_column', 10, 2 );
+function custom_cinza_slider_column( $column, $post_id ) {
+	switch ( $column ) {
+		case 'shortcode' :
+			echo('[cinza_slider id="'.$post_id.'"]');
+			break;
+	}
+}
+
+add_filter ( 'manage_cinza_slider_posts_columns', 'add_cinza_slider_columns' );
+function add_cinza_slider_columns ( $columns ) {
+	unset($columns['title']);
+	unset($columns['shortcode']);
+	unset($columns['date']);
+
+	return array_merge ( $columns, array ( 
+		'title' => __ ('Title'),
+		'shortcode' => __ ( 'Shortcode' ),
+		'date' => __('Date')
+	) );
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Add Meta Boxex
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

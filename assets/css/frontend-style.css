@@ -1,7 +1,15 @@
-.cinza-carousel .static-cell {
+.cinza-carousel .static-cell,
+.cinza-carousel .carousel-cell-content,
+.cinza-carousel .carousel-cell-link {
     position: absolute;
+    display: block;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.cinza-carousel .static-cell {
     z-index: 1;
 }
 
@@ -16,19 +24,13 @@
     object-position: center;
 }
 
-.cinza-carousel .carousel-cell-content {
-    display: flex;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+.cinza-carousel .carousel-cell-content-inner {
+    position: relative;
+    z-index: 1;
 }
 
 .cinza-carousel .carousel-cell-link {
-    display: flex;
-    width: 100%;
-    height: 100%;   
+    z-index: 2;
 }
 
 .cinza-carousel .carousel-cell-content,

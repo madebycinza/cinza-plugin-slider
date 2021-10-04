@@ -41,6 +41,10 @@
     font-weight: bold;
 }
 
+@media only screen and (max-width: 1000px) {
+    #cslider-optionset .col-3 {display: none;}
+}
+
 /* Fields */
 
 #cslider-fieldset tr {
@@ -120,6 +124,18 @@
 
 #cslider-fieldset td.cslider-content div.link-details select {
     width: 160px;
+}
+
+@media only screen and (max-width: 1200px) {
+    #cslider-fieldset td.cslider-preview,
+    #cslider-fieldset .slide-row td.cslider-content {
+        width: 100%;
+        display: block;
+    }
+
+    #cslider-fieldset .slide-row td.cslider-content {
+        padding: 20px 0 0;
+    }
 }
 
 /* Documentation */
