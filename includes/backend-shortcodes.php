@@ -46,14 +46,6 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
             $valid_fade = '';
         }
 
-        if (boolval($cslider_options['cslider_lazyLoad']) && ($cslider_options['cslider_animation'] != "fade")) {
-            $valid_lazyLoad = '"lazyLoad": 2,'; // load images in selected slide, next 2 slides and previous 2 slides
-            $img_load_method = 'data-flickity-lazyload';
-        } else {
-            $valid_lazyLoad = '"lazyLoad": false,'; 
-            $img_load_method = 'src';
-        }
-
         // Behavior
         $options .= '"draggable": ' . (boolval($cslider_options['cslider_draggable']) ? "true" : "false") . ',';
         $options .= '"freeScroll": ' . (boolval($cslider_options['cslider_freeScroll']) ? "true" : "false") . ',';
@@ -71,7 +63,7 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
         
         // Images
         $options .= '"imagesLoaded": "true",';
-        $options .= $valid_lazyLoad;
+        $options .= '"lazyLoad": "false",';
 
         // Setup
         $options .= '"cellSelector": ".carousel-cell",';
@@ -109,7 +101,8 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
 
         $layer_img = '';
         if(!empty($field['cslider_img'])) {
-            $layer_img = '<img class="carousel-cell-image" '. $img_load_method .'="'. $field['cslider_img'] .'" />';
+            //$layer_img = '<img class="carousel-cell-image" '. src="'. $field['cslider_img'] .'" />';
+            $layer_img = wp_get_attachment_image( intval($field['cslider_img']), 'full' );
         }
 
         $layer_link = '';
@@ -162,6 +155,6 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
 
     // Output
     $o = '<div class="cinza-carousel cinza-carousel-'.$slider_id.'" data-flickity='. $options .'>'. $static . $slides .'</div>'. $style;
-
+    
     return $o;
 }

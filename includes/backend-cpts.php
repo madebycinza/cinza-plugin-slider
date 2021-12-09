@@ -138,7 +138,6 @@ function cslider_meta_box_options( $post ) {
 	$temp_resize = 1;
 	$temp_contain = 1;
 	$temp_percentPosition = 1;
-	$temp_lazyLoad = 1;
 	$temp_watchCSS = 0;
 	$temp_dragThreshold = '3';
 	$temp_selectedAttraction = '0.025';
@@ -164,7 +163,6 @@ function cslider_meta_box_options( $post ) {
 		$temp_resize = $cslider_options['cslider_resize'];
 		$temp_contain = $cslider_options['cslider_contain'];
 		$temp_percentPosition = $cslider_options['cslider_percentPosition'];
-		$temp_lazyLoad = $cslider_options['cslider_lazyLoad'];
 		$temp_watchCSS = $cslider_options['cslider_watchCSS'];
 		$temp_dragThreshold = esc_attr($cslider_options['cslider_dragThreshold']);
 		$temp_selectedAttraction = esc_attr($cslider_options['cslider_selectedAttraction']);
@@ -419,29 +417,6 @@ function cslider_meta_box_options( $post ) {
 		<thead>
 			<tr>
 				<td class="cslider-options" colspan="3">
-					<p>Images</p>
-				</td>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td class="cslider-options col-1">
-					<label for="cslider_lazyLoad">lazyLoad</label>
-				</td>
-				<td class="cslider-options col-2">
-					<input type="checkbox" name="cslider_lazyLoad" id="cslider_lazyLoad" class="widefat cslider-lazyLoad" value="1" <?php checked('1', $temp_lazyLoad); ?> />
-				</td>
-                <td class="cslider-options col-3">
-                    Set the image's src URL to load with data-flickity-lazyload-src. It doesn't work with Fade animation.
-                </td>
-			</tr>
-		</tbody>
-	</table>
-
-	<table id="cslider-optionset" width="100%">
-		<thead>
-			<tr>
-				<td class="cslider-options" colspan="3">
 					<p>Advanced</p>
 				</td>
 			</tr>
@@ -524,7 +499,9 @@ function cslider_meta_box_display() {
 			$preview_placeholder = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/preview-placeholder.jpg';
 
 			if ( $cslider_fields ) {
-				foreach ( $cslider_fields as $field ) {?>
+				$count = 0;
+				foreach ( $cslider_fields as $field ) {
+					$count++; ?>
 					<tr class="slide-row">
 						<td class="cslider-preview">
 							<?php 
@@ -534,13 +511,16 @@ function cslider_meta_box_display() {
 							<label>Image Preview</label>
 							<div class="cslider-preview" style="background-image: url('<?php echo $preview_img; ?>');"></div>
 							<div class="cslider-buttons">
-								<a class="button button-primary move-slide" href="#"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
-								<a class="button button-primary delete-slide" href="#"><img src="<?php echo $icon_remove; ?>" alt="Delete Slide" />Delete</a>
+								<a class="button move-slide" href="#"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
+								<a class="button delete-slide" href="#"><img src="<?php echo $icon_remove; ?>" alt="Delete Slide" />Delete</a>
 							</div>
 						</td>
 						<td class="cslider-content">
 							<label>Image URL</label>
-							<input type="text" class="widefat cslider-img" name="cslider_img[]" value="<?php echo esc_attr( $field['cslider_img'] ); ?>" />
+							<div class="img-details">
+								<input type="text" class="widefat cslider-img" name="cslider_img[]" value="<?php echo esc_attr( $field['cslider_img'] ); ?>" />
+								<input type="button" class="button button-primary cslider_img_btn" value="Select Image" />
+							</div>
 							<label>Content</label>
 							<textarea type="text" class="widefat cslider-content" name="cslider_content[]"><?php echo esc_attr( $field['cslider_content'] ); ?></textarea>
 							<label>Layer Link URL</label>
@@ -562,13 +542,16 @@ function cslider_meta_box_display() {
 						<label>Image Preview</label>
 						<div class="cslider-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');"></div>
 						<div class="cslider-buttons">
-							<a class="button button-primary move-slide" href="#"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
-							<a class="button button-primary delete-slide" href="#"><img src="<?php echo $icon_remove; ?>" alt="Delete Slide" />Delete</a>
+							<a class="button move-slide" href="#"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
+							<a class="button delete-slide" href="#"><img src="<?php echo $icon_remove; ?>" alt="Delete Slide" />Delete</a>
 						</div>
 					</td>
 					<td class="cslider-content">
 						<label>Image URL</label>
-						<input type="text" class="widefat cslider-img" name="cslider_img[]" />
+						<div class="img-details">
+							<input type="text" class="widefat cslider-img" name="cslider_img[]" />
+							<input type="button" class="button button-primary cslider_img_btn" value="Select Image" />
+						</div>
 						<label>Content</label>
 						<textarea type="text" class="widefat cslider-content" name="cslider_content[]"></textarea>
 						<label>Layer Link URL</label>
@@ -589,13 +572,16 @@ function cslider_meta_box_display() {
 					<label>Image Preview</label>
 					<div class="cslider-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');"></div>
 					<div class="cslider-buttons">
-						<a class="button button-primary move-slide" href="#"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
-						<a class="button button-primary delete-slide" href="#"><img src="<?php echo $icon_remove; ?>" alt="Delete Slide" />Delete</a>
+						<a class="button move-slide" href="#"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
+						<a class="button delete-slide" href="#"><img src="<?php echo $icon_remove; ?>" alt="Delete Slide" />Delete</a>
 					</div>
 				</td>
 				<td class="cslider-content">
 					<label>Image URL</label>
-					<input type="text" class="widefat cslider-img" name="cslider_img[]" />
+					<div class="img-details">
+						<input type="text" class="widefat cslider-img" name="cslider_img[]" />
+						<input type="button" class="button button-primary cslider_img_btn" value="Select Image" />
+					</div>
 					<label>Content</label>
 					<textarea type="text" class="widefat cslider-content" name="cslider_content[]"></textarea>
 					<label>Layer Link URL</label>
@@ -610,8 +596,42 @@ function cslider_meta_box_display() {
 			</tr>
 		</tbody>
 	</table>
-	
 	<p><a id="add-slide" class="button" href="#">Add slide</a></p>
+
+	<script>
+		jQuery(document).ready(function($){
+			// WP media modal
+			$('.cslider_img_btn').click(function(event) {open_wp_media_modal(event, $(this).siblings(".cslider-img"));});
+		});
+		
+		function open_wp_media_modal(event, id) {
+			var logo_selection;
+			
+			// Befault action of the button event will not be triggered
+			event.preventDefault();
+			
+			// If the upload object has already been created, reopen the dialog
+			if (logo_selection) {
+				logo_selection.open();
+				return;
+			}
+			// Extend the wp.media object
+			logo_selection = wp.media.frames.file_frame = wp.media({
+				title: 'Select media',
+				button: {
+				text: 'Select media'
+			}, multiple: false });
+			
+			// When a file is selected, grab the URL and set it as the text field's value
+			logo_selection.on('select', function() {
+				var attachment = logo_selection.state().get('selection').first().toJSON();
+				jQuery(id).val(attachment.url);
+			});
+			
+			// Open the upload dialog
+			logo_selection.open();
+		}
+	</script>
 	<?php
 }
 
@@ -689,7 +709,6 @@ function cslider_save_fields_meta_boxes($post_id) {
 	$cslider_selectedAttraction = $_POST['cslider_selectedAttraction'];
 	$cslider_friction = $_POST['cslider_friction'];
 	$cslider_freeScrollFriction = $_POST['cslider_freeScrollFriction'];
-	$cslider_lazyLoad = $_POST['cslider_lazyLoad'];
 	$cslider_setGallerySize = $_POST['cslider_setGallerySize'];
 	$cslider_resize = $_POST['cslider_resize'];
 	$cslider_cellAlign = $_POST['cslider_cellAlign'];
@@ -714,7 +733,6 @@ function cslider_save_fields_meta_boxes($post_id) {
 	$new['cslider_selectedAttraction'] = empty($cslider_selectedAttraction) ? '0.025' : wp_strip_all_tags($cslider_selectedAttraction);
 	$new['cslider_friction'] = empty($cslider_friction) ? '0.28' : wp_strip_all_tags($cslider_friction);
 	$new['cslider_freeScrollFriction'] = empty($cslider_freeScrollFriction) ? '0.075' : wp_strip_all_tags($cslider_freeScrollFriction);
-	$new['cslider_lazyLoad'] = $cslider_lazyLoad ? '1' : '0';
 	$new['cslider_setGallerySize'] = $cslider_setGallerySize ? '1' : '0';
 	$new['cslider_resize'] = $cslider_resize ? '1' : '0';
 	$new['cslider_cellAlign'] = wp_strip_all_tags($cslider_cellAlign);

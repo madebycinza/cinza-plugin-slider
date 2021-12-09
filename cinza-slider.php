@@ -54,6 +54,7 @@ function add_script_to_cslider_cpt() {
     wp_enqueue_script('cslider-jquery', 'https://code.jquery.com/jquery-1.12.4.js', array('jquery'), '1.12.4', true);
     wp_enqueue_script('cslider-jquery-ui', 'https://code.jquery.com/ui/1.12.1/jquery-ui.js', array('jquery'), '1.12.1', true);
     wp_enqueue_script('cslider-backend-js', plugins_url('/assets/js/backend-script.js', __FILE__), array('jquery'), '1.0.0', false);
+    wp_enqueue_media();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
