@@ -505,25 +505,31 @@ function cslider_meta_box_display() {
 					<tr class="slide-row">
 						<td class="cslider-preview">
 							<?php 
-							if (empty($field['cslider_img'])) $preview_img = $preview_placeholder;
-							else $preview_img = esc_attr( $field['cslider_img'] );
+								if (empty( esc_attr($field['cslider_img_id']) )) {
+									$cslider_img_url = '';
+									$cslider_img_preview = $preview_placeholder;
+								} else {
+									$cslider_img_url = wp_get_attachment_image_src( $attachment_id = esc_attr($field['cslider_img_id']), $size = 'full');
+									$cslider_img_preview = wp_get_attachment_image_src( $attachment_id = esc_attr($field['cslider_img_id']), $size = 'large');
+								}
 							?>
-							<label>Image Preview</label>
-							<div class="cslider-preview" style="background-image: url('<?php echo $preview_img; ?>');"></div>
+							<label>Preview</label>
+							<div class="cslider-img-preview" style="background-image: url('<?php echo $cslider_img_preview[0]; ?>');"></div>
 							<div class="cslider-buttons">
 								<a class="button move-slide" href="#"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
 								<a class="button delete-slide" href="#"><img src="<?php echo $icon_remove; ?>" alt="Delete Slide" />Delete</a>
 							</div>
 						</td>
 						<td class="cslider-content">
-							<label>Image URL</label>
+							<label>Image</label>
 							<div class="img-details">
-								<input type="text" class="widefat cslider-img" name="cslider_img[]" value="<?php echo esc_attr( $field['cslider_img'] ); ?>" />
-								<input type="button" class="button button-primary cslider_img_btn" value="Select Image" />
+								<input type="text" class="widefat cslider-img-url" name="cslider_img_url[]" value="<?php echo $cslider_img_url[0]; ?>" readonly />
+								<input type="text" class="widefat cslider-img-id" name="cslider_img_id[]" value="<?php echo esc_attr( $field['cslider_img_id'] ); ?>" />
+								<input type="button" class="button button-primary cslider-img-btn" value="Select Image" />
 							</div>
 							<label>Content</label>
 							<textarea type="text" class="widefat cslider-content" name="cslider_content[]"><?php echo esc_attr( $field['cslider_content'] ); ?></textarea>
-							<label>Layer Link URL</label>
+							<label>Link</label>
 							<div class="link-details">
 								<input type="text" class="widefat cslider-link" name="cslider_link[]" value="<?php echo esc_attr( $field['cslider_link'] ); ?>" />
 								<select name="cslider_link_target[]" class="cslider-link-target">
@@ -539,22 +545,23 @@ function cslider_meta_box_display() {
 				<!-- show a blank one -->
 				<tr class="slide-row">
 					<td class="cslider-preview">
-						<label>Image Preview</label>
-						<div class="cslider-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');"></div>
+						<label>Preview</label>
+						<div class="cslider-img-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');"></div>
 						<div class="cslider-buttons">
 							<a class="button move-slide" href="#"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
 							<a class="button delete-slide" href="#"><img src="<?php echo $icon_remove; ?>" alt="Delete Slide" />Delete</a>
 						</div>
 					</td>
 					<td class="cslider-content">
-						<label>Image URL</label>
+						<label>Image</label>
 						<div class="img-details">
-							<input type="text" class="widefat cslider-img" name="cslider_img[]" />
-							<input type="button" class="button button-primary cslider_img_btn" value="Select Image" />
+							<input type="text" class="widefat cslider-img-url" name="cslider_img_url[]" readonly />
+							<input type="text" class="widefat cslider-img-id" name="cslider_img_id[]" />
+							<input type="button" class="button button-primary cslider-img-btn" value="Select Image" />
 						</div>
 						<label>Content</label>
 						<textarea type="text" class="widefat cslider-content" name="cslider_content[]"></textarea>
-						<label>Layer Link URL</label>
+						<label>Link</label>
 						<div class="link-details">
 							<input type="text" class="widefat cslider-link" name="cslider_link[]" />
 							<select name="cslider_link_target[]" class="cslider-link-target">
@@ -569,22 +576,23 @@ function cslider_meta_box_display() {
 			<!-- empty hidden one for jQuery -->
 			<tr class="empty-row screen-reader-text slide-row">
 				<td class="cslider-preview">
-					<label>Image Preview</label>
-					<div class="cslider-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');"></div>
+					<label>Preview</label>
+					<div class="cslider-img-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');"></div>
 					<div class="cslider-buttons">
 						<a class="button move-slide" href="#"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
 						<a class="button delete-slide" href="#"><img src="<?php echo $icon_remove; ?>" alt="Delete Slide" />Delete</a>
 					</div>
 				</td>
 				<td class="cslider-content">
-					<label>Image URL</label>
+					<label>Image</label>
 					<div class="img-details">
-						<input type="text" class="widefat cslider-img" name="cslider_img[]" />
-						<input type="button" class="button button-primary cslider_img_btn" value="Select Image" />
+						<input type="text" class="widefat cslider-img-url" name="cslider_img_url[]" readonly />
+						<input type="text" class="widefat cslider-img-id" name="cslider_img_id[]" />
+						<input type="button" class="button button-primary cslider-img-btn" value="Select Image" />
 					</div>
 					<label>Content</label>
 					<textarea type="text" class="widefat cslider-content" name="cslider_content[]"></textarea>
-					<label>Layer Link URL</label>
+					<label>Link</label>
 					<div class="link-details">
 						<input type="text" class="widefat cslider-link" name="cslider_link[]" />
 						<select name="cslider_link_target[]" class="cslider-link-target">
@@ -596,42 +604,7 @@ function cslider_meta_box_display() {
 			</tr>
 		</tbody>
 	</table>
-	<p><a id="add-slide" class="button" href="#">Add slide</a></p>
-
-	<script>
-		jQuery(document).ready(function($){
-			// WP media modal
-			$('.cslider_img_btn').click(function(event) {open_wp_media_modal(event, $(this).siblings(".cslider-img"));});
-		});
-		
-		function open_wp_media_modal(event, id) {
-			var logo_selection;
-			
-			// Befault action of the button event will not be triggered
-			event.preventDefault();
-			
-			// If the upload object has already been created, reopen the dialog
-			if (logo_selection) {
-				logo_selection.open();
-				return;
-			}
-			// Extend the wp.media object
-			logo_selection = wp.media.frames.file_frame = wp.media({
-				title: 'Select media',
-				button: {
-				text: 'Select media'
-			}, multiple: false });
-			
-			// When a file is selected, grab the URL and set it as the text field's value
-			logo_selection.on('select', function() {
-				var attachment = logo_selection.state().get('selection').first().toJSON();
-				jQuery(id).val(attachment.url);
-			});
-			
-			// Open the upload dialog
-			logo_selection.open();
-		}
-	</script>
+	<p id="add-slide-p"><a id="add-slide" class="button button-primary" href="#">Add slide</a></p>
 	<?php
 }
 
@@ -744,7 +717,7 @@ function cslider_save_fields_meta_boxes($post_id) {
 	update_post_meta($post_id, '_cslider_options', $new);
 
 	// Save _cslider_fields
-	$cslider_imgs = $_POST['cslider_img'];
+	$cslider_imgs_id = $_POST['cslider_img_id'];
 	$cslider_contents = $_POST['cslider_content'];
 	$cslider_links = $_POST['cslider_link'];
 	$cslider_link_targets = $_POST['cslider_link_target'];
@@ -758,8 +731,8 @@ function cslider_save_fields_meta_boxes($post_id) {
 	else $count = $count_contents;
 
 	for ( $i = 0; $i < $count; $i++ ) {
-		if ( $cslider_imgs[$i] != '' || $cslider_contents[$i] != '' ) :
-			$new[$i]['cslider_img'] = stripslashes( $cslider_imgs[$i] );
+		if ( $cslider_imgs_id[$i] != '' || $cslider_contents[$i] != '' ) :
+			$new[$i]['cslider_img_id'] = stripslashes( $cslider_imgs_id[$i] );
 			$new[$i]['cslider_content'] = stripslashes( $cslider_contents[$i] );
 			$new[$i]['cslider_link'] = stripslashes( $cslider_links[$i] );
 			$new[$i]['cslider_link_target'] = stripslashes( $cslider_link_targets[$i] );

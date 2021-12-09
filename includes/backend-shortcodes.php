@@ -100,9 +100,9 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
         }
 
         $layer_img = '';
-        if(!empty($field['cslider_img'])) {
+        if(!empty($field['cslider_img_id'])) {
             //$layer_img = '<img class="carousel-cell-image" '. src="'. $field['cslider_img'] .'" />';
-            $layer_img = wp_get_attachment_image( intval($field['cslider_img']), 'full' );
+            $layer_img = wp_get_attachment_image( intval($field['cslider_img_id']), 'full' );
         }
 
         $layer_link = '';
