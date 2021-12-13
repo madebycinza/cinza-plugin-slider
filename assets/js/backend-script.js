@@ -1,5 +1,7 @@
 jQuery(document).ready(function( $ ){
 
+    $( '.cinza-carousel' ).attr('TabIndex',-1);
+
     // Add new slide
     $( '#add-slide' ).on('click', function() {
         var row = $( '.empty-row.screen-reader-text' ).clone(true);
@@ -16,6 +18,14 @@ jQuery(document).ready(function( $ ){
         }
     });
 
+    // Remove slide image
+    $(".button.remove-img").on('click', function(){
+        $(this).siblings(".cslider-img-url").val("");
+        $(this).siblings(".cslider-img-id").val("");
+        $(this).parent().parent().parent().find(".cslider-img-preview-inner").css("background-color", "transparent");
+        $(this).parent().parent().parent().find(".cslider-img-preview-inner").css("background-image", "url()");
+    });
+
     // Sorting
     $( function() {
         $( "#cslider-fieldset tbody" ).sortable();
@@ -23,15 +33,13 @@ jQuery(document).ready(function( $ ){
     } );
 
     // Enqueue Media
-    jQuery(document).ready(function($){
-        $('.cslider-img-btn').click(function(event) {
-            open_wp_media_modal(
-                event, 
-                $(this).siblings(".cslider-img-url"), 
-                $(this).siblings(".cslider-img-id"),
-                $(this).parent().parent().parent().find(".cslider-img-preview")
-            );
-        });
+    $('.cslider-img-btn').on('click', function(event) {
+        open_wp_media_modal(
+            event, 
+            $(this).siblings(".cslider-img-url"), 
+            $(this).siblings(".cslider-img-id"),
+            $(this).parent().parent().parent().find(".cslider-img-preview-inner")
+        );
     });
     
     function open_wp_media_modal(event, img_url, img_id, img_preview) {

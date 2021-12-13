@@ -123,6 +123,7 @@ function cslider_meta_box_options( $post ) {
 	// Set default values
 	$temp_minHeight = 300;
 	$temp_maxHeight = 500;
+	$temp_fullWidth = 0;
 	$temp_setGallerySize = 1;
 	$temp_adaptiveHeight = 1;
 	$temp_prevNextButtons = 1;
@@ -148,6 +149,7 @@ function cslider_meta_box_options( $post ) {
 	if ( !empty($cslider_options) ) {
 		$temp_minHeight = esc_attr($cslider_options['cslider_minHeight']);
 		$temp_maxHeight = esc_attr($cslider_options['cslider_maxHeight']);
+		$temp_fullWidth = $cslider_options['cslider_fullWidth'];
 		$temp_setGallerySize = $cslider_options['cslider_setGallerySize'];
 		$temp_adaptiveHeight = $cslider_options['cslider_adaptiveHeight'];
 		$temp_draggable = $cslider_options['cslider_draggable'];
@@ -202,6 +204,17 @@ function cslider_meta_box_options( $post ) {
 					Manually sets the slider max-height in pixels. Set value to zero to disable this option.
                 </td>
             </tr>
+			<tr>
+				<td class="cslider-options col-1">
+					<label for="cslider_fullWidth">fullWidth</label>
+				</td>
+				<td class="cslider-options col-2">
+					<input type="checkbox" name="cslider_fullWidth" id="cslider_fullWidth" class="widefat cslider-fullWidth" value="1" <?php checked('1', $temp_fullWidth); ?> />
+				</td>
+                <td class="cslider-options col-3">
+					Force full width.
+                </td>
+			</tr>
 			<tr>
 				<td class="cslider-options col-1">
 					<label for="cslider_setGallerySize">setGallerySize</label>
@@ -495,7 +508,8 @@ function cslider_meta_box_display() {
 	<table id="cslider-fieldset" width="100%">
 		<tbody><?php
 			$icon_sort = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/icon-move.png';
-			$icon_remove = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/icon-delete.png';
+			$icon_delete = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/icon-delete.png';
+			$icon_remove = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/icon-remove.png';
 			$preview_placeholder = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/preview-placeholder.jpg';
 
 			if ( $cslider_fields ) {
@@ -505,25 +519,25 @@ function cslider_meta_box_display() {
 					<tr class="slide-row">
 						<td class="cslider-preview">
 							<?php 
-								if (empty( esc_attr($field['cslider_img_id']) )) {
-									$cslider_img_url = '';
-									$cslider_img_preview = $preview_placeholder;
-								} else {
-									$cslider_img_url = wp_get_attachment_image_src( $attachment_id = esc_attr($field['cslider_img_id']), $size = 'full');
-									$cslider_img_preview = wp_get_attachment_image_src( $attachment_id = esc_attr($field['cslider_img_id']), $size = 'large');
+								if (!empty( esc_attr($field['cslider_img_id']) )) {
+									$cslider_img_url = wp_get_attachment_image_src( $attachment_id = esc_attr($field['cslider_img_id']), $size = 'full')[0];
+									$cslider_img_preview = wp_get_attachment_image_src( $attachment_id = esc_attr($field['cslider_img_id']), $size = 'large')[0];
 								}
 							?>
 							<label>Preview</label>
-							<div class="cslider-img-preview" style="background-image: url('<?php echo $cslider_img_preview[0]; ?>');"></div>
+							<div class="cslider-img-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');">
+								<div class="cslider-img-preview-inner" style="background-image: url('<?php echo $cslider_img_preview; ?>');"></div>
+							</div>
 							<div class="cslider-buttons">
-								<a class="button move-slide" href="#"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
-								<a class="button delete-slide" href="#"><img src="<?php echo $icon_remove; ?>" alt="Delete Slide" />Delete</a>
+								<a class="button move-slide" href="#/"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
+								<a class="button delete-slide" href="#/"><img src="<?php echo $icon_delete; ?>" alt="Delete Slide" />Delete</a>
 							</div>
 						</td>
 						<td class="cslider-content">
 							<label>Image</label>
 							<div class="img-details">
-								<input type="text" class="widefat cslider-img-url" name="cslider_img_url[]" value="<?php echo $cslider_img_url[0]; ?>" readonly />
+								<input type="text" class="widefat cslider-img-url" name="cslider_img_url[]" value="<?php echo $cslider_img_url; ?>" readonly />
+								<a class="button remove-img" href="#/"><img src="<?php echo $icon_remove; ?>" alt="Remove Image" /></a>
 								<input type="text" class="widefat cslider-img-id" name="cslider_img_id[]" value="<?php echo esc_attr( $field['cslider_img_id'] ); ?>" />
 								<input type="button" class="button button-primary cslider-img-btn" value="Select Image" />
 							</div>
@@ -546,16 +560,19 @@ function cslider_meta_box_display() {
 				<tr class="slide-row">
 					<td class="cslider-preview">
 						<label>Preview</label>
-						<div class="cslider-img-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');"></div>
+						<div class="cslider-img-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');">
+							<div class="cslider-img-preview-inner" style="background-image: url();"></div>
+						</div>
 						<div class="cslider-buttons">
 							<a class="button move-slide" href="#"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
-							<a class="button delete-slide" href="#"><img src="<?php echo $icon_remove; ?>" alt="Delete Slide" />Delete</a>
+							<a class="button delete-slide" href="#"><img src="<?php echo $icon_delete; ?>" alt="Delete Slide" />Delete</a>
 						</div>
 					</td>
 					<td class="cslider-content">
 						<label>Image</label>
 						<div class="img-details">
 							<input type="text" class="widefat cslider-img-url" name="cslider_img_url[]" readonly />
+							<a class="button remove-img" href="#"><img src="<?php echo $icon_remove; ?>" alt="Remove Image" /></a>
 							<input type="text" class="widefat cslider-img-id" name="cslider_img_id[]" />
 							<input type="button" class="button button-primary cslider-img-btn" value="Select Image" />
 						</div>
@@ -577,16 +594,19 @@ function cslider_meta_box_display() {
 			<tr class="empty-row screen-reader-text slide-row">
 				<td class="cslider-preview">
 					<label>Preview</label>
-					<div class="cslider-img-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');"></div>
+					<div class="cslider-img-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');">
+						<div class="cslider-img-preview-inner" style="background-image: url();"></div>
+					</div>
 					<div class="cslider-buttons">
 						<a class="button move-slide" href="#"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
-						<a class="button delete-slide" href="#"><img src="<?php echo $icon_remove; ?>" alt="Delete Slide" />Delete</a>
+						<a class="button delete-slide" href="#"><img src="<?php echo $icon_delete; ?>" alt="Delete Slide" />Delete</a>
 					</div>
 				</td>
 				<td class="cslider-content">
 					<label>Image</label>
 					<div class="img-details">
 						<input type="text" class="widefat cslider-img-url" name="cslider_img_url[]" readonly />
+						<a class="button remove-img" href="#"><img src="<?php echo $icon_remove; ?>" alt="Remove Image" /></a>
 						<input type="text" class="widefat cslider-img-id" name="cslider_img_id[]" />
 						<input type="button" class="button button-primary cslider-img-btn" value="Select Image" />
 					</div>
@@ -669,6 +689,7 @@ function cslider_save_fields_meta_boxes($post_id) {
 	// Save _cslider_options
 	$cslider_minHeight = $_POST['cslider_minHeight'];
 	$cslider_maxHeight = $_POST['cslider_maxHeight'];
+	$cslider_fullWidth = $_POST['cslider_fullWidth'];
 	$cslider_draggable = $_POST['cslider_draggable'];
 	$cslider_freeScroll = $_POST['cslider_freeScroll'];
 	$cslider_wrapAround = $_POST['cslider_wrapAround'];
@@ -693,6 +714,7 @@ function cslider_save_fields_meta_boxes($post_id) {
 	$new = array();
 	$new['cslider_minHeight'] = empty($cslider_minHeight) ? '0' : wp_strip_all_tags($cslider_minHeight);
 	$new['cslider_maxHeight'] = empty($cslider_maxHeight) ? '0' : wp_strip_all_tags($cslider_maxHeight);
+	$new['cslider_fullWidth'] = $cslider_fullWidth ? '1' : '0';
 	$new['cslider_draggable'] = $cslider_draggable ? '1' : '0';
 	$new['cslider_freeScroll'] = $cslider_freeScroll ? '1' : '0';
 	$new['cslider_wrapAround'] = $cslider_wrapAround ? '1' : '0';
