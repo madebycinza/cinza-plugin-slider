@@ -1,6 +1,4 @@
-jQuery(document).ready(function( $ ){
-
-    $( '.cinza-carousel' ).attr('TabIndex',-1);
+jQuery(document).ready(function($) {
 
     // Add new slide
     $( '#add-slide' ).on('click', function() {

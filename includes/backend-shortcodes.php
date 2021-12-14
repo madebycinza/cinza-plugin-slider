@@ -12,9 +12,10 @@ function cslider_shortcodes_init() {
 function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' ) {
 
 	// Enqueue scripts
-    wp_enqueue_style('cslider-frontend-css');
+    wp_enqueue_script('flickity-js');
 	wp_enqueue_style('flickity-css');
-	wp_enqueue_script('flickity-js');
+    wp_enqueue_style('animate-css');
+    wp_enqueue_style('cslider-frontend-css');
 	
     // Normalize attribute keys, lowercase
     $atts = array_change_key_case( (array) $atts, CASE_LOWER );
@@ -122,6 +123,13 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
 
     // Dynamic style 
     $style = "<style>";
+
+    $style .=  ".cinza-carousel {
+                    height: ". ( ($cslider_options['cslider_minHeight'] + $cslider_options['cslider_maxHeight']) / 2) ."px; /* Temporary while it loads, removed with jQuery */
+                    opacity: 0;
+                    overflow: hidden; /* Temporary while it loads, removed with jQuery */
+                }";
+
     if (intval($cslider_options['cslider_minHeight']) > 0) {
         $style .=  ".cinza-carousel-".$slider_id.", 
                     .cinza-carousel-".$slider_id." .flickity-viewport, 
@@ -142,32 +150,31 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
 
     if (intval($cslider_options['cslider_fullWidth']) > 0) {
         $style .=  ".cinza-carousel-".$slider_id." {
-            width: 100vw;
-            position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw;
-            margin-right: -50vw;
-        }";
+                        width: 100vw;
+                        position: relative;
+                        left: 50%;
+                        right: 50%;
+                        margin-left: -50vw;
+                        margin-right: -50vw;
+                    }";
     }
 
     if(!empty($cslider_static['cslider_static_overlay'])) {
         $style .=  ".cinza-carousel-".$slider_id." .carousel-cell:after {
-                    content: '';
-                    position: absolute;
-                    display: block;
-                    top: 0;
-                    bottom: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: ". $cslider_static['cslider_static_overlay'] .";
-                    z-index: 1;
-                }";
+                        content: '';
+                        position: absolute;
+                        display: block;
+                        top: 0;
+                        bottom: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: ". $cslider_static['cslider_static_overlay'] .";
+                        z-index: 1;
+                    }";
     }
     $style .= "</style>";
 
     // Output
-    $o = '<div class="cinza-carousel cinza-carousel-'.$slider_id.'" data-flickity='. $options .'>'. $static . $slides .'</div>'. $style;
-    
+    $o = '<div class="cinza-carousel cinza-carousel-'.$slider_id.' animate__animated animate__fadeIn" data-flickity='. $options .'>'. $static . $slides .'</div>'. $style;
     return $o;
 }

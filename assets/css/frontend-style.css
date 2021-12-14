@@ -1,3 +1,7 @@
+.cinza-carousel {
+    transition: 0.3s all ease-in-out;
+}
+
 .cinza-carousel .static-cell,
 .cinza-carousel .carousel-cell-content,
 .cinza-carousel .carousel-cell-link {
@@ -15,13 +19,13 @@
 
 .cinza-carousel .carousel-cell {
     width: 100%;
-    height: 100%;
     overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .cinza-carousel .carousel-cell .carousel-cell-image {
     width: 100%;
-    height: 100%;
     object-fit: cover;
     object-position: center;
 }
@@ -33,10 +37,6 @@
 
 .cinza-carousel .carousel-cell-link {
     z-index: 2;
-}
-
-.cinza-carousel .carousel-cell-link:focus {
-	border: 3px solid !important;
 }
 
 .cinza-carousel .carousel-cell-content,
@@ -69,4 +69,58 @@
 .cinza-carousel .flickity-page-dots .dot:hover, 
 .cinza-carousel .flickity-page-dots .dot.is-selected {
     background: #FFF;
+}
+
+/* Accessibility */
+
+.cinza-carousel:focus-visible {
+    /*outline: 3px solid !important;*/
+}
+
+.cinza-carousel .carousel-cell-link:focus-visible {
+	border: 3px solid !important;
+}
+
+/* Preloader */
+
+#overlayer {
+    width:100%;
+    height:100%;  
+    position:absolute;
+    z-index:1;
+    background:#4a4a4a;
+}
+.loader {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    z-index:3;
+    border: 4px solid #Fff;
+    top: 50%;
+    animation: loader 2s infinite ease;
+}
+
+.loader-inner {
+    vertical-align: top;
+    display: inline-block;
+    width: 100%;
+    background-color: #fff;
+    animation: loader-inner 2s infinite ease-in;
+}
+
+@keyframes loader {
+    0% {transform: rotate(0deg);}
+    25% {transform: rotate(180deg);}
+    50% {transform: rotate(180deg);}
+    75% {transform: rotate(360deg);}
+    100% {transform: rotate(360deg);}
+}
+
+@keyframes loader-inner {
+    0% {height: 0%;}
+    25% {height: 0%;}
+    50% {height: 100%;}
+    75% {height: 100%;}
+    100% {height: 0%;}
 }
