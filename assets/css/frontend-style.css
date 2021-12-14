@@ -73,8 +73,12 @@
 
 /* Accessibility */
 
-.cinza-carousel:focus-visible {
-    /*outline: 3px solid !important;*/
+.cinza-carousel:focus,
+.cinza-carousel:focus-visible,
+.cinza-carousel .flickity-viewport:focus,
+.cinza-carousel .flickity-viewport:focus-visible,
+.cinza-carousel .carousel-cell-link:focus {
+    outline: none !important;
 }
 
 .cinza-carousel .carousel-cell-link:focus-visible {
