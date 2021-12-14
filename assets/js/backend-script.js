@@ -63,7 +63,7 @@ jQuery(document).ready(function($) {
             var attachment = logo_selection.state().get('selection').first().toJSON();
             jQuery(img_url).val(attachment.url);
             jQuery(img_id).val(attachment.id);
-            jQuery(img_preview).css("background-image", "url("+ attachment.url +")");
+            jQuery(img_preview).css({ 'background-image' : 'url('+ attachment.url +')', 'background-color' : '#f6f7f7' });
         });
         
         // Open the upload dialog

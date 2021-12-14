@@ -135,7 +135,7 @@ function cslider_meta_box_options( $post ) {
 	$temp_wrapAround = 1;
 	$temp_freeScroll = 0;
 	$temp_groupCells = '1';
-	$temp_cellAlign = 'center';
+	$temp_cellAlign = 'left';
 	$temp_resize = 1;
 	$temp_contain = 1;
 	$temp_percentPosition = 1;
@@ -519,6 +519,8 @@ function cslider_meta_box_display() {
 					<tr class="slide-row">
 						<td class="cslider-preview">
 							<?php 
+								$cslider_img_url = '';
+								$cslider_img_preview = '';
 								if (!empty( esc_attr($field['cslider_img_id']) )) {
 									$cslider_img_url = wp_get_attachment_image_src( $attachment_id = esc_attr($field['cslider_img_id']), $size = 'full')[0];
 									$cslider_img_preview = wp_get_attachment_image_src( $attachment_id = esc_attr($field['cslider_img_id']), $size = 'large')[0];
@@ -526,7 +528,11 @@ function cslider_meta_box_display() {
 							?>
 							<label>Preview</label>
 							<div class="cslider-img-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');">
-								<div class="cslider-img-preview-inner" style="background-image: url('<?php echo $cslider_img_preview; ?>');"></div>
+								<?php if(empty($cslider_img_preview)) { ?> 
+									<div class="cslider-img-preview-inner"></div> <?php
+								} else { ?>
+									<div class="cslider-img-preview-inner" style="background-image: url('<?php echo $cslider_img_preview; ?>'); background-color: #f6f7f7;"></div> <?php
+								} ?>
 							</div>
 							<div class="cslider-buttons">
 								<a class="button move-slide" href="#/"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
@@ -564,15 +570,15 @@ function cslider_meta_box_display() {
 							<div class="cslider-img-preview-inner" style="background-image: url();"></div>
 						</div>
 						<div class="cslider-buttons">
-							<a class="button move-slide" href="#"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
-							<a class="button delete-slide" href="#"><img src="<?php echo $icon_delete; ?>" alt="Delete Slide" />Delete</a>
+							<a class="button move-slide" href="#/"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
+							<a class="button delete-slide" href="#/"><img src="<?php echo $icon_delete; ?>" alt="Delete Slide" />Delete</a>
 						</div>
 					</td>
 					<td class="cslider-content">
 						<label>Image</label>
 						<div class="img-details">
 							<input type="text" class="widefat cslider-img-url" name="cslider_img_url[]" readonly />
-							<a class="button remove-img" href="#"><img src="<?php echo $icon_remove; ?>" alt="Remove Image" /></a>
+							<a class="button remove-img" href="#/"><img src="<?php echo $icon_remove; ?>" alt="Remove Image" /></a>
 							<input type="text" class="widefat cslider-img-id" name="cslider_img_id[]" />
 							<input type="button" class="button button-primary cslider-img-btn" value="Select Image" />
 						</div>
@@ -598,15 +604,15 @@ function cslider_meta_box_display() {
 						<div class="cslider-img-preview-inner" style="background-image: url();"></div>
 					</div>
 					<div class="cslider-buttons">
-						<a class="button move-slide" href="#"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
-						<a class="button delete-slide" href="#"><img src="<?php echo $icon_delete; ?>" alt="Delete Slide" />Delete</a>
+						<a class="button move-slide" href="#/"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
+						<a class="button delete-slide" href="#/"><img src="<?php echo $icon_delete; ?>" alt="Delete Slide" />Delete</a>
 					</div>
 				</td>
 				<td class="cslider-content">
 					<label>Image</label>
 					<div class="img-details">
 						<input type="text" class="widefat cslider-img-url" name="cslider_img_url[]" readonly />
-						<a class="button remove-img" href="#"><img src="<?php echo $icon_remove; ?>" alt="Remove Image" /></a>
+						<a class="button remove-img" href="#/"><img src="<?php echo $icon_remove; ?>" alt="Remove Image" /></a>
 						<input type="text" class="widefat cslider-img-id" name="cslider_img_id[]" />
 						<input type="button" class="button button-primary cslider-img-btn" value="Select Image" />
 					</div>
@@ -749,8 +755,11 @@ function cslider_save_fields_meta_boxes($post_id) {
 	$count_imgs = count($cslider_imgs);
 	$count_contents = count($cslider_contents);
 
-	if ($count_imgs > $count_contents) $count = $count_imgs;
-	else $count = $count_contents;
+	if ($count_imgs > $count_contents) {
+		$count = $count_imgs;
+	} else {
+		$count = $count_contents;
+	}
 
 	for ( $i = 0; $i < $count; $i++ ) {
 		if ( $cslider_imgs_id[$i] != '' || $cslider_contents[$i] != '' ) :
