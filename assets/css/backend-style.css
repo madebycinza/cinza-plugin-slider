@@ -16,7 +16,7 @@
 }
 
 #cslider-optionset .cslider-options.col-1 {
-    width: 200px;
+    width: 160px;
 }
 
 #cslider-optionset .cslider-options.col-2 {
@@ -24,7 +24,7 @@
 }
 
 #cslider-optionset .cslider-options.col-3 {
-    width: calc(100% - 200px - 150px);
+    width: calc(100% - 160px - 150px);
 }
 
 #cslider-optionset .cslider-options input[type="text"],
@@ -39,10 +39,6 @@
 #cslider-optionset thead p {
     margin: 5px 0;
     font-weight: bold;
-}
-
-@media only screen and (max-width: 1000px) {
-    #cslider-optionset .col-3 {display: none;}
 }
 
 /* Fields */
@@ -132,13 +128,14 @@
 
 #cslider-fieldset td.cslider-content div.img-details a.button {
     position: absolute;
-    right: 172px;
+    right: 160px;
     width: 30px;
     line-height: 1;
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 0 3px 3px 0;
 }
 
 #cslider-fieldset td.cslider-content div.img-details a.button img {
@@ -154,13 +151,13 @@
 
 #cslider-fieldset td.cslider-content input.cslider-link,
 #cslider-fieldset td.cslider-content input.cslider-img-url {
-    width: calc(100% - 172px);
-    margin-right: 10px;   
+    width: calc(100% - 160px);
+    margin: 0 10px 0 0;
 }
 
 #cslider-fieldset td.cslider-content div.link-details select,
 #cslider-fieldset td.cslider-content div.img-details input.button {
-    width: 160px;
+    width: 150px;
     margin: 0;
 }
 
@@ -168,16 +165,8 @@
     display: none;
 }
 
-@media only screen and (max-width: 1200px) {
-    #cslider-fieldset td.cslider-preview,
-    #cslider-fieldset .slide-row td.cslider-content {
-        width: 100%;
-        display: block;
-    }
-
-    #cslider-fieldset .slide-row td.cslider-content {
-        padding: 20px 0 0;
-    }
+#cslider-fieldset .slide-static td.cslider-content  {
+    padding: 0 !important;
 }
 
 /* Documentation */
@@ -196,3 +185,97 @@
 /* Others */
 
 .rank-math-seo-score {display: none !important;}
+
+/* Breakpoins */
+
+@media screen and (max-width: 1199px) {
+
+    .wp-core-ui:not(.mobile) #cslider-optionset .col-3 {
+        display: none;
+    }
+
+    .wp-core-ui:not(.mobile) #cslider-fields .button {
+        margin-bottom: 0;
+    }
+
+    .wp-core-ui:not(.mobile) #cslider-fieldset td.cslider-content div.link-details, 
+    .wp-core-ui:not(.mobile) #cslider-fieldset td.cslider-content div.img-details {
+        display: block;
+    }
+
+    .wp-core-ui:not(.mobile) #cslider-fieldset td.cslider-preview,
+    .wp-core-ui:not(.mobile) #cslider-fieldset td.cslider-content {
+        width: 100%;
+        display: block;
+    }
+
+    .wp-core-ui:not(.mobile) #cslider-fieldset td.cslider-content {
+        padding: 20px 0 0;
+    }
+
+    .wp-core-ui:not(.mobile) #cslider-fieldset td.cslider-content input.cslider-link, 
+    .wp-core-ui:not(.mobile) #cslider-fieldset td.cslider-content input.cslider-img-url {
+        width: 100%;
+        margin: 0 0 10px 0;
+    }
+
+    .wp-core-ui:not(.mobile) #cslider-fieldset td.cslider-content div.link-details select, 
+    .wp-core-ui:not(.mobile) #cslider-fieldset td.cslider-content div.img-details input.button {
+        width: 100%;
+    }
+
+    .wp-core-ui:not(.mobile) #cslider-fieldset td.cslider-content div.img-details a.button {
+        top: 0;
+        right: 0;
+    }
+}
+
+@media screen and (max-width: 782px) {
+
+    .wp-core-ui:not(.mobile) #cslider-fieldset td.cslider-content div.img-details a.button {
+        width: 40px;
+    }
+
+    .wp-core-ui.mobile #cslider-fields .button {
+        margin-bottom: 0;
+    }
+
+    .wp-core-ui.mobile #cslider-fieldset td.cslider-content div.link-details, 
+    .wp-core-ui.mobile #cslider-fieldset td.cslider-content div.img-details {
+        display: block;
+    }
+
+    .wp-core-ui.mobile #cslider-fieldset td.cslider-preview,
+    .wp-core-ui.mobile #cslider-fieldset td.cslider-content {
+        width: 100%;
+        display: block;
+    }
+
+    .wp-core-ui.mobile #cslider-fieldset td.cslider-content {
+        padding: 20px 0 0;
+    }
+
+    .wp-core-ui.mobile #cslider-fieldset td.cslider-content input.cslider-link, 
+    .wp-core-ui.mobile #cslider-fieldset td.cslider-content input.cslider-img-url {
+        width: 100%;
+        margin: 0 0 10px 0;
+    }
+
+    .wp-core-ui.mobile #cslider-fieldset td.cslider-content div.link-details select, 
+    .wp-core-ui.mobile #cslider-fieldset td.cslider-content div.img-details input.button {
+        width: 100%;
+    }
+
+    .wp-core-ui.mobile #cslider-fieldset td.cslider-content div.img-details a.button {
+        top: 0;
+        right: 0;
+        width: 40px;       
+    }
+}
+
+@media screen and (max-width: 682px) {
+
+    .wp-core-ui.mobile #cslider-optionset .col-3 {
+        display: none;
+    }
+}
