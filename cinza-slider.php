@@ -44,8 +44,12 @@ function cslider_scripts_frontend_init( $hook ) {
 add_action( 'admin_enqueue_scripts', 'add_script_to_cslider_cpt' );
 function add_script_to_cslider_cpt() {
     global $post_type;
+
+    // Dashicon
+    wp_register_style('cinza_dashicon', plugins_url('/assets/css/backend-dashicon.css', __FILE__), array(), '1.0.0', false);
+    wp_enqueue_style('cinza_dashicon');
  
-    // Register scripts only on cinza_slider CPT posts
+    // Register scripts below only on cinza_slider CPT pages
 	if( $post_type != 'cinza_slider' ) return;
 
     // CSS

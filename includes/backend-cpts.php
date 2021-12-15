@@ -7,7 +7,7 @@
 add_action( 'init', 'cslider_register_post_type' );
 function cslider_register_post_type() {
 	$labels = [
-		'name'                     => esc_html__( 'Sliders', 'your-textdomain' ),
+		'name'                     => esc_html__( 'Cinza Sliders', 'your-textdomain' ),
 		'singular_name'            => esc_html__( 'Slider', 'your-textdomain' ),
 		'add_new'                  => esc_html__( 'Add New', 'your-textdomain' ),
 		'add_new_item'             => esc_html__( 'Add new slider', 'your-textdomain' ),
@@ -28,7 +28,7 @@ function cslider_register_post_type() {
 		'set_featured_image'       => esc_html__( 'Set featured image', 'your-textdomain' ),
 		'remove_featured_image'    => esc_html__( 'Remove featured image', 'your-textdomain' ),
 		'use_featured_image'       => esc_html__( 'Use as featured image', 'your-textdomain' ),
-		'menu_name'                => esc_html__( 'Sliders', 'your-textdomain' ),
+		'menu_name'                => esc_html__( 'Cinza Slider', 'your-textdomain' ),
 		'filter_items_list'        => esc_html__( 'Filter sliders list', 'your-textdomain' ),
 		'filter_by_date'           => esc_html__( '', 'your-textdomain' ),
 		'items_list_navigation'    => esc_html__( 'Sliders list navigation', 'your-textdomain' ),
@@ -70,7 +70,6 @@ function cslider_register_post_type() {
 	register_post_type( 'cinza_slider', $args );
 }
 
-
 add_filter( 'manage_cinza_slider_posts_columns', 'set_custom_edit_cinza_slider_columns' );
 function set_custom_edit_cinza_slider_columns($columns) {
     $columns['shortcode'] = __( 'Shortcode', 'your_text_domain' );
@@ -86,11 +85,14 @@ function custom_cinza_slider_column( $column, $post_id ) {
 	}
 }
 
-add_filter ( 'manage_cinza_slider_posts_columns', 'add_cinza_slider_columns' );
+add_filter ( 'manage_cinza_slider_posts_columns', 'add_cinza_slider_columns', 99, 99 );
 function add_cinza_slider_columns ( $columns ) {
 	unset($columns['title']);
 	unset($columns['shortcode']);
 	unset($columns['date']);
+	unset($columns['rank_math_seo_details']);
+	unset($columns['rank_math_title']);
+	unset($columns['rank_math_description']);
 
 	return array_merge ( $columns, array ( 
 		'title' => __ ('Title'),
@@ -103,12 +105,13 @@ function add_cinza_slider_columns ( $columns ) {
 // Add Meta Boxex
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-add_action('add_meta_boxes', 'cslider_add_fields_meta_boxes');
+add_action( 'add_meta_boxes', 'cslider_add_fields_meta_boxes', 99, 99 );
 function cslider_add_fields_meta_boxes() {
 	add_meta_box('cslider-options', 'Options', 'cslider_meta_box_options', 'cinza_slider', 'normal', 'default');
 	add_meta_box('cslider-fields', 'Slider Cells', 'cslider_meta_box_display', 'cinza_slider', 'normal', 'default');
 	add_meta_box('cslider-static', 'Static Layer', 'cslider_meta_box_static', 'cinza_slider', 'normal', 'default');
 	add_meta_box('cslider-documentation', 'Documentation', 'cslider_meta_box_doc', 'cinza_slider', 'side', 'default');
+	remove_meta_box( 'rank_math_metabox' , 'cinza_slider' , 'normal' ); 
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -136,6 +139,7 @@ function cslider_meta_box_options( $post ) {
 	$temp_freeScroll = 0;
 	$temp_groupCells = '1';
 	$temp_cellAlign = 'left';
+	$temp_imgFit = 'cover';
 	$temp_resize = 1;
 	$temp_contain = 1;
 	$temp_percentPosition = 1;
@@ -162,6 +166,7 @@ function cslider_meta_box_options( $post ) {
 		$temp_freeScroll = $cslider_options['cslider_freeScroll'];
 		$temp_groupCells = esc_attr($cslider_options['cslider_groupCells']);
 		$temp_cellAlign = $cslider_options['cslider_cellAlign'];
+		$temp_imgFit = $cslider_options['cslider_imgFit'];
 		$temp_resize = $cslider_options['cslider_resize'];
 		$temp_contain = $cslider_options['cslider_contain'];
 		$temp_percentPosition = $cslider_options['cslider_percentPosition'];
@@ -190,7 +195,7 @@ function cslider_meta_box_options( $post ) {
                     <input type="text" name="cslider_minHeight" id="cslider_minHeight" class="cslider-minHeight" value="<?php echo $temp_minHeight; ?>" /> <span>px</span>
                 </td>
                 <td class="cslider-options col-3">
-					Manually sets the slider min-height in pixels. Set value to zero to disable this option.
+					Manually sets the slider min-height in pixels. <em>Set value to zero to disable this option.</em>
                 </td>
             </tr>
 			<tr>
@@ -201,7 +206,7 @@ function cslider_meta_box_options( $post ) {
                     <input type="text" name="cslider_maxHeight" id="cslider_maxHeight" class="cslider-maxHeight" value="<?php echo $temp_maxHeight; ?>" /> <span>px</span>
                 </td>
                 <td class="cslider-options col-3">
-					Manually sets the slider max-height in pixels. Set value to zero to disable this option.
+					Manually sets the slider max-height in pixels. <em>Set value to zero to disable this option.</em>
                 </td>
             </tr>
 			<tr>
@@ -223,7 +228,7 @@ function cslider_meta_box_options( $post ) {
 					<input type="checkbox" name="cslider_setGallerySize" id="cslider_setGallerySize" class="widefat cslider-setGallerySize" value="1" <?php checked('1', $temp_setGallerySize); ?> />
 				</td>
                 <td class="cslider-options col-3">
-					Sets the height of the carousel to the height of the tallest cell.
+					Sets the height of the slider to the height of the tallest cell.
                 </td>
 			</tr>
             <tr>
@@ -234,7 +239,7 @@ function cslider_meta_box_options( $post ) {
                     <input type="checkbox" name="cslider_adaptiveHeight" id="cslider_adaptiveHeight" class="widefat cslider-adaptiveHeight" value="1" <?php checked('1', $temp_adaptiveHeight); ?> />
                 </td>
                 <td class="cslider-options col-3">
-                    Changes height of carousel to fit height of selected slide.
+                    Changes height of slider to fit height of selected cell.
                 </td>
             </tr>
 		</tbody>
@@ -257,7 +262,7 @@ function cslider_meta_box_options( $post ) {
 					<input type="checkbox" name="cslider_prevNextButtons" id="cslider_prevNextButtons" class="widefat cslider-prevNextButtons" value="1" <?php checked('1', $temp_prevNextButtons); ?> />
 				</td>
                 <td class="cslider-options col-3">
-                    Creates and enables previous & next buttons. Enabled by default prevNextButtons: true.
+                    Creates and enables previous & next buttons.
                 </td>
 			</tr>
 			<tr>
@@ -268,7 +273,7 @@ function cslider_meta_box_options( $post ) {
 					<input type="checkbox" name="cslider_pageDots" id="cslider_pageDots" class="widefat cslider-pageDots" value="1" <?php checked('1', $temp_pageDots); ?> />
 				</td>
                 <td class="cslider-options col-3">
-                    Creates and enables page dots. Enabled by default pageDots: true.
+                    Creates and enables page dots.
                 </td>
 			</tr>
             <tr>
@@ -279,7 +284,7 @@ function cslider_meta_box_options( $post ) {
                     <input type="checkbox" name="cslider_draggable" id="cslider_draggable" class="widefat cslider-draggable" value="1" <?php checked('1', $temp_draggable); ?> />
                 </td>
                 <td class="cslider-options col-3">
-					Enables dragging and flicking. Enabled by default when carousel has 2 or more slides draggable: '>1'.
+					Enables dragging and flicking.
                 </td>
             </tr>
 		</tbody>
@@ -305,7 +310,7 @@ function cslider_meta_box_options( $post ) {
 					</select>
 				</td>
                 <td class="cslider-options col-3">
-                    Slides or fades between transitioning. Fade functionality uses the flickity-fade package.
+                    Slides or fades between transitioning. <em>Fade functionality uses the flickity-fade package.</em>
                 </td>
 			</tr>
 			<tr>
@@ -316,7 +321,7 @@ function cslider_meta_box_options( $post ) {
                     <input type="text" name="cslider_autoPlay" id="cslider_autoPlay" class="cslider-autoPlay" value="<?php echo $temp_autoPlay; ?>" /> <span>ms</span>
                 </td>
                 <td class="cslider-options col-3">
-                    Automatically advances to the next cell. Set value to zero to disable this option.
+                    Automatically advances to the next cell. <em>Set value to zero to disable this option.</em>
                 </td>
             </tr>
             <tr>
@@ -327,7 +332,7 @@ function cslider_meta_box_options( $post ) {
                     <input type="checkbox" name="cslider_pauseAutoPlayOnHover" id="cslider_pauseAutoPlayOnHover" class="widefat cslider-pauseAutoPlayOnHover" value="1" <?php checked('1', $temp_pauseAutoPlayOnHover); ?> />
                 </td>
                 <td class="cslider-options col-3">
-                    Auto-playing will pause when the user hovers over the carousel.
+                    Auto-playing will pause when the user hovers over the slider.
                 </td>
             </tr>
             <tr>
@@ -387,7 +392,22 @@ function cslider_meta_box_options( $post ) {
 					</select>
 				</td>
                 <td class="cslider-options col-3">
-                    Align cells within the carousel element.
+                    Align cells within the slider element.
+                </td>
+			</tr>
+
+			<tr>
+				<td class="cslider-options col-1">
+					<label for="cslider_imgFit">imgFit</label>
+				</td>
+				<td class="cslider-options col-2">
+					<select name="cslider_imgFit" id="cslider_imgFit" class="cslider-imgFit">
+						<option value="cover" <?php selected( $temp_imgFit, 'cover' ); ?>>Cover</option>
+						<option value="contain" <?php selected( $temp_imgFit, 'contain' ); ?>>Contain</option>
+					</select>
+				</td>
+                <td class="cslider-options col-3">
+                    Align cells within the slider element.
                 </td>
 			</tr>
 			<tr>
@@ -398,7 +418,7 @@ function cslider_meta_box_options( $post ) {
 					<input type="checkbox" name="cslider_resize" id="cslider_resize" class="widefat cslider-resize" value="1" <?php checked('1', $temp_resize); ?> />
 				</td>
                 <td class="cslider-options col-3">
-                    Adjusts sizes and positions when window is resized. Enabled by default resize: true.
+                    Adjusts sizes and positions when window is resized.
                 </td>
 			</tr>
 			<tr>
@@ -409,7 +429,7 @@ function cslider_meta_box_options( $post ) {
 					<input type="checkbox" name="cslider_contain" id="cslider_contain" class="widefat cslider-contain" value="1" <?php checked('1', $temp_contain); ?> />
 				</td>
                 <td class="cslider-options col-3">
-                    Contains cells to carousel element to prevent excess scroll at beginning or end. Has no effect if wrapAround: true.
+                    Contains cells to slider element to prevent excess scroll at beginning or end. <em>Has no effect if wrapAround: true.</em>
                 </td>
 			</tr>
 			<tr>
@@ -420,7 +440,7 @@ function cslider_meta_box_options( $post ) {
 					<input type="checkbox" name="cslider_percentPosition" id="cslider_percentPosition" class="widefat cslider-percentPosition" value="1" <?php checked('1', $temp_percentPosition); ?> />
 				</td>
                 <td class="cslider-options col-3">
-                    Sets positioning in percent values, rather than pixel values. If your cells do not have percent widths, we recommended percentPosition: false.
+                    Sets positioning in percent values, rather than pixel values.
                 </td>
 			</tr>
 		</tbody>
@@ -443,7 +463,7 @@ function cslider_meta_box_options( $post ) {
                     <input type="checkbox" name="cslider_watchCSS" id="cslider_watchCSS" class="widefat cslider-watchCSS" value="1" <?php checked('1', $temp_watchCSS); ?> />
                 </td>
                 <td class="cslider-options col-3">
-                    You can enable and disable Flickity with CSS. watchCSS option watches the content of :after of the carousel element. Flickity is enabled if :after content is 'flickity'.
+                    You can enable and disable Flickity with CSS. watchCSS option watches the content of :after of the slider element. <em>Flickity is enabled if :after content is 'flickity'.</em>
                 </td>
             </tr>
             <tr>
@@ -454,7 +474,7 @@ function cslider_meta_box_options( $post ) {
                     <input type="text" name="cslider_dragThreshold" id="cslider_dragThreshold" class="cslider-dragThreshold" value="<?php echo $temp_dragThreshold; ?>" /> <span>px</span>
                 </td>
                 <td class="cslider-options col-3">
-					The number of pixels a mouse or touch has to move before dragging begins. Increase dragThreshold to allow for more wiggle room for vertical page scrolling on touch devices. Default dragThreshold: 3.
+					The number of pixels a mouse or touch has to move before dragging begins. Increase dragThreshold to allow for more wiggle room for vertical page scrolling on touch devices. <em>Default dragThreshold: 3.</em>
                 </td>
             </tr>
             <tr>
@@ -465,7 +485,7 @@ function cslider_meta_box_options( $post ) {
                     <input type="text" name="cslider_selectedAttraction" id="cslider_selectedAttraction" class="cslider-selectedAttraction" value="<?php echo $temp_selectedAttraction; ?>" />
                 </td>
                 <td class="cslider-options col-3">
-                    selectedAttraction attracts the position of the slider to the selected cell. Higher attraction makes the slider move faster. Lower makes it move slower. Default selectedAttraction: 0.025.
+                    selectedAttraction attracts the position of the slider to the selected cell. Higher attraction makes the slider move faster. Lower makes it move slower. <em>Default selectedAttraction: 0.025.</em>
                 </td>
             </tr>
             <tr>
@@ -476,7 +496,7 @@ function cslider_meta_box_options( $post ) {
                     <input type="text" name="cslider_friction" id="cslider_friction" class="cslider-friction" value="<?php echo $temp_friction; ?>" />
                 </td>
                 <td class="cslider-options col-3">
-                    friction slows the movement of slider. Higher friction makes the slider feel stickier and less bouncy. Lower friction makes the slider feel looser and more wobbly. Default friction: 0.28.
+                    friction slows the movement of slider. Higher friction makes the slider feel stickier and less bouncy. Lower friction makes the slider feel looser and more wobbly. <em>Default friction: 0.28.</em>
                 </td>
             </tr>
             <tr>
@@ -487,7 +507,7 @@ function cslider_meta_box_options( $post ) {
                     <input type="text" name="cslider_freeScrollFriction" id="cslider_freeScrollFriction" class="cslider-freeScrollFriction" value="<?php echo $temp_freeScrollFriction; ?>" />
                 </td>
                 <td class="cslider-options col-3">
-                    Slows movement of slider when freeScroll: true. Higher friction makes the slider feel stickier. Lower friction makes the slider feel looser. Default freeScrollFriction: 0.075.
+                    Slows movement of slider when freeScroll: true. Higher friction makes the slider feel stickier. Lower friction makes the slider feel looser. <em>Default freeScrollFriction: 0.075.</em>
                 </td>
             </tr>
 		</tbody>
@@ -501,6 +521,7 @@ function cslider_meta_box_options( $post ) {
 
 function cslider_meta_box_display() {
 	global $post;
+	$cslider_options = get_post_meta( $post->ID, '_cslider_options', true );
 	$cslider_fields = get_post_meta($post->ID, '_cslider_fields', true);
 	wp_nonce_field( 'cslider_meta_box_nonce', 'cslider_meta_box_nonce' );
 
@@ -531,7 +552,9 @@ function cslider_meta_box_display() {
 								<?php if(empty($cslider_img_preview)) { ?> 
 									<div class="cslider-img-preview-inner"></div> <?php
 								} else { ?>
-									<div class="cslider-img-preview-inner" style="background-image: url('<?php echo $cslider_img_preview; ?>'); background-color: #f6f7f7;"></div> <?php
+									<div class="cslider-img-preview-inner" 
+										 style="background-image: url('<?php echo $cslider_img_preview; ?>'); background-color: #f6f7f7; background-size: <?php echo $cslider_options['cslider_imgFit']; ?>;">
+									</div><?php
 								} ?>
 							</div>
 							<div class="cslider-buttons">
@@ -567,7 +590,7 @@ function cslider_meta_box_display() {
 					<td class="cslider-preview">
 						<label>Preview</label>
 						<div class="cslider-img-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');">
-							<div class="cslider-img-preview-inner" style="background-image: url();"></div>
+							<div class="cslider-img-preview-inner" style="background-image: url(); background-size: <?php echo $cslider_options['cslider_imgFit']; ?>;">
 						</div>
 						<div class="cslider-buttons">
 							<a class="button move-slide" href="#/"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
@@ -601,7 +624,7 @@ function cslider_meta_box_display() {
 				<td class="cslider-preview">
 					<label>Preview</label>
 					<div class="cslider-img-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');">
-						<div class="cslider-img-preview-inner" style="background-image: url();"></div>
+						<div class="cslider-img-preview-inner" style="background-image: url(); background-size: <?php echo $cslider_options['cslider_imgFit']; ?>;">
 					</div>
 					<div class="cslider-buttons">
 						<a class="button move-slide" href="#/"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
@@ -712,6 +735,7 @@ function cslider_save_fields_meta_boxes($post_id) {
 	$cslider_setGallerySize = $_POST['cslider_setGallerySize'];
 	$cslider_resize = $_POST['cslider_resize'];
 	$cslider_cellAlign = $_POST['cslider_cellAlign'];
+	$cslider_imgFit = $_POST['cslider_imgFit'];
 	$cslider_contain = $_POST['cslider_contain'];
 	$cslider_percentPosition = $_POST['cslider_percentPosition'];
 	$cslider_prevNextButtons = $_POST['cslider_prevNextButtons'];
@@ -737,6 +761,7 @@ function cslider_save_fields_meta_boxes($post_id) {
 	$new['cslider_setGallerySize'] = $cslider_setGallerySize ? '1' : '0';
 	$new['cslider_resize'] = $cslider_resize ? '1' : '0';
 	$new['cslider_cellAlign'] = wp_strip_all_tags($cslider_cellAlign);
+	$new['cslider_imgFit'] = wp_strip_all_tags($cslider_imgFit);
 	$new['cslider_contain'] = $cslider_contain ? '1' : '0';
 	$new['cslider_percentPosition'] = $cslider_percentPosition ? '1' : '0';
 	$new['cslider_prevNextButtons'] = $cslider_prevNextButtons ? '1' : '0';
@@ -752,7 +777,7 @@ function cslider_save_fields_meta_boxes($post_id) {
 
 	$new = array();
 	$old = get_post_meta($post_id, '_cslider_fields', true);
-	$count_imgs = count($cslider_imgs);
+	$count_imgs = count($cslider_imgs_id);
 	$count_contents = count($cslider_contents);
 
 	if ($count_imgs > $count_contents) {

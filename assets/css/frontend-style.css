@@ -1,10 +1,10 @@
-.cinza-carousel {
+.cinza-slider {
     transition: 0.3s all ease-in-out;
 }
 
-.cinza-carousel .static-cell,
-.cinza-carousel .carousel-cell-content,
-.cinza-carousel .carousel-cell-link {
+.cinza-slider .static-cell,
+.cinza-slider .slider-cell-content,
+.cinza-slider .slider-cell-link {
     position: absolute;
     display: block;
     top: 0;
@@ -13,75 +13,74 @@
     height: 100%;
 }
 
-.cinza-carousel .static-cell {
+.cinza-slider .static-cell {
     z-index: 1;
 }
 
-.cinza-carousel .carousel-cell {
+.cinza-slider .slider-cell {
     width: 100%;
     overflow: hidden;
     display: flex;
     flex-wrap: wrap;
 }
 
-.cinza-carousel .carousel-cell .carousel-cell-image {
+.cinza-slider .slider-cell .slider-cell-image {
     width: 100%;
-    object-fit: cover;
     object-position: center;
 }
 
-.cinza-carousel .carousel-cell-content-inner {
+.cinza-slider .slider-cell-content-inner {
     position: relative;
     z-index: 1;
 }
 
-.cinza-carousel .carousel-cell-link {
+.cinza-slider .slider-cell-link {
     z-index: 2;
 }
 
-.cinza-carousel .carousel-cell-content,
-.cinza-carousel .flickity-prev-next-button, 
-.cinza-carousel .flickity-page-dots {
+.cinza-slider .slider-cell-content,
+.cinza-slider .flickity-prev-next-button, 
+.cinza-slider .flickity-page-dots {
     z-index: 2;
 }
 
-.cinza-carousel .flickity-prev-next-button {
+.cinza-slider .flickity-prev-next-button {
     color: #FFF;
     background: transparent;
     transition: 0.3s all ease-in-out;
 }
 
-.cinza-carousel .flickity-prev-next-button:hover {
+.cinza-slider .flickity-prev-next-button:hover {
     color: rgba(255, 255, 255, 0.5);
     background: transparent;
 }
 
-.cinza-carousel .flickity-page-dots {
+.cinza-slider .flickity-page-dots {
     bottom: 20px;
 }
 
-.cinza-carousel .flickity-page-dots .dot {
+.cinza-slider .flickity-page-dots .dot {
     background: rgba(255, 255, 255, 0.5);
     opacity: 1;
     transition: 0.3s all ease-in-out;
 }
 
-.cinza-carousel .flickity-page-dots .dot:hover, 
-.cinza-carousel .flickity-page-dots .dot.is-selected {
+.cinza-slider .flickity-page-dots .dot:hover, 
+.cinza-slider .flickity-page-dots .dot.is-selected {
     background: #FFF;
 }
 
 /* Accessibility */
 
-.cinza-carousel:focus,
-.cinza-carousel:focus-visible,
-.cinza-carousel .flickity-viewport:focus,
-.cinza-carousel .flickity-viewport:focus-visible,
-.cinza-carousel .carousel-cell-link:focus {
+.cinza-slider:focus,
+.cinza-slider:focus-visible,
+.cinza-slider .flickity-viewport:focus,
+.cinza-slider .flickity-viewport:focus-visible,
+.cinza-slider .slider-cell-link:focus {
     outline: none !important;
 }
 
-.cinza-carousel .carousel-cell-link:focus-visible {
+.cinza-slider .slider-cell-link:focus-visible {
 	border: 3px solid !important;
 }
 

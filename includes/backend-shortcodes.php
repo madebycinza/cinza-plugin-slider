@@ -26,18 +26,23 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
             'id' => 'Empty',
         ), $atts, $tag
     );
+	$slider_id = intval( $cslider_atts['id'] );
+    $cslider_options = get_post_meta($slider_id, '_cslider_options', true);
 
 	// Shortcode validation
-	$slider_id = intval( $cslider_atts['id'] );
-    if ( $slider_id == 'Empty' || !is_int($slider_id) ) return "Please enter a valid slider ID.";
+    if ( $slider_id == 'Empty' || !is_int($slider_id) || empty($cslider_options) ) {
+        return "<p class='cslider-error'>Please enter a valid slider ID.</p>";
+    }
 
     // Query: _cslider_options
-	$cslider_options = get_post_meta($slider_id, '_cslider_options', true);
     $options = ' \'{ ';
 
         // Query validations
-        if (intval($cslider_options['cslider_autoPlay']) > 0) $valid_autoPlay = '"autoPlay": '. $cslider_options['cslider_autoPlay'] .','; 
-        else $valid_autoPlay = '"autoPlay": false,'; 
+        if (intval($cslider_options['cslider_autoPlay']) > 0) {
+            $valid_autoPlay = '"autoPlay": '. $cslider_options['cslider_autoPlay'] .','; 
+        } else {
+            $valid_autoPlay = '"autoPlay": false,'; 
+        }
 
         if ($cslider_options['cslider_animation'] == "fade") {
             wp_enqueue_style('flickity-fade-css');
@@ -67,7 +72,7 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
         $options .= '"lazyLoad": "false",';
 
         // Setup
-        $options .= '"cellSelector": ".carousel-cell",';
+        $options .= '"cellSelector": ".slider-cell",';
         $options .= '"initialIndex": 0,';
         $options .= '"accessibility": "true",';
         $options .= '"setGallerySize": ' . (boolval($cslider_options['cslider_setGallerySize']) ? "true" : "false") . ',';
@@ -88,7 +93,7 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
     $cslider_static = get_post_meta($slider_id, '_cslider_static', true);
     $static = "";
     if(!empty($cslider_static['cslider_static_content'])) {
-        $static .=  '<div class="static-cell"><div class="carousel-cell-content">'. $cslider_static['cslider_static_content'] .'</div></div>';
+        $static .=  '<div class="static-cell"><div class="slider-cell-content">'. $cslider_static['cslider_static_content'] .'</div></div>';
     }
 
     // Query: _cslider_fields
@@ -102,54 +107,52 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
 
         $layer_img = '';
         if(!empty($field['cslider_img_id'])) {
-            //$layer_img = '<img class="carousel-cell-image" '. src="'. $field['cslider_img'] .'" />';
-            $layer_img = wp_get_attachment_image( intval($field['cslider_img_id']), 'full', "", ["class" => "carousel-cell-image"] );
+            //$layer_img = '<img class="slider-cell-image" '. src="'. $field['cslider_img'] .'" />';
+            $layer_img = wp_get_attachment_image( intval($field['cslider_img_id']), 'full', "", ["class" => "slider-cell-image"] );
         }
 
         $layer_link = '';
         if(!empty($field['cslider_link'])) {
-            $layer_link .= '<a href="'. $field['cslider_link'] .'" '. $layer_link_target .' class="carousel-cell-link"></a>';
+            $layer_link .= '<a href="'. $field['cslider_link'] .'" '. $layer_link_target .' class="slider-cell-link"></a>';
         }
 
         $layer_content = '';
         if(!empty($field['cslider_content'])) {
-            $layer_content = '<div class="carousel-cell-content"><div class="carousel-cell-content-inner">'. $field['cslider_content'] .'</div>'. $layer_link .'</div>';
+            $layer_content = '<div class="slider-cell-content"><div class="slider-cell-content-inner">'. $field['cslider_content'] .'</div>'. $layer_link .'</div>';
         } else {
-            $layer_content = '<div class="carousel-cell-content">'. $layer_link .'</div>';
+            $layer_content = '<div class="slider-cell-content">'. $layer_link .'</div>';
         }
 
-        $slides .=  '<div class="carousel-cell">' . $layer_img . $layer_content . '</div>';
+        $slides .=  '<div class="slider-cell">' . $layer_img . $layer_content . '</div>';
     }
 
     // Dynamic style 
     $style = "<style>";
 
-    $style .=  ".cinza-carousel {
+    $style .=  ".cinza-slider-".$slider_id." {
                     height: ". ( ($cslider_options['cslider_minHeight'] + $cslider_options['cslider_maxHeight']) / 2) ."px; /* Temporary while it loads, removed with jQuery */
                     opacity: 0;
                     overflow: hidden; /* Temporary while it loads, removed with jQuery */
+                }
+                
+                .cinza-slider-".$slider_id." .slider-cell .slider-cell-image {
+                    object-fit: ". $cslider_options['cslider_imgFit'] .";
                 }";
 
-    if (intval($cslider_options['cslider_minHeight']) > 0) {
-        $style .=  ".cinza-carousel-".$slider_id.", 
-                    .cinza-carousel-".$slider_id." .flickity-viewport, 
-                    .cinza-carousel-".$slider_id." .carousel-cell, 
-                    .cinza-carousel-".$slider_id." .carousel-cell img {
-                        min-height: ". $cslider_options['cslider_minHeight'] ."px;
-                    }";
-    }
-    
-    if (intval($cslider_options['cslider_maxHeight']) > 0) {
-        $style .=  ".cinza-carousel-".$slider_id.", 
-                    .cinza-carousel-".$slider_id." .flickity-viewport, 
-                    .cinza-carousel-".$slider_id." .carousel-cell, 
-                    .cinza-carousel-".$slider_id." .carousel-cell img {
-                        max-height: ". $cslider_options['cslider_maxHeight'] ."px;
-                    }";
-    }
+    $dynamic_minHeight = 'auto';
+    $dynamic_maxHeight = 'auto';
+    if (intval($cslider_options['cslider_minHeight']) > 0) {$dynamic_minHeight = $cslider_options['cslider_minHeight'] ."px";}
+    if (intval($cslider_options['cslider_maxHeight']) > 0) {$dynamic_maxHeight = $cslider_options['cslider_maxHeight'] ."px";}
+    $style .=  ".cinza-slider-".$slider_id.", 
+                .cinza-slider-".$slider_id." .flickity-viewport, 
+                .cinza-slider-".$slider_id." .slider-cell, 
+                .cinza-slider-".$slider_id." .slider-cell .slider-cell-image {
+                    min-height: ". $dynamic_minHeight .";
+                    max-height: ". $dynamic_maxHeight .";
+                }";
 
     if (intval($cslider_options['cslider_fullWidth']) > 0) {
-        $style .=  ".cinza-carousel-".$slider_id." {
+        $style .=  ".cinza-slider-".$slider_id." {
                         width: 100vw;
                         position: relative;
                         left: 50%;
@@ -160,7 +163,7 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
     }
 
     if(!empty($cslider_static['cslider_static_overlay'])) {
-        $style .=  ".cinza-carousel-".$slider_id." .carousel-cell:after {
+        $style .=  ".cinza-slider-".$slider_id." .slider-cell:after {
                         content: '';
                         position: absolute;
                         display: block;
@@ -175,6 +178,6 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
     $style .= "</style>";
 
     // Output
-    $o = '<div class="cinza-carousel cinza-carousel-'.$slider_id.' animate__animated animate__fadeIn" data-flickity='. $options .'>'. $static . $slides .'</div>'. $style;
+    $o = '<div class="cinza-slider cinza-slider-'.$slider_id.' animate__animated animate__fadeIn" data-flickity='. $options .'>'. $static . $slides .'</div>'. $style;
     return $o;
 }
