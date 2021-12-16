@@ -553,7 +553,7 @@ function cslider_meta_box_display() {
 									<div class="cslider-img-preview-inner"></div> <?php
 								} else { ?>
 									<div class="cslider-img-preview-inner" 
-										 style="background-image: url('<?php echo $cslider_img_preview; ?>'); background-color: #f6f7f7; background-size: <?php echo $cslider_options['cslider_imgFit']; ?>;">
+										 style="background-image: url('<?php echo $cslider_img_preview; ?>'); background-color: #f6f7f7; background-size: <?php echo $temp_imgFit; ?>;">
 									</div><?php
 								} ?>
 							</div>
@@ -590,7 +590,7 @@ function cslider_meta_box_display() {
 					<td class="cslider-preview">
 						<label>Preview</label>
 						<div class="cslider-img-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');">
-							<div class="cslider-img-preview-inner" style="background-image: url(); background-size: <?php echo $cslider_options['cslider_imgFit']; ?>;">
+							<div class="cslider-img-preview-inner" style="background-image: url(); background-size: <?php echo $temp_imgFit; ?>;">
 						</div>
 						<div class="cslider-buttons">
 							<a class="button move-slide" href="#/"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
@@ -624,7 +624,7 @@ function cslider_meta_box_display() {
 				<td class="cslider-preview">
 					<label>Preview</label>
 					<div class="cslider-img-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');">
-						<div class="cslider-img-preview-inner" style="background-image: url(); background-size: <?php echo $cslider_options['cslider_imgFit']; ?>;">
+						<div class="cslider-img-preview-inner" style="background-image: url(); background-size: <?php echo $temp_imgFit; ?>;">
 					</div>
 					<div class="cslider-buttons">
 						<a class="button move-slide" href="#/"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
