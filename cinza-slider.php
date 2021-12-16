@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name:       Cinza Slider
- * Plugin URI:        https://cinza.io/
+ * Plugin URI:        https://cinza.io/plugin/slider
  * Description:       A minimal slider plugin.
  * Version:           1.0.0
  * Requires at least: 5.2
