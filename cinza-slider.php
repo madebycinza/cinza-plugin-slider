@@ -26,15 +26,15 @@ function cslider_scripts_frontend_init( $hook ) {
 	if ( is_admin() ) return;
 	
     // CSS
-    wp_register_style('flickity-css', 'https://unpkg.com/flickity@2/dist/flickity.min.css');
-    wp_register_style('flickity-fade-css', 'https://unpkg.com/flickity-fade@1/flickity-fade.css');
-    wp_register_style('animate-css', 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
-    wp_register_style('cslider-frontend-css', plugins_url('/assets/css/frontend-style.css', __FILE__), array(), '1.0.0', false);
+    wp_register_style('flickity', plugins_url('/assets/css/flickity.min.css', __FILE__), array(), '2.2.2', false);
+    wp_register_style('flickity-fade', plugins_url('/assets/css/flickity-fade.css', __FILE__), array(), '1.0.0', false);
+    wp_register_style('animate', plugins_url('/assets/css/animate.min.css', __FILE__), array(), '4.1.1', false);
+    wp_register_style('cslider-frontend', plugins_url('/assets/css/frontend-style.css', __FILE__), array(), '1.0.0', false);
 
     // JS
-    wp_register_script('flickity-js', 'https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js');
-    wp_register_script('flickity-fade-js', 'https://unpkg.com/flickity-fade@1/flickity-fade.js');
-    wp_enqueue_script('cslider-frontend-js', plugins_url('/assets/js/frontend-script.js', __FILE__), array('jquery'), '1.0.0', false);
+    wp_register_script('flickity', plugins_url('/assets/js/flickity.pkgd.min.js', __FILE__), array('jquery'), '2.2.2', false);
+    wp_register_script('flickity-fade', plugins_url('/assets/js/flickity-fade.js', __FILE__), array('jquery'), '1.0.0', false);
+    wp_enqueue_script('cslider-frontend', plugins_url('/assets/js/frontend-script.js', __FILE__), array('jquery'), '1.0.0', false);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,8 +46,8 @@ function add_script_to_cslider_cpt() {
     global $post_type;
 
     // Dashicon
-    wp_register_style('cinza_dashicon', plugins_url('/assets/css/backend-dashicon.css', __FILE__), array(), '1.0.0', false);
-    wp_enqueue_style('cinza_dashicon');
+    wp_register_style('cinza-dashicon', plugins_url('/assets/css/backend-dashicon.css', __FILE__), array(), '1.0.0', false);
+    wp_enqueue_style('cinza-dashicon');
  
     // Register scripts below only on cinza_slider CPT pages
 	if( $post_type != 'cinza_slider' ) return;
@@ -56,9 +56,28 @@ function add_script_to_cslider_cpt() {
     wp_register_style('cslider-backend-css', plugins_url('/assets/css/backend-style.css', __FILE__), array(), '1.0.0', false);
     wp_enqueue_style('cslider-backend-css');
 
+    ?><style>
+        /* Font downaloded from https://i.icomoon.io/public/bc38e56778/Cinza/style.css 
+           src: url('https://i.icomoon.io/public/bc38e56778/Cinza/icomoon.eot?fum9vf');
+           src: url('https://i.icomoon.io/public/bc38e56778/Cinza/icomoon.eot?fum9vf#iefix') format('embedded-opentype'),
+                url('https://i.icomoon.io/public/bc38e56778/Cinza/icomoon.woff2?fum9vf') format('woff2'),
+                url('https://i.icomoon.io/public/bc38e56778/Cinza/icomoon.ttf?fum9vf') format('truetype'),
+                url('https://i.icomoon.io/public/bc38e56778/Cinza/icomoon.woff?fum9vf') format('woff');
+        */
+        @font-face {
+            font-family: 'icomoon';
+            src:  url(<?php echo plugins_url('/assets/fonts/icomoon-1.eot', __FILE__); ?>);
+            src:  url(<?php echo plugins_url('/assets/fonts/icomoon-2.eot', __FILE__); ?>) format('embedded-opentype'),
+                  url(<?php echo plugins_url('/assets/fonts/icomoon.woff2', __FILE__); ?>) format('woff2'),
+                  url(<?php echo plugins_url('/assets/fonts/icomoon.ttf', __FILE__); ?>) format('truetype'),
+                  url(<?php echo plugins_url('/assets/fonts/icomoon.woff', __FILE__); ?>) format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: block;
+        }
+    </style><?php
+
     // JS
-    wp_enqueue_script('cslider-jquery', 'https://code.jquery.com/jquery-1.12.4.js', array('jquery'), '1.12.4', true);
-    wp_enqueue_script('cslider-jquery-ui', 'https://code.jquery.com/ui/1.12.1/jquery-ui.js', array('jquery'), '1.12.1', true);
     wp_enqueue_script('cslider-backend-js', plugins_url('/assets/js/backend-script.js', __FILE__), array('jquery'), '1.0.0', false);
     wp_enqueue_media();
 }

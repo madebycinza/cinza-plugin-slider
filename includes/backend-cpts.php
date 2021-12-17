@@ -153,24 +153,24 @@ function cslider_meta_box_options( $post ) {
 	if ( !empty($cslider_options) ) {
 		$temp_minHeight = esc_attr($cslider_options['cslider_minHeight']);
 		$temp_maxHeight = esc_attr($cslider_options['cslider_maxHeight']);
-		$temp_fullWidth = $cslider_options['cslider_fullWidth'];
-		$temp_setGallerySize = $cslider_options['cslider_setGallerySize'];
-		$temp_adaptiveHeight = $cslider_options['cslider_adaptiveHeight'];
-		$temp_draggable = $cslider_options['cslider_draggable'];
-		$temp_prevNextButtons = $cslider_options['cslider_prevNextButtons'];
-		$temp_pageDots = $cslider_options['cslider_pageDots'];
-		$temp_animation = $cslider_options['cslider_animation'];
+		$temp_fullWidth = esc_attr($cslider_options['cslider_fullWidth']);
+		$temp_setGallerySize = esc_attr($cslider_options['cslider_setGallerySize']);
+		$temp_adaptiveHeight = esc_attr($cslider_options['cslider_adaptiveHeight']);
+		$temp_draggable = esc_attr($cslider_options['cslider_draggable']);
+		$temp_prevNextButtons = esc_attr($cslider_options['cslider_prevNextButtons']);
+		$temp_pageDots = esc_attr($cslider_options['cslider_pageDots']);
+		$temp_animation = esc_attr($cslider_options['cslider_animation']);
 		$temp_autoPlay = esc_attr($cslider_options['cslider_autoPlay']);
-		$temp_pauseAutoPlayOnHover = $cslider_options['cslider_pauseAutoPlayOnHover'];
-		$temp_wrapAround = $cslider_options['cslider_wrapAround'];
-		$temp_freeScroll = $cslider_options['cslider_freeScroll'];
+		$temp_pauseAutoPlayOnHover = esc_attr($cslider_options['cslider_pauseAutoPlayOnHover']);
+		$temp_wrapAround = esc_attr($cslider_options['cslider_wrapAround']);
+		$temp_freeScroll = esc_attr($cslider_options['cslider_freeScroll']);
 		$temp_groupCells = esc_attr($cslider_options['cslider_groupCells']);
-		$temp_cellAlign = $cslider_options['cslider_cellAlign'];
-		$temp_imgFit = $cslider_options['cslider_imgFit'];
-		$temp_resize = $cslider_options['cslider_resize'];
-		$temp_contain = $cslider_options['cslider_contain'];
-		$temp_percentPosition = $cslider_options['cslider_percentPosition'];
-		$temp_watchCSS = $cslider_options['cslider_watchCSS'];
+		$temp_cellAlign = esc_attr($cslider_options['cslider_cellAlign']);
+		$temp_imgFit = esc_attr($cslider_options['cslider_imgFit']);
+		$temp_resize = esc_attr($cslider_options['cslider_resize']);
+		$temp_contain = esc_attr($cslider_options['cslider_contain']);
+		$temp_percentPosition = esc_attr($cslider_options['cslider_percentPosition']);
+		$temp_watchCSS = esc_attr($cslider_options['cslider_watchCSS']);
 		$temp_dragThreshold = esc_attr($cslider_options['cslider_dragThreshold']);
 		$temp_selectedAttraction = esc_attr($cslider_options['cslider_selectedAttraction']);
 		$temp_friction = esc_attr($cslider_options['cslider_friction']);
@@ -192,7 +192,7 @@ function cslider_meta_box_options( $post ) {
                     <label for="cslider_minHeight">minHeight</label>
 				</td>
 				<td class="cslider-options col-2">
-                    <input type="text" name="cslider_minHeight" id="cslider_minHeight" class="cslider-minHeight" value="<?php echo $temp_minHeight; ?>" /> <span>px</span>
+                    <input type="text" name="cslider_minHeight" id="cslider_minHeight" class="cslider-minHeight" value="<?php echo esc_attr($temp_minHeight); ?>" /> <span>px</span>
                 </td>
                 <td class="cslider-options col-3">
 					Manually sets the slider min-height in pixels. <em>Set value to zero to disable this option.</em>
@@ -203,7 +203,7 @@ function cslider_meta_box_options( $post ) {
                     <label for="cslider_maxHeight">maxHeight</label>
 				</td>
 				<td class="cslider-options col-2">
-                    <input type="text" name="cslider_maxHeight" id="cslider_maxHeight" class="cslider-maxHeight" value="<?php echo $temp_maxHeight; ?>" /> <span>px</span>
+                    <input type="text" name="cslider_maxHeight" id="cslider_maxHeight" class="cslider-maxHeight" value="<?php echo esc_attr($temp_maxHeight); ?>" /> <span>px</span>
                 </td>
                 <td class="cslider-options col-3">
 					Manually sets the slider max-height in pixels. <em>Set value to zero to disable this option.</em>
@@ -318,7 +318,7 @@ function cslider_meta_box_options( $post ) {
 					<label for="cslider_autoPlay">autoPlay</label>
 				</td>
 				<td class="cslider-options col-2">
-                    <input type="text" name="cslider_autoPlay" id="cslider_autoPlay" class="cslider-autoPlay" value="<?php echo $temp_autoPlay; ?>" /> <span>ms</span>
+                    <input type="text" name="cslider_autoPlay" id="cslider_autoPlay" class="cslider-autoPlay" value="<?php echo esc_attr($temp_autoPlay); ?>" /> <span>ms</span>
                 </td>
                 <td class="cslider-options col-3">
                     Automatically advances to the next cell. <em>Set value to zero to disable this option.</em>
@@ -374,7 +374,7 @@ function cslider_meta_box_options( $post ) {
 					<label for="cslider_groupCells">groupCells</label>
 				</td>
 				<td class="cslider-options col-2">
-                    <input type="text" name="cslider_groupCells" id="cslider_groupCells" class="cslider-groupCells" value="<?php echo $temp_groupCells; ?>" />
+                    <input type="text" name="cslider_groupCells" id="cslider_groupCells" class="cslider-groupCells" value="<?php echo esc_attr($temp_groupCells); ?>" />
                 </td>
                 <td class="cslider-options col-3">
                     Groups cells together in slides. Flicking, page dots, and previous/next buttons are mapped to group slides, not individual cells. is-selected class is added to the multiple cells in the selected slide.
@@ -471,7 +471,7 @@ function cslider_meta_box_options( $post ) {
 					<label for="cslider_dragThreshold">dragThreshold</label>
 				</td>
 				<td class="cslider-options col-2">
-                    <input type="text" name="cslider_dragThreshold" id="cslider_dragThreshold" class="cslider-dragThreshold" value="<?php echo $temp_dragThreshold; ?>" /> <span>px</span>
+                    <input type="text" name="cslider_dragThreshold" id="cslider_dragThreshold" class="cslider-dragThreshold" value="<?php echo esc_attr($temp_dragThreshold); ?>" /> <span>px</span>
                 </td>
                 <td class="cslider-options col-3">
 					The number of pixels a mouse or touch has to move before dragging begins. Increase dragThreshold to allow for more wiggle room for vertical page scrolling on touch devices. <em>Default dragThreshold: 3.</em>
@@ -482,7 +482,7 @@ function cslider_meta_box_options( $post ) {
                     <label for="cslider_selectedAttraction">selectedAttraction</label>
 				</td>
 				<td class="cslider-options col-2">
-                    <input type="text" name="cslider_selectedAttraction" id="cslider_selectedAttraction" class="cslider-selectedAttraction" value="<?php echo $temp_selectedAttraction; ?>" />
+                    <input type="text" name="cslider_selectedAttraction" id="cslider_selectedAttraction" class="cslider-selectedAttraction" value="<?php echo esc_attr($temp_selectedAttraction); ?>" />
                 </td>
                 <td class="cslider-options col-3">
                     selectedAttraction attracts the position of the slider to the selected cell. Higher attraction makes the slider move faster. Lower makes it move slower. <em>Default selectedAttraction: 0.025.</em>
@@ -493,7 +493,7 @@ function cslider_meta_box_options( $post ) {
                     <label for="cslider_friction">friction</label>
 				</td>
 				<td class="cslider-options col-2">
-                    <input type="text" name="cslider_friction" id="cslider_friction" class="cslider-friction" value="<?php echo $temp_friction; ?>" />
+                    <input type="text" name="cslider_friction" id="cslider_friction" class="cslider-friction" value="<?php echo esc_attr($temp_friction); ?>" />
                 </td>
                 <td class="cslider-options col-3">
                     friction slows the movement of slider. Higher friction makes the slider feel stickier and less bouncy. Lower friction makes the slider feel looser and more wobbly. <em>Default friction: 0.28.</em>
@@ -504,7 +504,7 @@ function cslider_meta_box_options( $post ) {
                     <label for="cslider_freeScrollFriction">freeScrollFriction</label>
 				</td>
 				<td class="cslider-options col-2">
-                    <input type="text" name="cslider_freeScrollFriction" id="cslider_freeScrollFriction" class="cslider-freeScrollFriction" value="<?php echo $temp_freeScrollFriction; ?>" />
+                    <input type="text" name="cslider_freeScrollFriction" id="cslider_freeScrollFriction" class="cslider-freeScrollFriction" value="<?php echo esc_attr($temp_freeScrollFriction); ?>" />
                 </td>
                 <td class="cslider-options col-3">
                     Slows movement of slider when freeScroll: true. Higher friction makes the slider feel stickier. Lower friction makes the slider feel looser. <em>Default freeScrollFriction: 0.075.</em>
@@ -524,6 +524,12 @@ function cslider_meta_box_display() {
 	$cslider_options = get_post_meta( $post->ID, '_cslider_options', true );
 	$cslider_fields = get_post_meta($post->ID, '_cslider_fields', true);
 	wp_nonce_field( 'cslider_meta_box_nonce', 'cslider_meta_box_nonce' );
+
+	$temp_imgFit = 'cover';
+	// Get saved values
+	if ( !empty($cslider_options) ) {
+		$temp_imgFit = $cslider_options['cslider_imgFit'];
+	}
 
 	?>
 	<table id="cslider-fieldset" width="100%">
@@ -548,25 +554,25 @@ function cslider_meta_box_display() {
 								}
 							?>
 							<label>Preview</label>
-							<div class="cslider-img-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');">
+							<div class="cslider-img-preview" style="background-image: url('<?php echo esc_attr($preview_placeholder); ?>');">
 								<?php if(empty($cslider_img_preview)) { ?> 
 									<div class="cslider-img-preview-inner"></div> <?php
 								} else { ?>
 									<div class="cslider-img-preview-inner" 
-										 style="background-image: url('<?php echo $cslider_img_preview; ?>'); background-color: #f6f7f7; background-size: <?php echo $temp_imgFit; ?>;">
+										 style="background-image: url('<?php echo esc_attr($cslider_img_preview); ?>'); background-color: #f6f7f7; background-size: <?php echo esc_attr($temp_imgFit); ?>;">
 									</div><?php
 								} ?>
 							</div>
 							<div class="cslider-buttons">
-								<a class="button move-slide" href="#/"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
-								<a class="button delete-slide" href="#/"><img src="<?php echo $icon_delete; ?>" alt="Delete Slide" />Delete</a>
+								<a class="button move-slide" href="#/"><img src="<?php echo esc_attr($icon_sort); ?>" alt="Move Slide" />Move</a>
+								<a class="button delete-slide" href="#/"><img src="<?php echo esc_attr($icon_delete); ?>" alt="Delete Slide" />Delete</a>
 							</div>
 						</td>
 						<td class="cslider-content">
 							<label>Image</label>
 							<div class="img-details">
-								<input type="text" class="widefat cslider-img-url" name="cslider_img_url[]" value="<?php echo $cslider_img_url; ?>" readonly />
-								<a class="button remove-img" href="#/"><img src="<?php echo $icon_remove; ?>" alt="Remove Image" /></a>
+								<input type="text" class="widefat cslider-img-url" name="cslider_img_url[]" value="<?php echo esc_attr($cslider_img_url); ?>" readonly />
+								<a class="button remove-img" href="#/"><img src="<?php echo esc_attr($icon_remove); ?>" alt="Remove Image" /></a>
 								<input type="text" class="widefat cslider-img-id" name="cslider_img_id[]" value="<?php echo esc_attr( $field['cslider_img_id'] ); ?>" />
 								<input type="button" class="button button-primary cslider-img-btn" value="Select Image" />
 							</div>
@@ -589,19 +595,19 @@ function cslider_meta_box_display() {
 				<tr class="slide-row">
 					<td class="cslider-preview">
 						<label>Preview</label>
-						<div class="cslider-img-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');">
-							<div class="cslider-img-preview-inner" style="background-image: url(); background-size: <?php echo $temp_imgFit; ?>;">
+						<div class="cslider-img-preview" style="background-image: url('<?php echo esc_attr($preview_placeholder); ?>');">
+							<div class="cslider-img-preview-inner" style="background-image: url(); background-size: <?php echo esc_attr($temp_imgFit); ?>;">
 						</div>
 						<div class="cslider-buttons">
-							<a class="button move-slide" href="#/"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
-							<a class="button delete-slide" href="#/"><img src="<?php echo $icon_delete; ?>" alt="Delete Slide" />Delete</a>
+							<a class="button move-slide" href="#/"><img src="<?php echo esc_attr($icon_sort); ?>" alt="Move Slide" />Move</a>
+							<a class="button delete-slide" href="#/"><img src="<?php echo esc_attr($icon_delete); ?>" alt="Delete Slide" />Delete</a>
 						</div>
 					</td>
 					<td class="cslider-content">
 						<label>Image</label>
 						<div class="img-details">
 							<input type="text" class="widefat cslider-img-url" name="cslider_img_url[]" readonly />
-							<a class="button remove-img" href="#/"><img src="<?php echo $icon_remove; ?>" alt="Remove Image" /></a>
+							<a class="button remove-img" href="#/"><img src="<?php echo esc_attr($icon_remove); ?>" alt="Remove Image" /></a>
 							<input type="text" class="widefat cslider-img-id" name="cslider_img_id[]" />
 							<input type="button" class="button button-primary cslider-img-btn" value="Select Image" />
 						</div>
@@ -623,19 +629,19 @@ function cslider_meta_box_display() {
 			<tr class="empty-row screen-reader-text slide-row">
 				<td class="cslider-preview">
 					<label>Preview</label>
-					<div class="cslider-img-preview" style="background-image: url('<?php echo $preview_placeholder; ?>');">
-						<div class="cslider-img-preview-inner" style="background-image: url(); background-size: <?php echo $temp_imgFit; ?>;">
+					<div class="cslider-img-preview" style="background-image: url('<?php echo esc_attr($preview_placeholder); ?>');">
+						<div class="cslider-img-preview-inner" style="background-image: url(); background-size: <?php echo esc_attr($temp_imgFit); ?>;">
 					</div>
 					<div class="cslider-buttons">
-						<a class="button move-slide" href="#/"><img src="<?php echo $icon_sort; ?>" alt="Move Slide" />Move</a>
-						<a class="button delete-slide" href="#/"><img src="<?php echo $icon_delete; ?>" alt="Delete Slide" />Delete</a>
+						<a class="button move-slide" href="#/"><img src="<?php echo esc_attr($icon_sort); ?>" alt="Move Slide" />Move</a>
+						<a class="button delete-slide" href="#/"><img src="<?php echo esc_attr($icon_delete); ?>" alt="Delete Slide" />Delete</a>
 					</div>
 				</td>
 				<td class="cslider-content">
 					<label>Image</label>
 					<div class="img-details">
 						<input type="text" class="widefat cslider-img-url" name="cslider_img_url[]" readonly />
-						<a class="button remove-img" href="#/"><img src="<?php echo $icon_remove; ?>" alt="Remove Image" /></a>
+						<a class="button remove-img" href="#/"><img src="<?php echo esc_attr($icon_remove); ?>" alt="Remove Image" /></a>
 						<input type="text" class="widefat cslider-img-id" name="cslider_img_id[]" />
 						<input type="button" class="button button-primary cslider-img-btn" value="Select Image" />
 					</div>
@@ -682,9 +688,9 @@ function cslider_meta_box_static() {
 			<tr class="slide-static">
 				<td class="cslider-content">
 					<label>Content</label>
-					<textarea type="text" class="widefat cslider-content" name="cslider_static_content"><?php echo $temp_static_content; ?></textarea>
+					<textarea type="text" class="widefat cslider-content" name="cslider_static_content"><?php echo esc_attr($temp_static_content); ?></textarea>
 					<label>Overlay Color</label>
-					<input type="text" class="widefat cslider-overlay" name="cslider_static_overlay" value="<?php echo $temp_static_overlay; ?>" />
+					<input type="text" class="widefat cslider-overlay" name="cslider_static_overlay" value="<?php echo esc_attr($temp_static_overlay); ?>" />
 				</td>
 			</tr>
 		</tbody>
@@ -716,30 +722,30 @@ function cslider_save_fields_meta_boxes($post_id) {
 		return;
 
 	// Save _cslider_options
-	$cslider_minHeight = $_POST['cslider_minHeight'];
-	$cslider_maxHeight = $_POST['cslider_maxHeight'];
-	$cslider_fullWidth = $_POST['cslider_fullWidth'];
-	$cslider_draggable = $_POST['cslider_draggable'];
-	$cslider_freeScroll = $_POST['cslider_freeScroll'];
-	$cslider_wrapAround = $_POST['cslider_wrapAround'];
-	$cslider_groupCells = $_POST['cslider_groupCells'];
-	$cslider_autoPlay = $_POST['cslider_autoPlay'];
-	$cslider_animation = $_POST['cslider_animation'];
-	$cslider_pauseAutoPlayOnHover = $_POST['cslider_pauseAutoPlayOnHover'];
-	$cslider_adaptiveHeight = $_POST['cslider_adaptiveHeight'];
-	$cslider_watchCSS = $_POST['cslider_watchCSS'];
-	$cslider_dragThreshold = $_POST['cslider_dragThreshold'];
-	$cslider_selectedAttraction = $_POST['cslider_selectedAttraction'];
-	$cslider_friction = $_POST['cslider_friction'];
-	$cslider_freeScrollFriction = $_POST['cslider_freeScrollFriction'];
-	$cslider_setGallerySize = $_POST['cslider_setGallerySize'];
-	$cslider_resize = $_POST['cslider_resize'];
-	$cslider_cellAlign = $_POST['cslider_cellAlign'];
-	$cslider_imgFit = $_POST['cslider_imgFit'];
-	$cslider_contain = $_POST['cslider_contain'];
-	$cslider_percentPosition = $_POST['cslider_percentPosition'];
-	$cslider_prevNextButtons = $_POST['cslider_prevNextButtons'];
-	$cslider_pageDots = $_POST['cslider_pageDots'];
+	$cslider_minHeight = sanitize_text_field($_POST['cslider_minHeight']);
+	$cslider_maxHeight = sanitize_text_field($_POST['cslider_maxHeight']);
+	$cslider_fullWidth = sanitize_key($_POST['cslider_fullWidth']);
+	$cslider_draggable = sanitize_key($_POST['cslider_draggable']);
+	$cslider_freeScroll =sanitize_key( $_POST['cslider_freeScroll']);
+	$cslider_wrapAround = sanitize_key($_POST['cslider_wrapAround']);
+	$cslider_groupCells = sanitize_text_field($_POST['cslider_groupCells']);
+	$cslider_autoPlay = sanitize_text_field($_POST['cslider_autoPlay']);
+	$cslider_animation = sanitize_text_field($_POST['cslider_animation']);
+	$cslider_pauseAutoPlayOnHover = sanitize_key($_POST['cslider_pauseAutoPlayOnHover']);
+	$cslider_adaptiveHeight = sanitize_key($_POST['cslider_adaptiveHeight']);
+	$cslider_watchCSS = sanitize_key($_POST['cslider_watchCSS']);
+	$cslider_dragThreshold = sanitize_text_field($_POST['cslider_dragThreshold']);
+	$cslider_selectedAttraction = sanitize_text_field($_POST['cslider_selectedAttraction']);
+	$cslider_friction = sanitize_text_field($_POST['cslider_friction']);
+	$cslider_freeScrollFriction = sanitize_text_field($_POST['cslider_freeScrollFriction']);
+	$cslider_setGallerySize = sanitize_key($_POST['cslider_setGallerySize']);
+	$cslider_resize = sanitize_key($_POST['cslider_resize']);
+	$cslider_cellAlign = sanitize_text_field($_POST['cslider_cellAlign']);
+	$cslider_imgFit = sanitize_text_field($_POST['cslider_imgFit']);
+	$cslider_contain = sanitize_key($_POST['cslider_contain']);
+	$cslider_percentPosition = sanitize_key($_POST['cslider_percentPosition']);
+	$cslider_prevNextButtons = sanitize_key($_POST['cslider_prevNextButtons']);
+	$cslider_pageDots = sanitize_key($_POST['cslider_pageDots']);
 
 	$new = array();
 	$new['cslider_minHeight'] = empty($cslider_minHeight) ? '0' : wp_strip_all_tags($cslider_minHeight);
@@ -770,10 +776,10 @@ function cslider_save_fields_meta_boxes($post_id) {
 	update_post_meta($post_id, '_cslider_options', $new);
 
 	// Save _cslider_fields
-	$cslider_imgs_id = $_POST['cslider_img_id'];
-	$cslider_contents = $_POST['cslider_content'];
-	$cslider_links = $_POST['cslider_link'];
-	$cslider_link_targets = $_POST['cslider_link_target'];
+	$cslider_imgs_id = sanitize_text_field($_POST['cslider_img_id']);
+	$cslider_contents = sanitize_text_field($_POST['cslider_content']);
+	$cslider_links = esc_url_raw($_POST['cslider_link']);
+	$cslider_link_targets = sanitize_text_field($_POST['cslider_link_target']);
 
 	$new = array();
 	$old = get_post_meta($post_id, '_cslider_fields', true);
@@ -801,8 +807,8 @@ function cslider_save_fields_meta_boxes($post_id) {
 		delete_post_meta( $post_id, '_cslider_fields', $old );
 
 	// Save _cslider_static
-	$cslider_static_content = $_POST['cslider_static_content'];
-	$cslider_static_overlay = $_POST['cslider_static_overlay'];
+	$cslider_static_content = sanitize_text_field($_POST['cslider_static_content']);
+	$cslider_static_overlay = sanitize_text_field($_POST['cslider_static_overlay']);
 
 	$new = array();
 	$new['cslider_static_content'] = $cslider_static_content;

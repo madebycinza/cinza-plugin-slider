@@ -12,10 +12,10 @@ function cslider_shortcodes_init() {
 function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' ) {
 
 	// Enqueue scripts
-    wp_enqueue_script('flickity-js');
-	wp_enqueue_style('flickity-css');
-    wp_enqueue_style('animate-css');
-    wp_enqueue_style('cslider-frontend-css');
+    wp_enqueue_script('flickity');
+	wp_enqueue_style('flickity');
+    wp_enqueue_style('animate');
+    wp_enqueue_style('cslider-frontend');
 	
     // Normalize attribute keys, lowercase
     $atts = array_change_key_case( (array) $atts, CASE_LOWER );
@@ -38,34 +38,34 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
     $options = ' \'{ ';
 
         // Query validations
-        if (intval($cslider_options['cslider_autoPlay']) > 0) {
-            $valid_autoPlay = '"autoPlay": '. $cslider_options['cslider_autoPlay'] .','; 
+        if (intval(esc_attr($cslider_options['cslider_autoPlay'])) > 0) {
+            $valid_autoPlay = '"autoPlay": '. esc_attr($cslider_options['cslider_autoPlay']) .','; 
         } else {
             $valid_autoPlay = '"autoPlay": false,'; 
         }
 
-        if ($cslider_options['cslider_animation'] == "fade") {
-            wp_enqueue_style('flickity-fade-css');
-            wp_enqueue_script('flickity-fade-js');
+        if (esc_attr($cslider_options['cslider_animation']) == "fade") {
+            wp_enqueue_style('flickity-fade');
+            wp_enqueue_script('flickity-fade');
             $valid_fade = '"fade": true,'; 
         } else {
             $valid_fade = '';
         }
 
         // Behavior
-        $options .= '"draggable": ' . (boolval($cslider_options['cslider_draggable']) ? "true" : "false") . ',';
-        $options .= '"freeScroll": ' . (boolval($cslider_options['cslider_freeScroll']) ? "true" : "false") . ',';
-        $options .= '"wrapAround": ' . (boolval($cslider_options['cslider_wrapAround']) ? "true" : "false") . ',';
-        $options .= '"groupCells": ' . $cslider_options['cslider_groupCells'] . ',';
+        $options .= '"draggable": ' . (boolval(esc_attr($cslider_options['cslider_draggable'])) ? "true" : "false") . ',';
+        $options .= '"freeScroll": ' . (boolval(esc_attr($cslider_options['cslider_freeScroll'])) ? "true" : "false") . ',';
+        $options .= '"wrapAround": ' . (boolval(esc_attr($cslider_options['cslider_wrapAround'])) ? "true" : "false") . ',';
+        $options .= '"groupCells": ' . esc_attr($cslider_options['cslider_groupCells']) . ',';
         $options .= $valid_autoPlay;
         $options .= $valid_fade;
-        $options .= '"pauseAutoPlayOnHover": ' . (boolval($cslider_options['cslider_pauseAutoPlayOnHover']) ? "true" : "false") . ',';
-        $options .= '"adaptiveHeight": ' . (boolval($cslider_options['cslider_adaptiveHeight']) ? "true" : "false") . ',';
-        $options .= '"watchCSS": ' . (boolval($cslider_options['cslider_watchCSS']) ? "true" : "false") . ',';
-        $options .= '"dragThreshold": "' . $cslider_options['cslider_dragThreshold'] . '",';
-        $options .= '"selectedAttraction": "' . $cslider_options['cslider_selectedAttraction'] . '",';
-        $options .= '"friction": "' . $cslider_options['cslider_friction'] . '",';
-        $options .= '"freeScrollFriction": "' . $cslider_options['cslider_freeScrollFriction'] . '",';
+        $options .= '"pauseAutoPlayOnHover": ' . (boolval(esc_attr($cslider_options['cslider_pauseAutoPlayOnHover'])) ? "true" : "false") . ',';
+        $options .= '"adaptiveHeight": ' . (boolval(esc_attr($cslider_options['cslider_adaptiveHeight'])) ? "true" : "false") . ',';
+        $options .= '"watchCSS": ' . (boolval(esc_attr($cslider_options['cslider_watchCSS'])) ? "true" : "false") . ',';
+        $options .= '"dragThreshold": "' . esc_attr($cslider_options['cslider_dragThreshold']) . '",';
+        $options .= '"selectedAttraction": "' . esc_attr($cslider_options['cslider_selectedAttraction']) . '",';
+        $options .= '"friction": "' . esc_attr($cslider_options['cslider_friction']) . '",';
+        $options .= '"freeScrollFriction": "' . esc_attr($cslider_options['cslider_freeScrollFriction']) . '",';
         
         // Images
         $options .= '"imagesLoaded": "true",';
@@ -75,17 +75,17 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
         $options .= '"cellSelector": ".slider-cell",';
         $options .= '"initialIndex": 0,';
         $options .= '"accessibility": "true",';
-        $options .= '"setGallerySize": ' . (boolval($cslider_options['cslider_setGallerySize']) ? "true" : "false") . ',';
-        $options .= '"resize": ' . (boolval($cslider_options['cslider_resize']) ? "true" : "false") . ',';
+        $options .= '"setGallerySize": ' . (boolval(esc_attr($cslider_options['cslider_setGallerySize'])) ? "true" : "false") . ',';
+        $options .= '"resize": ' . (boolval(esc_attr($cslider_options['cslider_resize'])) ? "true" : "false") . ',';
 
         // Cell
-        $options .= '"cellAlign": "' . $cslider_options['cslider_cellAlign'] . '",';
-        $options .= '"contain": ' . (boolval($cslider_options['cslider_contain']) ? "true" : "false") . ',';
-        $options .= '"percentPosition": ' . (boolval($cslider_options['cslider_percentPosition']) ? "true" : "false") . ',';
+        $options .= '"cellAlign": "' . esc_attr($cslider_options['cslider_cellAlign']) . '",';
+        $options .= '"contain": ' . (boolval(esc_attr($cslider_options['cslider_contain'])) ? "true" : "false") . ',';
+        $options .= '"percentPosition": ' . (boolval(esc_attr($cslider_options['cslider_percentPosition'])) ? "true" : "false") . ',';
 
         // UI
-        $options .= '"prevNextButtons": ' . (boolval($cslider_options['cslider_prevNextButtons']) ? "true" : "false") . ',';
-        $options .= '"pageDots": ' . (boolval($cslider_options['cslider_pageDots']) ? "true" : "false");
+        $options .= '"prevNextButtons": ' . (boolval(esc_attr($cslider_options['cslider_prevNextButtons'])) ? "true" : "false") . ',';
+        $options .= '"pageDots": ' . (boolval(esc_attr($cslider_options['cslider_pageDots'])) ? "true" : "false");
 
     $options .= ' }\' ';
 
@@ -127,22 +127,24 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
     }
 
     // Dynamic style 
-    $style = "<style>";
+    $ds_minHeight = intval(esc_attr($cslider_options['cslider_minHeight']));
+    $ds_maxHeight = intval(esc_attr($cslider_options['cslider_maxHeight']));
 
+    $style = "<style>";
     $style .=  ".cinza-slider-".$slider_id." {
-                    height: ". ( ($cslider_options['cslider_minHeight'] + $cslider_options['cslider_maxHeight']) / 2) ."px; /* Temporary while it loads, removed with jQuery */
+                    height: ". ( ($ds_minHeight + $ds_maxHeight) / 2) ."px; /* Temporary while it loads, removed with jQuery */
                     opacity: 0;
                     overflow: hidden; /* Temporary while it loads, removed with jQuery */
                 }
                 
                 .cinza-slider-".$slider_id." .slider-cell .slider-cell-image {
-                    object-fit: ". $cslider_options['cslider_imgFit'] .";
+                    object-fit: ". esc_attr($cslider_options['cslider_imgFit']) .";
                 }";
 
     $dynamic_minHeight = 'auto';
     $dynamic_maxHeight = 'auto';
-    if (intval($cslider_options['cslider_minHeight']) > 0) {$dynamic_minHeight = $cslider_options['cslider_minHeight'] ."px";}
-    if (intval($cslider_options['cslider_maxHeight']) > 0) {$dynamic_maxHeight = $cslider_options['cslider_maxHeight'] ."px";}
+    if ($ds_minHeight > 0) {$dynamic_minHeight = $ds_minHeight ."px";}
+    if ($ds_maxHeight> 0) {$dynamic_maxHeight = $ds_maxHeight ."px";}
     $style .=  ".cinza-slider-".$slider_id.", 
                 .cinza-slider-".$slider_id." .flickity-viewport, 
                 .cinza-slider-".$slider_id." .slider-cell, 
@@ -151,7 +153,7 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
                     max-height: ". $dynamic_maxHeight .";
                 }";
 
-    if (intval($cslider_options['cslider_fullWidth']) > 0) {
+    if (intval(esc_attr($cslider_options['cslider_fullWidth'])) > 0) {
         $style .=  ".cinza-slider-".$slider_id." {
                         width: 100vw;
                         position: relative;
