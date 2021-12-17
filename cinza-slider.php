@@ -48,14 +48,6 @@ function add_script_to_cslider_cpt() {
     // Dashicon
     wp_register_style('cinza-dashicon', plugins_url('/assets/css/backend-dashicon.css', __FILE__), array(), '1.0.0', false);
     wp_enqueue_style('cinza-dashicon');
- 
-    // Register scripts below only on cinza_slider CPT pages
-	if( $post_type != 'cinza_slider' ) return;
-
-    // CSS
-    wp_register_style('cslider-backend-css', plugins_url('/assets/css/backend-style.css', __FILE__), array(), '1.0.0', false);
-    wp_enqueue_style('cslider-backend-css');
-
     ?><style>
         /* Font downaloded from https://i.icomoon.io/public/bc38e56778/Cinza/style.css 
            src: url('https://i.icomoon.io/public/bc38e56778/Cinza/icomoon.eot?fum9vf');
@@ -76,6 +68,13 @@ function add_script_to_cslider_cpt() {
             font-display: block;
         }
     </style><?php
+ 
+    // Register scripts below only on cinza_slider CPT pages only
+	if( $post_type != 'cinza_slider' ) return;
+
+    // CSS
+    wp_register_style('cslider-backend-css', plugins_url('/assets/css/backend-style.css', __FILE__), array(), '1.0.0', false);
+    wp_enqueue_style('cslider-backend-css');
 
     // JS
     wp_enqueue_script('cslider-backend-js', plugins_url('/assets/js/backend-script.js', __FILE__), array('jquery'), '1.0.0', false);

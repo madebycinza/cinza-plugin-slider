@@ -80,7 +80,7 @@ add_action( 'manage_cinza_slider_posts_custom_column' , 'custom_cinza_slider_col
 function custom_cinza_slider_column( $column, $post_id ) {
 	switch ( $column ) {
 		case 'shortcode' :
-			echo('[cinza_slider id="'.$post_id.'"]');
+			echo('[cinza_slider id="'. esc_attr($post_id) .'"]');
 			break;
 	}
 }
@@ -776,10 +776,10 @@ function cslider_save_fields_meta_boxes($post_id) {
 	update_post_meta($post_id, '_cslider_options', $new);
 
 	// Save _cslider_fields
-	$cslider_imgs_id = sanitize_text_field($_POST['cslider_img_id']);
-	$cslider_contents = sanitize_text_field($_POST['cslider_content']);
-	$cslider_links = esc_url_raw($_POST['cslider_link']);
-	$cslider_link_targets = sanitize_text_field($_POST['cslider_link_target']);
+	$cslider_imgs_id = $_POST['cslider_img_id'];
+	$cslider_contents = $_POST['cslider_content'];
+	$cslider_links = $_POST['cslider_link'];
+	$cslider_link_targets = $_POST['cslider_link_target'];
 
 	$new = array();
 	$old = get_post_meta($post_id, '_cslider_fields', true);
@@ -794,10 +794,10 @@ function cslider_save_fields_meta_boxes($post_id) {
 
 	for ( $i = 0; $i < $count; $i++ ) {
 		if ( $cslider_imgs_id[$i] != '' || $cslider_contents[$i] != '' ) :
-			$new[$i]['cslider_img_id'] = stripslashes( $cslider_imgs_id[$i] );
-			$new[$i]['cslider_content'] = stripslashes( $cslider_contents[$i] );
-			$new[$i]['cslider_link'] = stripslashes( $cslider_links[$i] );
-			$new[$i]['cslider_link_target'] = stripslashes( $cslider_link_targets[$i] );
+			$new[$i]['cslider_img_id'] = sanitize_text_field( $cslider_imgs_id[$i] );
+			$new[$i]['cslider_content'] = sanitize_text_field( $cslider_contents[$i] );
+			$new[$i]['cslider_link'] = esc_url_raw( $cslider_links[$i] );
+			$new[$i]['cslider_link_target'] = sanitize_text_field( $cslider_link_targets[$i] );
 		endif;
 	}
 
