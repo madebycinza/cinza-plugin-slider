@@ -577,7 +577,7 @@ function cslider_meta_box_display() {
 								<input type="button" class="button button-primary cslider-img-btn" value="Select Image" />
 							</div>
 							<label>Content</label>
-							<textarea type="text" class="widefat cslider-content" name="cslider_content[]"><?php echo esc_attr( $field['cslider_content'] ); ?></textarea>
+							<textarea type="text" class="widefat cslider-content" name="cslider_content[]"><?php echo esc_html( $field['cslider_content'] ); ?></textarea>
 							<label>Link</label>
 							<div class="link-details">
 								<input type="text" class="widefat cslider-link" name="cslider_link[]" value="<?php echo esc_attr( $field['cslider_link'] ); ?>" />
@@ -688,7 +688,7 @@ function cslider_meta_box_static() {
 			<tr class="slide-static">
 				<td class="cslider-content">
 					<label>Content</label>
-					<textarea type="text" class="widefat cslider-content" name="cslider_static_content"><?php echo esc_attr($temp_static_content); ?></textarea>
+					<textarea type="text" class="widefat cslider-content" name="cslider_static_content"><?php echo esc_html($temp_static_content); ?></textarea>
 					<label>Overlay Color</label>
 					<input type="text" class="widefat cslider-overlay" name="cslider_static_overlay" value="<?php echo esc_attr($temp_static_overlay); ?>" />
 				</td>
@@ -795,7 +795,7 @@ function cslider_save_fields_meta_boxes($post_id) {
 	for ( $i = 0; $i < $count; $i++ ) {
 		if ( $cslider_imgs_id[$i] != '' || $cslider_contents[$i] != '' ) :
 			$new[$i]['cslider_img_id'] = sanitize_text_field( $cslider_imgs_id[$i] );
-			$new[$i]['cslider_content'] = sanitize_text_field( $cslider_contents[$i] );
+			$new[$i]['cslider_content'] = wp_filter_post_kses( $cslider_contents[$i] );
 			$new[$i]['cslider_link'] = esc_url_raw( $cslider_links[$i] );
 			$new[$i]['cslider_link_target'] = sanitize_text_field( $cslider_link_targets[$i] );
 		endif;
@@ -807,7 +807,7 @@ function cslider_save_fields_meta_boxes($post_id) {
 		delete_post_meta( $post_id, '_cslider_fields', $old );
 
 	// Save _cslider_static
-	$cslider_static_content = sanitize_text_field($_POST['cslider_static_content']);
+	$cslider_static_content = wp_filter_post_kses($_POST['cslider_static_content']);
 	$cslider_static_overlay = sanitize_text_field($_POST['cslider_static_overlay']);
 
 	$new = array();
