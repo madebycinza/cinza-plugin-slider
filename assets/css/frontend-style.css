@@ -15,6 +15,7 @@
 
 .cinza-slider .static-cell {
     z-index: 1;
+    pointer-events: none;
 }
 
 .cinza-slider .slider-cell {
