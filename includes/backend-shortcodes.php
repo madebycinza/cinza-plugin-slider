@@ -2,14 +2,14 @@
 	
 add_action( 'init', 'cslider_shortcodes_init' );
 function cslider_shortcodes_init() {
-	add_shortcode( 'cinza_slider', 'cslider_shortcode' );
+	add_shortcode( 'cslider', 'cslider_shortcode' );
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Slider shortcode
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' ) {
+function cslider_shortcode( $atts = [], $content = null, $tag = 'cslider' ) {
 
 	// Enqueue scripts
     wp_enqueue_script('flickity');
@@ -30,7 +30,7 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
     $cslider_options = get_post_meta($slider_id, '_cslider_options', true);
 
 	// Shortcode validation
-    if ( $slider_id == 'Empty' || !is_int($slider_id) || empty($cslider_options) ) {
+    if ( $slider_id == 'Empty' || !is_int($slider_id) || empty($cslider_options) || (get_post_status_object( get_post_status($slider_id) )->label != 'Published' )) {
         return "<p class='cslider-error'>Please enter a valid slider ID.</p>";
     }
 
@@ -93,7 +93,13 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
     $cslider_static = get_post_meta($slider_id, '_cslider_static', true);
     $static = "";
     if(!empty($cslider_static['cslider_static_content'])) {
-        $static .=  '<div class="static-cell"><div class="slider-cell-content">'. $cslider_static['cslider_static_content'] .'</div></div>';
+        $static .=  '<div class="static-cell">
+			        	<div class="slider-cell-content">
+			        		<div class="slider-cell-content-inner">
+			        			'. $cslider_static['cslider_static_content'] .'
+			        		</div>
+			        	</div>
+			        </div>';
     }
 
     // Query: _cslider_fields
@@ -131,13 +137,13 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
     $ds_maxHeight = intval(esc_attr($cslider_options['cslider_maxHeight']));
 
     $style = "<style>";
-    $style .=  ".cinza-slider-".$slider_id." {
+    $style .=  ".cslider-".$slider_id." {
                     height: ". ( ($ds_minHeight + $ds_maxHeight) / 2) ."px; /* Temporary while it loads, removed with jQuery */
                     opacity: 0;
                     overflow: hidden; /* Temporary while it loads, removed with jQuery */
                 }
                 
-                .cinza-slider-".$slider_id." .slider-cell .slider-cell-image {
+                .cslider-".$slider_id." .slider-cell .slider-cell-image {
                     object-fit: ". esc_attr($cslider_options['cslider_imgFit']) .";
                 }";
 
@@ -145,16 +151,16 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
     $dynamic_maxHeight = 'auto';
     if ($ds_minHeight > 0) {$dynamic_minHeight = $ds_minHeight ."px";}
     if ($ds_maxHeight> 0) {$dynamic_maxHeight = $ds_maxHeight ."px";}
-    $style .=  ".cinza-slider-".$slider_id.", 
-                .cinza-slider-".$slider_id." .flickity-viewport, 
-                .cinza-slider-".$slider_id." .slider-cell, 
-                .cinza-slider-".$slider_id." .slider-cell .slider-cell-image {
+    $style .=  ".cslider-".$slider_id.", 
+                .cslider-".$slider_id." .flickity-viewport, 
+                .cslider-".$slider_id." .slider-cell, 
+                .cslider-".$slider_id." .slider-cell .slider-cell-image {
                     min-height: ". $dynamic_minHeight .";
                     max-height: ". $dynamic_maxHeight .";
                 }";
 
     if (intval(esc_attr($cslider_options['cslider_fullWidth'])) > 0) {
-        $style .=  ".cinza-slider-".$slider_id." {
+        $style .=  ".cslider-".$slider_id." {
                         width: 100vw;
                         position: relative;
                         left: 50%;
@@ -165,7 +171,7 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
     }
 
     if(!empty($cslider_static['cslider_static_overlay'])) {
-        $style .=  ".cinza-slider-".$slider_id." .slider-cell:after {
+        $style .=  ".cslider-".$slider_id." .slider-cell:after {
                         content: '';
                         position: absolute;
                         display: block;
@@ -180,6 +186,6 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinza_slider' )
     $style .= "</style>";
 
     // Output
-    $o = '<div class="cinza-slider cinza-slider-'.$slider_id.' animate__animated animate__fadeIn" data-flickity='. $options .'>'. $static . $slides .'</div>'. $style;
+    $o = '<div class="cslider cslider-'.$slider_id.' animate__animated animate__fadeIn" data-flickity='. $options .'>'. $static . $slides .'</div>'. $style;
     return $o;
 }

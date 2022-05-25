@@ -107,7 +107,7 @@
     justify-content: center;
 }
 
-#cslider-fieldset div.cslider-buttons a.button img {
+#cslider-fieldset div.cslider-buttons a.button .icon {
     width: 15px;
     margin-right: 8px;
 }

@@ -1,7 +1,7 @@
 <?php
 	
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Register CPT: cinza_slider
+// Register CPT: cslider
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 add_action( 'init', 'cslider_register_post_type' );
@@ -47,11 +47,11 @@ function cslider_register_post_type() {
 		'description'         => '',
 		'public'              => true,
 		'hierarchical'        => false,
-		'exclude_from_search' => false,
+		'exclude_from_search' => true,
 		'publicly_queryable'  => true,
 		'show_ui'             => true,
 		'show_in_nav_menus'   => true,
-		'show_in_admin_bar'   => false,
+		'show_in_admin_bar'   => true,
 		'show_in_rest'        => true,
 		'query_var'           => false,
 		'can_export'          => true,
@@ -67,26 +67,26 @@ function cslider_register_post_type() {
 		'rewrite'             => ['with_front' => false],
 	];
 
-	register_post_type( 'cinza_slider', $args );
+	register_post_type( 'cslider', $args );
 }
 
-add_filter( 'manage_cinza_slider_posts_columns', 'set_custom_edit_cinza_slider_columns' );
-function set_custom_edit_cinza_slider_columns($columns) {
+add_filter( 'manage_cslider_posts_columns', 'set_custom_edit_cslider_columns' );
+function set_custom_edit_cslider_columns($columns) {
     $columns['shortcode'] = __( 'Shortcode', 'your_text_domain' );
     return $columns;
 }
 
-add_action( 'manage_cinza_slider_posts_custom_column' , 'custom_cinza_slider_column', 10, 2 );
-function custom_cinza_slider_column( $column, $post_id ) {
+add_action( 'manage_cslider_posts_custom_column' , 'custom_cslider_column', 10, 2 );
+function custom_cslider_column( $column, $post_id ) {
 	switch ( $column ) {
 		case 'shortcode' :
-			echo('[cinza_slider id="'. esc_attr($post_id) .'"]');
+			cslider_meta_box_shortcode($post_id);
 			break;
 	}
 }
 
-add_filter ( 'manage_cinza_slider_posts_columns', 'add_cinza_slider_columns', 99, 99 );
-function add_cinza_slider_columns ( $columns ) {
+add_filter ( 'manage_cslider_posts_columns', 'add_cslider_columns', 99, 99 );
+function add_cslider_columns ( $columns ) {
 	unset($columns['title']);
 	unset($columns['shortcode']);
 	unset($columns['date']);
@@ -101,17 +101,45 @@ function add_cinza_slider_columns ( $columns ) {
 	) );
 }
 
+add_filter( 'the_content', 'cslider_post_content');
+function cslider_post_content ( $content ) {
+    if ( is_singular('cslider') ) {
+        return do_shortcode('[cslider id="'. get_the_ID() .'"]');
+    }
+    return $content;
+}
+
+// Remove UI for Custom Fields metabox
+add_action( 'admin_head' , 'cslider_remove_post_custom_fields' );
+function cslider_remove_post_custom_fields() {
+    remove_meta_box( 'postcustom' , 'cslider' , 'normal' ); 
+}
+
+// Remove CPT from SEO sitemap (for Rank Math SEO plugin)
+// https://rankmath.com/kb/make-theme-rank-math-compatible/#exclude-post-type-from-sitemap
+add_filter( 'rank_math/sitemap/exclude_post_type', function ($exclude, $type) {
+    if ('cslider' === $type) {
+        $exclude = true;
+    }
+    return $exclude;
+}, 10, 2);
+
+// Remove CPT from SEO sitemap (for Yoast SEO plugin)
+// https://developer.yoast.com/features/xml-sitemaps/api/#exclude-specific-posts
+// https://wordpress.org/support/topic/exclude-multiple-post-types-from-sitemap/
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Add Meta Boxex
+// Add Meta Boxes
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 add_action( 'add_meta_boxes', 'cslider_add_fields_meta_boxes', 99, 99 );
 function cslider_add_fields_meta_boxes() {
-	add_meta_box('cslider-options', 'Options', 'cslider_meta_box_options', 'cinza_slider', 'normal', 'default');
-	add_meta_box('cslider-fields', 'Slider Cells', 'cslider_meta_box_display', 'cinza_slider', 'normal', 'default');
-	add_meta_box('cslider-static', 'Static Layer', 'cslider_meta_box_static', 'cinza_slider', 'normal', 'default');
-	add_meta_box('cslider-documentation', 'Documentation', 'cslider_meta_box_doc', 'cinza_slider', 'side', 'default');
-	remove_meta_box( 'rank_math_metabox' , 'cinza_slider' , 'normal' ); 
+	add_meta_box('cslider-options', 'Options', 'cslider_meta_box_options', 'cslider', 'normal', 'default');
+	add_meta_box('cslider-fields', 'Slider Cells', 'cslider_meta_box_display', 'cslider', 'normal', 'default');
+	add_meta_box('cslider-static', 'Static Layer', 'cslider_meta_box_static', 'cslider', 'normal', 'default');
+	add_meta_box('cslider-shortcode', 'Shortcode', 'cslider_meta_box_shortcode', 'cslider', 'side', 'default');
+	add_meta_box('cslider-documentation', 'Documentation', 'cslider_meta_box_doc', 'cslider', 'side', 'default');
+	remove_meta_box( 'rank_math_metabox' , 'cslider' , 'normal' ); 
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -195,7 +223,7 @@ function cslider_meta_box_options( $post ) {
                     <input type="text" name="cslider_minHeight" id="cslider_minHeight" class="cslider-minHeight" value="<?php echo esc_attr($temp_minHeight); ?>" /> <span>px</span>
                 </td>
                 <td class="cslider-options col-3">
-					Manually sets the slider min-height in pixels. <em>Set value to zero to disable this option.</em>
+					Sets the slider min-height in pixels. <em>Set value to zero to disable this option (<strong>Note: </strong>makes it easier to customize).</em>
                 </td>
             </tr>
 			<tr>
@@ -206,7 +234,7 @@ function cslider_meta_box_options( $post ) {
                     <input type="text" name="cslider_maxHeight" id="cslider_maxHeight" class="cslider-maxHeight" value="<?php echo esc_attr($temp_maxHeight); ?>" /> <span>px</span>
                 </td>
                 <td class="cslider-options col-3">
-					Manually sets the slider max-height in pixels. <em>Set value to zero to disable this option.</em>
+					Sets the slider max-height in pixels. <em>Set value to zero to disable this option (<strong>Note: </strong>makes it easier to customize).</em>
                 </td>
             </tr>
 			<tr>
@@ -284,7 +312,7 @@ function cslider_meta_box_options( $post ) {
                     <input type="checkbox" name="cslider_draggable" id="cslider_draggable" class="widefat cslider-draggable" value="1" <?php checked('1', $temp_draggable); ?> />
                 </td>
                 <td class="cslider-options col-3">
-					Enables dragging and flicking.
+					Enables dragging and flicking. <em><strong>Note: </strong>Enabling this feature will make static layer unselectable.</em>
                 </td>
             </tr>
 		</tbody>
@@ -534,9 +562,6 @@ function cslider_meta_box_display() {
 	?>
 	<table id="cslider-fieldset" width="100%">
 		<tbody><?php
-			$icon_sort = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/icon-move.png';
-			$icon_delete = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/icon-delete.png';
-			$icon_remove = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/icon-remove.png';
 			$preview_placeholder = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/preview-placeholder.jpg';
 
 			if ( $cslider_fields ) {
@@ -564,15 +589,15 @@ function cslider_meta_box_display() {
 								} ?>
 							</div>
 							<div class="cslider-buttons">
-								<a class="button move-slide" href="#/"><img src="<?php echo esc_attr($icon_sort); ?>" alt="Move Slide" />Move</a>
-								<a class="button delete-slide" href="#/"><img src="<?php echo esc_attr($icon_delete); ?>" alt="Delete Slide" />Delete</a>
+								<a class="button move-slide" href="#/"><span class="icon icon-move"></span>Move</a>
+								<a class="button delete-slide" href="#/"><span class="icon icon-bin"></span>Delete</a>
 							</div>
 						</td>
 						<td class="cslider-content">
 							<label>Image</label>
 							<div class="img-details">
 								<input type="text" class="widefat cslider-img-url" name="cslider_img_url[]" value="<?php echo esc_attr($cslider_img_url); ?>" readonly />
-								<a class="button remove-img" href="#/"><img src="<?php echo esc_attr($icon_remove); ?>" alt="Remove Image" /></a>
+								<a class="button remove-img" href="#/"><span class="icon icon-cross"></span></a>
 								<input type="text" class="widefat cslider-img-id" name="cslider_img_id[]" value="<?php echo esc_attr( $field['cslider_img_id'] ); ?>" />
 								<input type="button" class="button button-primary cslider-img-btn" value="Select Image" />
 							</div>
@@ -599,15 +624,15 @@ function cslider_meta_box_display() {
 							<div class="cslider-img-preview-inner" style="background-image: url(); background-size: <?php echo esc_attr($temp_imgFit); ?>;">
 						</div>
 						<div class="cslider-buttons">
-							<a class="button move-slide" href="#/"><img src="<?php echo esc_attr($icon_sort); ?>" alt="Move Slide" />Move</a>
-							<a class="button delete-slide" href="#/"><img src="<?php echo esc_attr($icon_delete); ?>" alt="Delete Slide" />Delete</a>
+							<a class="button move-slide" href="#/"><span class="icon icon-move"></span>Move</a>
+							<a class="button delete-slide" href="#/"><span class="icon icon-bin"></span>Delete</a>
 						</div>
 					</td>
 					<td class="cslider-content">
 						<label>Image</label>
 						<div class="img-details">
 							<input type="text" class="widefat cslider-img-url" name="cslider_img_url[]" readonly />
-							<a class="button remove-img" href="#/"><img src="<?php echo esc_attr($icon_remove); ?>" alt="Remove Image" /></a>
+							<a class="button remove-img" href="#/"><span class="icon icon-cross"></span></a>
 							<input type="text" class="widefat cslider-img-id" name="cslider_img_id[]" />
 							<input type="button" class="button button-primary cslider-img-btn" value="Select Image" />
 						</div>
@@ -633,15 +658,15 @@ function cslider_meta_box_display() {
 						<div class="cslider-img-preview-inner" style="background-image: url(); background-size: <?php echo esc_attr($temp_imgFit); ?>;">
 					</div>
 					<div class="cslider-buttons">
-						<a class="button move-slide" href="#/"><img src="<?php echo esc_attr($icon_sort); ?>" alt="Move Slide" />Move</a>
-						<a class="button delete-slide" href="#/"><img src="<?php echo esc_attr($icon_delete); ?>" alt="Delete Slide" />Delete</a>
+						<a class="button move-slide" href="#/"><span class="icon icon-move"></span>Move</a>
+						<a class="button delete-slide" href="#/"><span class="icon icon-bin"></span>Delete</a>
 					</div>
 				</td>
 				<td class="cslider-content">
 					<label>Image</label>
 					<div class="img-details">
 						<input type="text" class="widefat cslider-img-url" name="cslider_img_url[]" readonly />
-						<a class="button remove-img" href="#/"><img src="<?php echo esc_attr($icon_remove); ?>" alt="Remove Image" /></a>
+						<a class="button remove-img" href="#/"><span class="icon icon-cross"></span></a>
 						<input type="text" class="widefat cslider-img-id" name="cslider_img_id[]" />
 						<input type="button" class="button button-primary cslider-img-btn" value="Select Image" />
 					</div>
@@ -699,11 +724,27 @@ function cslider_meta_box_static() {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Meta Box: _cslider_shortcode
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function cslider_meta_box_shortcode( $post ) {
+	$slider_SC = '[cslider id=&quot;'. get_the_ID() .'&quot;]';
+	$slider_ID = 'cslider-' . get_the_ID();
+	
+	?>
+	<div class="cslider_shortcode_copy">
+		<input type="text" value="<?php echo $slider_SC; ?>" class="cslider_shortcode_copy_input" id="<?php echo $slider_ID; ?>" readonly />
+		<a class="preview button" onclick="cslider_copy_shortcode('<?php echo $slider_ID; ?>')"><span class="icon icon-edit-copy"></span> Copy</a>
+	</div>
+	<?php
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Meta Box: _cslider_doc
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function cslider_meta_box_doc( $post ) {
-	?><a href="https://flickity.metafizzy.co/options.html" target="_blank" class="preview button">Flickity documentation</a><?php
+	?><a href="https://flickity.metafizzy.co/options.html" target="_blank" class="preview button">Metafizzy Flickity doc</a><?php
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
