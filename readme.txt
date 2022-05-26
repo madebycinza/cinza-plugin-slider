@@ -4,14 +4,14 @@ Tags: slider, slideshow, carousel, metafizzy, flickity
 Requires at least: 5.2
 Tested up to: 5.8.2
 Requires PHP: 7.0
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 A minimal slider plugin built with Flickity.
 
 == Description ==
-Cinza Slider is a minimal slider plugin built with <a href="https://flickity.metafizzy.co/" targe="_blank">Flickity by Metafizzy</a>. It makes lightweight and flexible sliders that can be easily customized with CSS.
+Cinza Slider is a minimal slider plugin built with <a href="https://flickity.metafizzy.co/" targe="_blank">Flickity</a> by Metafizzy. It makes lightweight and flexible sliders that can be easily customized with CSS.
 
 == Installation ==
 Upload the Cinza Slider plugin to your WordPress site, activate it, and start creating sliders.
@@ -21,6 +21,11 @@ Upload the Cinza Slider plugin to your WordPress site, activate it, and start cr
 2. Slide cell fields
 
 == Changelog ==
+= 1.0.4 =
+*Release Date - 25th May, 2022*
+
+* Custom Post Type and shortcode fixes
+
 = 1.0.3 =
 *Release Date - 25th May, 2022*
 

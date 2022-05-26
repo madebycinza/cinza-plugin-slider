@@ -67,16 +67,16 @@ function cslider_register_post_type() {
 		'rewrite'             => ['with_front' => false],
 	];
 
-	register_post_type( 'cslider', $args );
+	register_post_type( 'cinza_slider', $args );
 }
 
-add_filter( 'manage_cslider_posts_columns', 'set_custom_edit_cslider_columns' );
+add_filter( 'manage_cinza_slider_posts_columns', 'set_custom_edit_cslider_columns' );
 function set_custom_edit_cslider_columns($columns) {
     $columns['shortcode'] = __( 'Shortcode', 'your_text_domain' );
     return $columns;
 }
 
-add_action( 'manage_cslider_posts_custom_column' , 'custom_cslider_column', 10, 2 );
+add_action( 'manage_cinza_slider_posts_custom_column' , 'custom_cslider_column', 10, 2 );
 function custom_cslider_column( $column, $post_id ) {
 	switch ( $column ) {
 		case 'shortcode' :
@@ -85,7 +85,7 @@ function custom_cslider_column( $column, $post_id ) {
 	}
 }
 
-add_filter ( 'manage_cslider_posts_columns', 'add_cslider_columns', 99, 99 );
+add_filter ( 'manage_cinza_slider_posts_columns', 'add_cslider_columns', 99, 99 );
 function add_cslider_columns ( $columns ) {
 	unset($columns['title']);
 	unset($columns['shortcode']);
@@ -103,8 +103,8 @@ function add_cslider_columns ( $columns ) {
 
 add_filter( 'the_content', 'cslider_post_content');
 function cslider_post_content ( $content ) {
-    if ( is_singular('cslider') ) {
-        return do_shortcode('[cslider id="'. get_the_ID() .'"]');
+    if ( is_singular('cinza_slider') ) {
+        return do_shortcode('[cinzaslider id="'. get_the_ID() .'"]');
     }
     return $content;
 }
@@ -112,13 +112,13 @@ function cslider_post_content ( $content ) {
 // Remove UI for Custom Fields metabox
 add_action( 'admin_head' , 'cslider_remove_post_custom_fields' );
 function cslider_remove_post_custom_fields() {
-    remove_meta_box( 'postcustom' , 'cslider' , 'normal' ); 
+    remove_meta_box( 'postcustom' , 'cinza_slider' , 'normal' ); 
 }
 
 // Remove CPT from SEO sitemap (for Rank Math SEO plugin)
 // https://rankmath.com/kb/make-theme-rank-math-compatible/#exclude-post-type-from-sitemap
 add_filter( 'rank_math/sitemap/exclude_post_type', function ($exclude, $type) {
-    if ('cslider' === $type) {
+    if ('cinza_slider' === $type) {
         $exclude = true;
     }
     return $exclude;
@@ -134,12 +134,12 @@ add_filter( 'rank_math/sitemap/exclude_post_type', function ($exclude, $type) {
 
 add_action( 'add_meta_boxes', 'cslider_add_fields_meta_boxes', 99, 99 );
 function cslider_add_fields_meta_boxes() {
-	add_meta_box('cslider-options', 'Options', 'cslider_meta_box_options', 'cslider', 'normal', 'default');
-	add_meta_box('cslider-fields', 'Slider Cells', 'cslider_meta_box_display', 'cslider', 'normal', 'default');
-	add_meta_box('cslider-static', 'Static Layer', 'cslider_meta_box_static', 'cslider', 'normal', 'default');
-	add_meta_box('cslider-shortcode', 'Shortcode', 'cslider_meta_box_shortcode', 'cslider', 'side', 'default');
-	add_meta_box('cslider-documentation', 'Documentation', 'cslider_meta_box_doc', 'cslider', 'side', 'default');
-	remove_meta_box( 'rank_math_metabox' , 'cslider' , 'normal' ); 
+	add_meta_box('cslider-options', 'Options', 'cslider_meta_box_options', 'cinza_slider', 'normal', 'default');
+	add_meta_box('cslider-fields', 'Slider Cells', 'cslider_meta_box_display', 'cinza_slider', 'normal', 'default');
+	add_meta_box('cslider-static', 'Static Layer', 'cslider_meta_box_static', 'cinza_slider', 'normal', 'default');
+	add_meta_box('cslider-shortcode', 'Shortcode', 'cslider_meta_box_shortcode', 'cinza_slider', 'side', 'default');
+	add_meta_box('cslider-documentation', 'Documentation', 'cslider_meta_box_doc', 'cinza_slider', 'side', 'default');
+	remove_meta_box( 'rank_math_metabox' , 'cinza_slider' , 'normal' ); 
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -728,8 +728,8 @@ function cslider_meta_box_static() {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function cslider_meta_box_shortcode( $post ) {
-	$slider_SC = '[cslider id=&quot;'. get_the_ID() .'&quot;]';
-	$slider_ID = 'cslider-' . get_the_ID();
+	$slider_SC = '[cinzaslider id=&quot;'. get_the_ID() .'&quot;]';
+	$slider_ID = 'cinza-slider-' . get_the_ID();
 	
 	?>
 	<div class="cslider_shortcode_copy">

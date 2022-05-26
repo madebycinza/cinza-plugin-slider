@@ -4,7 +4,7 @@
  * Plugin Name:       Cinza Slider
  * Plugin URI:        https://cinza.io/plugin/slider
  * Description:       A minimal slider plugin.
- * Version:           1.0.3
+ * Version:           1.0.4
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Cinza Web Design
@@ -53,7 +53,7 @@ function add_script_to_cslider_cpt() {
     wp_enqueue_style('cslider-admin');
  
     // Register scripts below only on cslider CPT pages only
-	if( $post_type != 'cslider' ) return;
+	if( $post_type != 'cinza_slider' ) return;
 
     // CSS
     wp_register_style('cslider-backend-css', plugins_url('/assets/css/backend-style.css', __FILE__), array(), '1.0.0', false);
@@ -94,7 +94,7 @@ register_deactivation_hook( __FILE__, 'cslider_deactivate' );
 function cslider_deactivate() {
     
     // Unregister CPT
-    unregister_post_type( 'cslider' );
+    unregister_post_type( 'cinza_slider' );
     
     // Reset permalinks
     flush_rewrite_rules();

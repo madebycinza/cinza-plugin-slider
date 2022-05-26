@@ -2,14 +2,15 @@
 	
 add_action( 'init', 'cslider_shortcodes_init' );
 function cslider_shortcodes_init() {
-	add_shortcode( 'cslider', 'cslider_shortcode' );
+	add_shortcode( 'cinzaslider', 'cslider_shortcode' ); // Main
+	add_shortcode( 'cinza_slider', 'cslider_shortcode' ); // Fallback
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Slider shortcode
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-function cslider_shortcode( $atts = [], $content = null, $tag = 'cslider' ) {
+function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) {
 
 	// Enqueue scripts
     wp_enqueue_script('flickity');
@@ -137,13 +138,13 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cslider' ) {
     $ds_maxHeight = intval(esc_attr($cslider_options['cslider_maxHeight']));
 
     $style = "<style>";
-    $style .=  ".cslider-".$slider_id." {
+    $style .=  ".cinza-slider-".$slider_id." {
                     height: ". ( ($ds_minHeight + $ds_maxHeight) / 2) ."px; /* Temporary while it loads, removed with jQuery */
                     opacity: 0;
                     overflow: hidden; /* Temporary while it loads, removed with jQuery */
                 }
                 
-                .cslider-".$slider_id." .slider-cell .slider-cell-image {
+                .cinza-slider-".$slider_id." .slider-cell .slider-cell-image {
                     object-fit: ". esc_attr($cslider_options['cslider_imgFit']) .";
                 }";
 
@@ -151,16 +152,16 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cslider' ) {
     $dynamic_maxHeight = 'auto';
     if ($ds_minHeight > 0) {$dynamic_minHeight = $ds_minHeight ."px";}
     if ($ds_maxHeight> 0) {$dynamic_maxHeight = $ds_maxHeight ."px";}
-    $style .=  ".cslider-".$slider_id.", 
-                .cslider-".$slider_id." .flickity-viewport, 
-                .cslider-".$slider_id." .slider-cell, 
-                .cslider-".$slider_id." .slider-cell .slider-cell-image {
+    $style .=  ".cinza-slider-".$slider_id.", 
+                .cinza-slider-".$slider_id." .flickity-viewport, 
+                .cinza-slider-".$slider_id." .slider-cell, 
+                .cinza-slider-".$slider_id." .slider-cell .slider-cell-image {
                     min-height: ". $dynamic_minHeight .";
                     max-height: ". $dynamic_maxHeight .";
                 }";
 
     if (intval(esc_attr($cslider_options['cslider_fullWidth'])) > 0) {
-        $style .=  ".cslider-".$slider_id." {
+        $style .=  ".cinza-slider-".$slider_id." {
                         width: 100vw;
                         position: relative;
                         left: 50%;
@@ -171,7 +172,7 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cslider' ) {
     }
 
     if(!empty($cslider_static['cslider_static_overlay'])) {
-        $style .=  ".cslider-".$slider_id." .slider-cell:after {
+        $style .=  ".cinza-slider-".$slider_id." .slider-cell:after {
                         content: '';
                         position: absolute;
                         display: block;
@@ -186,6 +187,6 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cslider' ) {
     $style .= "</style>";
 
     // Output
-    $o = '<div class="cslider cslider-'.$slider_id.' animate__animated animate__fadeIn" data-flickity='. $options .'>'. $static . $slides .'</div>'. $style;
+    $o = '<div class="cinza-slider cinza-slider-'.$slider_id.' animate__animated animate__fadeIn" data-flickity='. $options .'>'. $static . $slides .'</div>'. $style;
     return $o;
 }
