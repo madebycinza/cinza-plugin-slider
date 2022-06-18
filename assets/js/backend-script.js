@@ -5,6 +5,15 @@ jQuery(document).ready(function($) {
         var row = $( '.empty-row.screen-reader-text' ).clone(true);
         row.removeClass( 'empty-row screen-reader-text' );
         row.insertBefore( '#cslider-fieldset tbody>tr:last' );
+        
+        // Increments global count
+		var count = document.getElementById("cslider_id_count");
+		count.value = ++count.value;
+		
+		// Attributes slide ID from count 
+		var slide = row.find( ".cslider_cell_id" );
+		slide.val("slider-cell-" + count.value);
+		
         return false;
     });
   
@@ -26,8 +35,7 @@ jQuery(document).ready(function($) {
 
     // Sorting
     $( function() {
-        $( "#cslider-fieldset tbody" ).sortable();
-        //$( "#cslider-fieldset tbody" ).disableSelection();
+        $( ".cslider-fieldset-sortable tbody" ).sortable();
     } );
 
     // Enqueue Media

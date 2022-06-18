@@ -31,8 +31,10 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
     $cslider_options = get_post_meta($slider_id, '_cslider_options', true);
 
 	// Shortcode validation
-    if ( $slider_id == 'Empty' || !is_int($slider_id) || empty($cslider_options) || (get_post_status_object( get_post_status($slider_id) )->label != 'Published' )) {
-        return "<p class='cslider-error'>Please enter a valid slider ID.</p>";
+    if ( $slider_id == 'Empty' || !is_int($slider_id) ||  empty($cslider_options) ) {
+	    return "<p class='cslider-error'>ERROR: Please enter a valid Cinza Slider ID.</p>";
+    } else if ( get_post_status_object( get_post_status($slider_id) )->label == 'Draft' ) {
+	    return "<p class='cslider-error'>ERROR: This Cinza Slider is not published yet.</p>";
     }
 
     // Query: _cslider_options
@@ -130,7 +132,11 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
             $layer_content = '<div class="slider-cell-content">'. $layer_link .'</div>';
         }
 
-        $slides .=  '<div class="slider-cell">' . $layer_img . $layer_content . '</div>';
+		$existing_cell_id = '';
+		if(isset($field['cslider_cell_id'])) {
+			$existing_cell_id = $field['cslider_cell_id'];	
+		}
+        $slides .=  '<div id="'. $existing_cell_id .'" class="slider-cell">' . $layer_img . $layer_content . '</div>';
     }
 
     // Dynamic style 
