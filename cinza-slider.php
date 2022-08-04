@@ -4,7 +4,7 @@
  * Plugin Name:       Cinza Slider
  * Plugin URI:        https://cinza.io/plugin/slider
  * Description:       A minimal slider plugin.
- * Version:           1.0.7
+ * Version:           1.0.8
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Cinza Web Design
@@ -32,8 +32,9 @@ function cslider_scripts_frontend_init( $hook ) {
     wp_register_style('cslider-frontend', plugins_url('/assets/css/frontend-style.css', __FILE__), array(), '1.0.0', false);
 
     // JS
-    wp_register_script('flickity', plugins_url('/assets/js/flickity.pkgd.min.js', __FILE__), array('jquery'), '2.2.2', false);
+    wp_register_script('flickity', plugins_url('/assets/js/flickity.pkgd.min.js', __FILE__), array('jquery'), '2.3.0', false);
     wp_register_script('flickity-fade', plugins_url('/assets/js/flickity-fade.js', __FILE__), array('jquery'), '1.0.0', false);
+    wp_register_script('flickity-hash', plugins_url('/assets/js/flickity-hash.js', __FILE__), array('jquery'), '1.0.4', false);
     wp_enqueue_script('cslider-frontend', plugins_url('/assets/js/frontend-script.js', __FILE__), array('jquery'), '1.0.0', false);
 }
 

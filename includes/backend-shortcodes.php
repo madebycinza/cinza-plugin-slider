@@ -54,9 +54,14 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
         } else {
             $valid_fade = '';
         }
+        
+        if (boolval(esc_attr($cslider_options['cslider_hash']))) {
+            wp_enqueue_script('flickity-hash');
+        }
 
         // Behavior
         $options .= '"draggable": ' . (boolval(esc_attr($cslider_options['cslider_draggable'])) ? "true" : "false") . ',';
+        $options .= '"hash": ' . (boolval(esc_attr($cslider_options['cslider_hash'])) ? "true" : "false") . ',';
         $options .= '"freeScroll": ' . (boolval(esc_attr($cslider_options['cslider_freeScroll'])) ? "true" : "false") . ',';
         $options .= '"wrapAround": ' . (boolval(esc_attr($cslider_options['cslider_wrapAround'])) ? "true" : "false") . ',';
         $options .= '"groupCells": ' . esc_attr($cslider_options['cslider_groupCells']) . ',';
@@ -90,7 +95,7 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
         $options .= '"prevNextButtons": ' . (boolval(esc_attr($cslider_options['cslider_prevNextButtons'])) ? "true" : "false") . ',';
         $options .= '"pageDots": ' . (boolval(esc_attr($cslider_options['cslider_pageDots'])) ? "true" : "false");
 
-    $options .= ' }\' ';
+    $options = '\'{"hash": true }\'';
 
     // Query: _cslider_static
     $cslider_static = get_post_meta($slider_id, '_cslider_static', true);

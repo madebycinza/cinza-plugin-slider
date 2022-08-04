@@ -160,6 +160,7 @@ function cslider_meta_box_options( $post ) {
 	$temp_prevNextButtons = 1;
 	$temp_pageDots = 1;
 	$temp_draggable = 1;
+	$temp_hash = 0;
 	$temp_animation = 'slide';
 	$temp_autoPlay = '0';
 	$temp_pauseAutoPlayOnHover = 1;
@@ -185,6 +186,7 @@ function cslider_meta_box_options( $post ) {
 		$temp_setGallerySize = esc_attr($cslider_options['cslider_setGallerySize']);
 		$temp_adaptiveHeight = esc_attr($cslider_options['cslider_adaptiveHeight']);
 		$temp_draggable = esc_attr($cslider_options['cslider_draggable']);
+		$temp_hash = esc_attr($cslider_options['cslider_hash']);
 		$temp_prevNextButtons = esc_attr($cslider_options['cslider_prevNextButtons']);
 		$temp_pageDots = esc_attr($cslider_options['cslider_pageDots']);
 		$temp_animation = esc_attr($cslider_options['cslider_animation']);
@@ -313,6 +315,17 @@ function cslider_meta_box_options( $post ) {
                 </td>
                 <td class="cslider-options col-3">
 					Enables dragging and flicking. <em><strong>Note: </strong>Enabling this feature will make static layer unselectable.</em>
+                </td>
+            </tr>
+            <tr>
+                <td class="cslider-options col-1">
+                    <label for="cslider_hash">hash</label>
+				</td>
+				<td class="cslider-options col-2">
+                    <input type="checkbox" name="cslider_hash" id="cslider_hash" class="widefat cslider-hash" value="1" <?php checked('1', $temp_hash); ?> />
+                </td>
+                <td class="cslider-options col-3">
+					Enables hash navigation. See Flickity documentation for more details.</em>
                 </td>
             </tr>
 		</tbody>
@@ -785,6 +798,7 @@ function cslider_save_fields_meta_boxes($post_id) {
 	$cslider_maxHeight 			  = isset($_POST['cslider_maxHeight']) ? sanitize_text_field($_POST['cslider_maxHeight']) : '';
 	$cslider_fullWidth 			  = isset($_POST['cslider_fullWidth']) ? sanitize_key($_POST['cslider_fullWidth']) : '';
 	$cslider_draggable 			  = isset($_POST['cslider_draggable']) ? sanitize_key($_POST['cslider_draggable']) : '';
+	$cslider_hash	 			  = isset($_POST['cslider_hash']) ? sanitize_key($_POST['cslider_hash']) : '';
 	$cslider_freeScroll 		  = isset($_POST['cslider_freeScroll']) ? sanitize_key($_POST['cslider_freeScroll']) : '';
 	$cslider_wrapAround 		  = isset($_POST['cslider_wrapAround']) ? sanitize_key($_POST['cslider_wrapAround']) : '';
 	$cslider_groupCells 		  = isset($_POST['cslider_groupCells']) ? sanitize_text_field($_POST['cslider_groupCells']) : '';
@@ -812,6 +826,7 @@ function cslider_save_fields_meta_boxes($post_id) {
 	$new_options['cslider_maxHeight'] = empty($cslider_maxHeight) ? '0' : wp_strip_all_tags($cslider_maxHeight);
 	$new_options['cslider_fullWidth'] = $cslider_fullWidth ? '1' : '0';
 	$new_options['cslider_draggable'] = $cslider_draggable ? '1' : '0';
+	$new_options['cslider_hash'] = $cslider_hash ? '1' : '0';
 	$new_options['cslider_freeScroll'] = $cslider_freeScroll ? '1' : '0';
 	$new_options['cslider_wrapAround'] = $cslider_wrapAround ? '1' : '0';
 	$new_options['cslider_groupCells'] = empty($cslider_groupCells) ? '1' : wp_strip_all_tags($cslider_groupCells);
