@@ -95,7 +95,7 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
         $options .= '"prevNextButtons": ' . (boolval(esc_attr($cslider_options['cslider_prevNextButtons'])) ? "true" : "false") . ',';
         $options .= '"pageDots": ' . (boolval(esc_attr($cslider_options['cslider_pageDots'])) ? "true" : "false");
 
-    $options = '\'{"hash": true }\'';
+    $options .= ' }\' ';
 
     // Query: _cslider_static
     $cslider_static = get_post_meta($slider_id, '_cslider_static', true);
