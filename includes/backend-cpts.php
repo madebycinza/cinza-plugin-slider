@@ -160,7 +160,7 @@ function cslider_meta_box_options( $post ) {
 	$temp_prevNextButtons = 1;
 	$temp_pageDots = 1;
 	$temp_draggable = 1;
-	$temp_hash = 0;
+	//$temp_hash = 0;
 	$temp_animation = 'slide';
 	$temp_autoPlay = '0';
 	$temp_pauseAutoPlayOnHover = 1;
@@ -186,7 +186,7 @@ function cslider_meta_box_options( $post ) {
 		$temp_setGallerySize = esc_attr($cslider_options['cslider_setGallerySize']);
 		$temp_adaptiveHeight = esc_attr($cslider_options['cslider_adaptiveHeight']);
 		$temp_draggable = esc_attr($cslider_options['cslider_draggable']);
-		$temp_hash = esc_attr($cslider_options['cslider_hash']);
+		//$temp_hash = esc_attr($cslider_options['cslider_hash']);
 		$temp_prevNextButtons = esc_attr($cslider_options['cslider_prevNextButtons']);
 		$temp_pageDots = esc_attr($cslider_options['cslider_pageDots']);
 		$temp_animation = esc_attr($cslider_options['cslider_animation']);
@@ -207,6 +207,9 @@ function cslider_meta_box_options( $post ) {
 		$temp_freeScrollFriction = esc_attr($cslider_options['cslider_freeScrollFriction']);
 	}
 
+	// NEXT - I'll add this same validation for all checkfields. It's different for text fields. Look into razorfrog.php
+	$temp_hash = isset($cslider_options['cslider_hash']) ? esc_attr($cslider_options['cslider_hash']) : 0;
+	
 	?>
 	<table id="cslider-optionset" width="100%">
 		<thead>

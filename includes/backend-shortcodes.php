@@ -36,6 +36,16 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
     } else if ( get_post_status_object( get_post_status($slider_id) )->label == 'Draft' ) {
 	    return "<p class='cslider-error'>ERROR: This Cinza Slider is not published yet.</p>";
     }
+    
+    // Get setting values with validation
+	// NEXT - I'll add this same validation for all checkfields. It's different for text fields. Look into razorfrog.php
+	$cslider_hash = isset($cslider_options['cslider_hash']) ? esc_attr($cslider_options['cslider_hash']) : '0';
+
+
+
+
+
+
 
     // Query: _cslider_options
     $options = ' \'{ ';
@@ -55,13 +65,13 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
             $valid_fade = '';
         }
         
-        if (boolval(esc_attr($cslider_options['cslider_hash']))) {
+        if (boolval($cslider_hash)) {
             wp_enqueue_script('flickity-hash');
         }
 
         // Behavior
         $options .= '"draggable": ' . (boolval(esc_attr($cslider_options['cslider_draggable'])) ? "true" : "false") . ',';
-        $options .= '"hash": ' . (boolval(esc_attr($cslider_options['cslider_hash'])) ? "true" : "false") . ',';
+        $options .= '"hash": ' . (boolval($cslider_hash) ? "true" : "false") . ',';
         $options .= '"freeScroll": ' . (boolval(esc_attr($cslider_options['cslider_freeScroll'])) ? "true" : "false") . ',';
         $options .= '"wrapAround": ' . (boolval(esc_attr($cslider_options['cslider_wrapAround'])) ? "true" : "false") . ',';
         $options .= '"groupCells": ' . esc_attr($cslider_options['cslider_groupCells']) . ',';
