@@ -115,16 +115,28 @@ function cslider_remove_post_custom_fields() {
     remove_meta_box( 'postcustom' , 'cinza_slider' , 'normal' ); 
 }
 
-// Remove CPT from SEO sitemap (for Rank Math SEO plugin)
-// https://rankmath.com/kb/make-theme-rank-math-compatible/#exclude-post-type-from-sitemap
-add_filter( 'rank_math/sitemap/exclude_post_type', function ($exclude, $type) {
-    if ('cinza_slider' === $type) {
-        $exclude = true;
-    }
-    return $exclude;
-}, 10, 2);
+// Remove CPT from SEO sitemap and set robots to noindex nofollow (for Rank Math SEO plugin)
+if ( in_array( 'seo-by-rank-math/rank-math.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 
-// Remove CPT from SEO sitemap (for Yoast SEO plugin)
+	// https://rankmath.com/kb/make-theme-rank-math-compatible/#exclude-post-type-from-sitemap
+	add_filter( 'rank_math/sitemap/exclude_post_type', function ($exclude, $type) {
+	    if ($type === 'cinza_slider') {
+	        $exclude = true;
+	    }
+	    return $exclude;
+	}, 10, 2);	
+
+	// https://support.rankmath.com/ticket/cpt-noindex/
+	add_filter( 'rank_math/frontend/robots', function( $robots ) {
+		if(get_post_type() == 'cinza_slider') {
+			$robots['index'] = 'noindex';
+			$robots['follow'] = 'nofollow';
+		}
+		return $robots;
+	});
+}
+
+// [Possible future addition] Remove CPT from SEO sitemap (for Yoast SEO plugin)
 // https://developer.yoast.com/features/xml-sitemaps/api/#exclude-specific-posts
 // https://wordpress.org/support/topic/exclude-multiple-post-types-from-sitemap/
 
@@ -152,63 +164,35 @@ function cslider_meta_box_options( $post ) {
 	wp_nonce_field( 'cslider_meta_box_nonce', 'cslider_meta_box_nonce' );
 	
 	// Set default values
-	$temp_minHeight = 300;
-	$temp_maxHeight = 500;
-	$temp_fullWidth = 0;
-	$temp_setGallerySize = 1;
-	$temp_adaptiveHeight = 1;
-	$temp_prevNextButtons = 1;
-	$temp_pageDots = 1;
-	$temp_draggable = 1;
-	//$temp_hash = 0;
-	$temp_animation = 'slide';
-	$temp_autoPlay = '0';
-	$temp_pauseAutoPlayOnHover = 1;
-	$temp_wrapAround = 1;
-	$temp_freeScroll = 0;
-	$temp_groupCells = '1';
-	$temp_cellAlign = 'left';
-	$temp_imgFit = 'cover';
-	$temp_resize = 1;
-	$temp_contain = 1;
-	$temp_percentPosition = 1;
-	$temp_watchCSS = 0;
-	$temp_dragThreshold = '3';
-	$temp_selectedAttraction = '0.025';
-	$temp_friction = '0.28';
-	$temp_freeScrollFriction = '0.075';
+	$temp_minHeight = isset($cslider_options['cslider_minHeight']) ? esc_attr($cslider_options['cslider_minHeight']) : '300';
+	$temp_maxHeight = isset($cslider_options['cslider_maxHeight']) ? esc_attr($cslider_options['cslider_maxHeight']) : '500';
+	$temp_fullWidth = isset($cslider_options['cslider_fullWidth']) ? esc_attr($cslider_options['cslider_fullWidth']) : '0';
+	$temp_setGallerySize = isset($cslider_options['cslider_setGallerySize']) ? esc_attr($cslider_options['cslider_setGallerySize']) : '1';
+	$temp_adaptiveHeight = isset($cslider_options['cslider_adaptiveHeight']) ? esc_attr($cslider_options['cslider_adaptiveHeight']) : '1';
 	
-	// Get saved values
-	if ( !empty($cslider_options) ) {
-		$temp_minHeight = esc_attr($cslider_options['cslider_minHeight']);
-		$temp_maxHeight = esc_attr($cslider_options['cslider_maxHeight']);
-		$temp_fullWidth = esc_attr($cslider_options['cslider_fullWidth']);
-		$temp_setGallerySize = esc_attr($cslider_options['cslider_setGallerySize']);
-		$temp_adaptiveHeight = esc_attr($cslider_options['cslider_adaptiveHeight']);
-		$temp_draggable = esc_attr($cslider_options['cslider_draggable']);
-		//$temp_hash = esc_attr($cslider_options['cslider_hash']);
-		$temp_prevNextButtons = esc_attr($cslider_options['cslider_prevNextButtons']);
-		$temp_pageDots = esc_attr($cslider_options['cslider_pageDots']);
-		$temp_animation = esc_attr($cslider_options['cslider_animation']);
-		$temp_autoPlay = esc_attr($cslider_options['cslider_autoPlay']);
-		$temp_pauseAutoPlayOnHover = esc_attr($cslider_options['cslider_pauseAutoPlayOnHover']);
-		$temp_wrapAround = esc_attr($cslider_options['cslider_wrapAround']);
-		$temp_freeScroll = esc_attr($cslider_options['cslider_freeScroll']);
-		$temp_groupCells = esc_attr($cslider_options['cslider_groupCells']);
-		$temp_cellAlign = esc_attr($cslider_options['cslider_cellAlign']);
-		$temp_imgFit = esc_attr($cslider_options['cslider_imgFit']);
-		$temp_resize = esc_attr($cslider_options['cslider_resize']);
-		$temp_contain = esc_attr($cslider_options['cslider_contain']);
-		$temp_percentPosition = esc_attr($cslider_options['cslider_percentPosition']);
-		$temp_watchCSS = esc_attr($cslider_options['cslider_watchCSS']);
-		$temp_dragThreshold = esc_attr($cslider_options['cslider_dragThreshold']);
-		$temp_selectedAttraction = esc_attr($cslider_options['cslider_selectedAttraction']);
-		$temp_friction = esc_attr($cslider_options['cslider_friction']);
-		$temp_freeScrollFriction = esc_attr($cslider_options['cslider_freeScrollFriction']);
-	}
-
-	// NEXT - I'll add this same validation for all checkfields. It's different for text fields. Look into razorfrog.php
-	$temp_hash = isset($cslider_options['cslider_hash']) ? esc_attr($cslider_options['cslider_hash']) : 0;
+	$temp_prevNextButtons = isset($cslider_options['cslider_prevNextButtons']) ? esc_attr($cslider_options['cslider_prevNextButtons']) : '1';
+	$temp_pageDots = isset($cslider_options['cslider_pageDots']) ? esc_attr($cslider_options['cslider_pageDots']) : '1';
+	$temp_draggable = isset($cslider_options['cslider_draggable']) ? esc_attr($cslider_options['cslider_draggable']) : '1';
+	$temp_hash = isset($cslider_options['cslider_hash']) ? esc_attr($cslider_options['cslider_hash']) : '0';
+	
+	$temp_animation = isset($cslider_options['cslider_animation']) ? esc_attr($cslider_options['cslider_animation']) : 'slide';
+	$temp_autoPlay = isset($cslider_options['cslider_autoPlay']) ? esc_attr($cslider_options['cslider_autoPlay']) : '0';
+	$temp_pauseAutoPlayOnHover = isset($cslider_options['cslider_pauseAutoPlayOnHover']) ? esc_attr($cslider_options['cslider_pauseAutoPlayOnHover']) : '1';
+	$temp_wrapAround = isset($cslider_options['cslider_wrapAround']) ? esc_attr($cslider_options['cslider_wrapAround']) : '1';
+	$temp_freeScroll = isset($cslider_options['cslider_freeScroll']) ? esc_attr($cslider_options['cslider_freeScroll']) : '0';
+	
+	$temp_groupCells = isset($cslider_options['cslider_groupCells']) ? esc_attr($cslider_options['cslider_groupCells']) : '1';
+	$temp_cellAlign = isset($cslider_options['cslider_cellAlign']) ? esc_attr($cslider_options['cslider_cellAlign']) : 'left';
+	$temp_imgFit = isset($cslider_options['cslider_imgFit']) ? esc_attr($cslider_options['cslider_imgFit']) : 'cover';
+	$temp_resize = isset($cslider_options['cslider_resize']) ? esc_attr($cslider_options['cslider_resize']) : '1';
+	$temp_contain = isset($cslider_options['cslider_contain']) ? esc_attr($cslider_options['cslider_contain']) : '1';
+	$temp_percentPosition = isset($cslider_options['cslider_percentPosition']) ? esc_attr($cslider_options['cslider_percentPosition']) : '1';
+	
+	$temp_watchCSS = isset($cslider_options['cslider_watchCSS']) ? esc_attr($cslider_options['cslider_watchCSS']) : '0';
+	$temp_dragThreshold = isset($cslider_options['cslider_dragThreshold']) ? esc_attr($cslider_options['cslider_dragThreshold']) : '3';
+	$temp_selectedAttraction = isset($cslider_options['cslider_selectedAttraction']) ? esc_attr($cslider_options['cslider_selectedAttraction']) : '0.025';
+	$temp_friction = isset($cslider_options['cslider_friction']) ? esc_attr($cslider_options['cslider_friction']) : '0.28';
+	$temp_freeScrollFriction = isset($cslider_options['cslider_freeScrollFriction']) ? esc_attr($cslider_options['cslider_freeScrollFriction']) : '0.075';
 	
 	?>
 	<table id="cslider-optionset" width="100%">
@@ -796,60 +780,70 @@ function cslider_save_fields_meta_boxes($post_id) {
 	if (!current_user_can('edit_post', $post_id))
 		return;
 
-	// Get all _cslider_options
+	// Get all _cslider_options from fields
 	$cslider_minHeight 			  = isset($_POST['cslider_minHeight']) ? sanitize_text_field($_POST['cslider_minHeight']) : '';
 	$cslider_maxHeight 			  = isset($_POST['cslider_maxHeight']) ? sanitize_text_field($_POST['cslider_maxHeight']) : '';
 	$cslider_fullWidth 			  = isset($_POST['cslider_fullWidth']) ? sanitize_key($_POST['cslider_fullWidth']) : '';
+	$cslider_setGallerySize 	  = isset($_POST['cslider_setGallerySize']) ? sanitize_key($_POST['cslider_setGallerySize']) : '';
+	$cslider_adaptiveHeight 	  = isset($_POST['cslider_adaptiveHeight']) ? sanitize_key($_POST['cslider_adaptiveHeight']) : '';
+	
+	$cslider_prevNextButtons 	  = isset($_POST['cslider_prevNextButtons']) ? sanitize_key($_POST['cslider_prevNextButtons']) : '';
+	$cslider_pageDots 			  = isset($_POST['cslider_pageDots']) ? sanitize_key($_POST['cslider_pageDots']) : '';
 	$cslider_draggable 			  = isset($_POST['cslider_draggable']) ? sanitize_key($_POST['cslider_draggable']) : '';
 	$cslider_hash	 			  = isset($_POST['cslider_hash']) ? sanitize_key($_POST['cslider_hash']) : '';
-	$cslider_freeScroll 		  = isset($_POST['cslider_freeScroll']) ? sanitize_key($_POST['cslider_freeScroll']) : '';
-	$cslider_wrapAround 		  = isset($_POST['cslider_wrapAround']) ? sanitize_key($_POST['cslider_wrapAround']) : '';
-	$cslider_groupCells 		  = isset($_POST['cslider_groupCells']) ? sanitize_text_field($_POST['cslider_groupCells']) : '';
-	$cslider_autoPlay 			  = isset($_POST['cslider_autoPlay']) ? sanitize_text_field($_POST['cslider_autoPlay']) : '';
+	
 	$cslider_animation 			  = isset($_POST['cslider_animation']) ? sanitize_text_field($_POST['cslider_animation']) : '';
+	$cslider_autoPlay 			  = isset($_POST['cslider_autoPlay']) ? sanitize_text_field($_POST['cslider_autoPlay']) : '';
 	$cslider_pauseAutoPlayOnHover = isset($_POST['cslider_pauseAutoPlayOnHover']) ? sanitize_key($_POST['cslider_pauseAutoPlayOnHover']) : '';
-	$cslider_adaptiveHeight 	  = isset($_POST['cslider_adaptiveHeight']) ? sanitize_key($_POST['cslider_adaptiveHeight']) : '';
+	$cslider_wrapAround 		  = isset($_POST['cslider_wrapAround']) ? sanitize_key($_POST['cslider_wrapAround']) : '';
+	$cslider_freeScroll 		  = isset($_POST['cslider_freeScroll']) ? sanitize_key($_POST['cslider_freeScroll']) : '';
+	
+	$cslider_groupCells 		  = isset($_POST['cslider_groupCells']) ? sanitize_text_field($_POST['cslider_groupCells']) : '';
+	$cslider_cellAlign 			  = isset($_POST['cslider_cellAlign']) ? sanitize_text_field($_POST['cslider_cellAlign']) : '';
+	$cslider_imgFit 			  = isset($_POST['cslider_imgFit']) ? sanitize_text_field($_POST['cslider_imgFit']) : '';
+	$cslider_resize 			  = isset($_POST['cslider_resize']) ? sanitize_key($_POST['cslider_resize']) : '';
+	$cslider_contain 			  = isset($_POST['cslider_contain']) ? sanitize_key($_POST['cslider_contain']) : '';
+	$cslider_percentPosition 	  = isset($_POST['cslider_percentPosition']) ? sanitize_key($_POST['cslider_percentPosition']) : '';
+	
 	$cslider_watchCSS 			  = isset($_POST['cslider_watchCSS']) ? sanitize_key($_POST['cslider_watchCSS']) : '';
 	$cslider_dragThreshold 		  = isset($_POST['cslider_dragThreshold']) ? sanitize_text_field($_POST['cslider_dragThreshold']) : '';
 	$cslider_selectedAttraction   = isset($_POST['cslider_selectedAttraction']) ? sanitize_text_field($_POST['cslider_selectedAttraction']) : '';
 	$cslider_friction 			  = isset($_POST['cslider_friction']) ? sanitize_text_field($_POST['cslider_friction']) : '';
 	$cslider_freeScrollFriction   = isset($_POST['cslider_freeScrollFriction']) ? sanitize_text_field($_POST['cslider_freeScrollFriction']) : '';
-	$cslider_setGallerySize 	  = isset($_POST['cslider_setGallerySize']) ? sanitize_key($_POST['cslider_setGallerySize']) : '';
-	$cslider_resize 			  = isset($_POST['cslider_resize']) ? sanitize_key($_POST['cslider_resize']) : '';
-	$cslider_cellAlign 			  = isset($_POST['cslider_cellAlign']) ? sanitize_text_field($_POST['cslider_cellAlign']) : '';
-	$cslider_imgFit 			  = isset($_POST['cslider_imgFit']) ? sanitize_text_field($_POST['cslider_imgFit']) : '';
-	$cslider_contain 			  = isset($_POST['cslider_contain']) ? sanitize_key($_POST['cslider_contain']) : '';
-	$cslider_percentPosition 	  = isset($_POST['cslider_percentPosition']) ? sanitize_key($_POST['cslider_percentPosition']) : '';
-	$cslider_prevNextButtons 	  = isset($_POST['cslider_prevNextButtons']) ? sanitize_key($_POST['cslider_prevNextButtons']) : '';
-	$cslider_pageDots 			  = isset($_POST['cslider_pageDots']) ? sanitize_key($_POST['cslider_pageDots']) : '';
+
 	$cslider_id_count 			  = isset($_POST['cslider_id_count']) ? sanitize_text_field($_POST['cslider_id_count']) : '';
 
+	// Validations before saving
 	$new_options = array();
 	$new_options['cslider_minHeight'] = empty($cslider_minHeight) ? '0' : wp_strip_all_tags($cslider_minHeight);
 	$new_options['cslider_maxHeight'] = empty($cslider_maxHeight) ? '0' : wp_strip_all_tags($cslider_maxHeight);
 	$new_options['cslider_fullWidth'] = $cslider_fullWidth ? '1' : '0';
+	$new_options['cslider_setGallerySize'] = $cslider_setGallerySize ? '1' : '0';
+	$new_options['cslider_adaptiveHeight'] = $cslider_adaptiveHeight ? '1' : '0';
+	
+	$new_options['cslider_prevNextButtons'] = $cslider_prevNextButtons ? '1' : '0';
+	$new_options['cslider_pageDots'] = $cslider_pageDots ? '1' : '0';
 	$new_options['cslider_draggable'] = $cslider_draggable ? '1' : '0';
 	$new_options['cslider_hash'] = $cslider_hash ? '1' : '0';
-	$new_options['cslider_freeScroll'] = $cslider_freeScroll ? '1' : '0';
-	$new_options['cslider_wrapAround'] = $cslider_wrapAround ? '1' : '0';
-	$new_options['cslider_groupCells'] = empty($cslider_groupCells) ? '1' : wp_strip_all_tags($cslider_groupCells);
-	$new_options['cslider_autoPlay'] = empty($cslider_autoPlay) ? '0' : wp_strip_all_tags($cslider_autoPlay);
+	
 	$new_options['cslider_animation'] = wp_strip_all_tags($cslider_animation);
+	$new_options['cslider_autoPlay'] = empty($cslider_autoPlay) ? '0' : wp_strip_all_tags($cslider_autoPlay);
 	$new_options['cslider_pauseAutoPlayOnHover'] = $cslider_pauseAutoPlayOnHover ? '1' : '0';
-	$new_options['cslider_adaptiveHeight'] = $cslider_adaptiveHeight ? '1' : '0';
+	$new_options['cslider_wrapAround'] = $cslider_wrapAround ? '1' : '0';
+	$new_options['cslider_freeScroll'] = $cslider_freeScroll ? '1' : '0';
+	
+	$new_options['cslider_groupCells'] = empty($cslider_groupCells) ? '1' : wp_strip_all_tags($cslider_groupCells);
+	$new_options['cslider_cellAlign'] = wp_strip_all_tags($cslider_cellAlign);
+	$new_options['cslider_imgFit'] = wp_strip_all_tags($cslider_imgFit);
+	$new_options['cslider_resize'] = $cslider_resize ? '1' : '0';
+	$new_options['cslider_contain'] = $cslider_contain ? '1' : '0';
+	$new_options['cslider_percentPosition'] = $cslider_percentPosition ? '1' : '0';
+	
 	$new_options['cslider_watchCSS'] = $cslider_watchCSS ? '1' : '0';
 	$new_options['cslider_dragThreshold'] = empty($cslider_dragThreshold) ? '3' : wp_strip_all_tags($cslider_dragThreshold);
 	$new_options['cslider_selectedAttraction'] = empty($cslider_selectedAttraction) ? '0.025' : wp_strip_all_tags($cslider_selectedAttraction);
 	$new_options['cslider_friction'] = empty($cslider_friction) ? '0.28' : wp_strip_all_tags($cslider_friction);
 	$new_options['cslider_freeScrollFriction'] = empty($cslider_freeScrollFriction) ? '0.075' : wp_strip_all_tags($cslider_freeScrollFriction);
-	$new_options['cslider_setGallerySize'] = $cslider_setGallerySize ? '1' : '0';
-	$new_options['cslider_resize'] = $cslider_resize ? '1' : '0';
-	$new_options['cslider_cellAlign'] = wp_strip_all_tags($cslider_cellAlign);
-	$new_options['cslider_imgFit'] = wp_strip_all_tags($cslider_imgFit);
-	$new_options['cslider_contain'] = $cslider_contain ? '1' : '0';
-	$new_options['cslider_percentPosition'] = $cslider_percentPosition ? '1' : '0';
-	$new_options['cslider_prevNextButtons'] = $cslider_prevNextButtons ? '1' : '0';
-	$new_options['cslider_pageDots'] = $cslider_pageDots ? '1' : '0';
 
 	// Get all _cslider_fields
 	$cslider_cells_id = $_POST['cslider_cell_id'];

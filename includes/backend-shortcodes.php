@@ -38,26 +38,47 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
     }
     
     // Get setting values with validation
-	// NEXT - I'll add this same validation for all checkfields. It's different for text fields. Look into razorfrog.php
+	$cslider_minHeight = isset($cslider_options['cslider_minHeight']) ? esc_attr($cslider_options['cslider_minHeight']) : '300';
+	$cslider_maxHeight = isset($cslider_options['cslider_maxHeight']) ? esc_attr($cslider_options['cslider_maxHeight']) : '500';
+	$cslider_fullWidth = isset($cslider_options['cslider_fullWidth']) ? esc_attr($cslider_options['cslider_fullWidth']) : '0';
+	$cslider_setGallerySize = isset($cslider_options['cslider_setGallerySize']) ? esc_attr($cslider_options['cslider_setGallerySize']) : '1';
+	$cslider_adaptiveHeight = isset($cslider_options['cslider_adaptiveHeight']) ? esc_attr($cslider_options['cslider_adaptiveHeight']) : '1';
+	
+	$cslider_prevNextButtons = isset($cslider_options['cslider_prevNextButtons']) ? esc_attr($cslider_options['cslider_prevNextButtons']) : '1';
+	$cslider_pageDots = isset($cslider_options['cslider_pageDots']) ? esc_attr($cslider_options['cslider_pageDots']) : '1';
+	$cslider_draggable = isset($cslider_options['cslider_draggable']) ? esc_attr($cslider_options['cslider_draggable']) : '1';
 	$cslider_hash = isset($cslider_options['cslider_hash']) ? esc_attr($cslider_options['cslider_hash']) : '0';
-
-
-
-
-
-
+	
+	$cslider_animation = isset($cslider_options['cslider_animation']) ? esc_attr($cslider_options['cslider_animation']) : 'slide';
+	$cslider_autoPlay = isset($cslider_options['cslider_autoPlay']) ? esc_attr($cslider_options['cslider_autoPlay']) : '0';
+	$cslider_pauseAutoPlayOnHover = isset($cslider_options['cslider_pauseAutoPlayOnHover']) ? esc_attr($cslider_options['cslider_pauseAutoPlayOnHover']) : '1';
+	$cslider_wrapAround = isset($cslider_options['cslider_wrapAround']) ? esc_attr($cslider_options['cslider_wrapAround']) : '1';
+	$cslider_freeScroll = isset($cslider_options['cslider_freeScroll']) ? esc_attr($cslider_options['cslider_freeScroll']) : '0';
+	
+	$cslider_groupCells = isset($cslider_options['cslider_groupCells']) ? esc_attr($cslider_options['cslider_groupCells']) : '1';
+	$cslider_cellAlign = isset($cslider_options['cslider_cellAlign']) ? esc_attr($cslider_options['cslider_cellAlign']) : 'left';
+	$cslider_imgFit = isset($cslider_options['cslider_imgFit']) ? esc_attr($cslider_options['cslider_imgFit']) : 'cover';
+	$cslider_resize = isset($cslider_options['cslider_resize']) ? esc_attr($cslider_options['cslider_resize']) : '1';
+	$cslider_contain = isset($cslider_options['cslider_contain']) ? esc_attr($cslider_options['cslider_contain']) : '1';
+	$cslider_percentPosition = isset($cslider_options['cslider_percentPosition']) ? esc_attr($cslider_options['cslider_percentPosition']) : '1';
+	
+	$cslider_watchCSS = isset($cslider_options['cslider_watchCSS']) ? esc_attr($cslider_options['cslider_watchCSS']) : '0';
+	$cslider_dragThreshold = isset($cslider_options['cslider_dragThreshold']) ? esc_attr($cslider_options['cslider_dragThreshold']) : '3';
+	$cslider_selectedAttraction = isset($cslider_options['cslider_selectedAttraction']) ? esc_attr($cslider_options['cslider_selectedAttraction']) : '0.025';
+	$cslider_friction = isset($cslider_options['cslider_friction']) ? esc_attr($cslider_options['cslider_friction']) : '0.28';
+	$cslider_freeScrollFriction = isset($cslider_options['cslider_freeScrollFriction']) ? esc_attr($cslider_options['cslider_freeScrollFriction']) : '0.075';
 
     // Query: _cslider_options
     $options = ' \'{ ';
 
         // Query validations
-        if (intval(esc_attr($cslider_options['cslider_autoPlay'])) > 0) {
-            $valid_autoPlay = '"autoPlay": '. esc_attr($cslider_options['cslider_autoPlay']) .','; 
+        if (intval($cslider_autoPlay) > 0) {
+            $valid_autoPlay = '"autoPlay": '. $cslider_autoPlay .','; 
         } else {
             $valid_autoPlay = '"autoPlay": false,'; 
         }
 
-        if (esc_attr($cslider_options['cslider_animation']) == "fade") {
+        if ($cslider_animation == "fade") {
             wp_enqueue_style('flickity-fade');
             wp_enqueue_script('flickity-fade');
             $valid_fade = '"fade": true,'; 
@@ -70,20 +91,20 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
         }
 
         // Behavior
-        $options .= '"draggable": ' . (boolval(esc_attr($cslider_options['cslider_draggable'])) ? "true" : "false") . ',';
+        $options .= '"draggable": ' . (boolval($cslider_draggable) ? "true" : "false") . ',';
         $options .= '"hash": ' . (boolval($cslider_hash) ? "true" : "false") . ',';
-        $options .= '"freeScroll": ' . (boolval(esc_attr($cslider_options['cslider_freeScroll'])) ? "true" : "false") . ',';
-        $options .= '"wrapAround": ' . (boolval(esc_attr($cslider_options['cslider_wrapAround'])) ? "true" : "false") . ',';
-        $options .= '"groupCells": ' . esc_attr($cslider_options['cslider_groupCells']) . ',';
+        $options .= '"freeScroll": ' . (boolval($cslider_freeScroll) ? "true" : "false") . ',';
+        $options .= '"wrapAround": ' . (boolval($cslider_wrapAround) ? "true" : "false") . ',';
+        $options .= '"groupCells": ' . $cslider_groupCells . ',';
         $options .= $valid_autoPlay;
         $options .= $valid_fade;
-        $options .= '"pauseAutoPlayOnHover": ' . (boolval(esc_attr($cslider_options['cslider_pauseAutoPlayOnHover'])) ? "true" : "false") . ',';
-        $options .= '"adaptiveHeight": ' . (boolval(esc_attr($cslider_options['cslider_adaptiveHeight'])) ? "true" : "false") . ',';
-        $options .= '"watchCSS": ' . (boolval(esc_attr($cslider_options['cslider_watchCSS'])) ? "true" : "false") . ',';
-        $options .= '"dragThreshold": "' . esc_attr($cslider_options['cslider_dragThreshold']) . '",';
-        $options .= '"selectedAttraction": "' . esc_attr($cslider_options['cslider_selectedAttraction']) . '",';
-        $options .= '"friction": "' . esc_attr($cslider_options['cslider_friction']) . '",';
-        $options .= '"freeScrollFriction": "' . esc_attr($cslider_options['cslider_freeScrollFriction']) . '",';
+        $options .= '"pauseAutoPlayOnHover": ' . (boolval($cslider_pauseAutoPlayOnHover) ? "true" : "false") . ',';
+        $options .= '"adaptiveHeight": ' . (boolval($cslider_adaptiveHeight) ? "true" : "false") . ',';
+        $options .= '"watchCSS": ' . (boolval($cslider_watchCSS) ? "true" : "false") . ',';
+        $options .= '"dragThreshold": "' . $cslider_dragThreshold . '",';
+        $options .= '"selectedAttraction": "' . $cslider_selectedAttraction . '",';
+        $options .= '"friction": "' . $cslider_friction . '",';
+        $options .= '"freeScrollFriction": "' . $cslider_freeScrollFriction . '",';
         
         // Images
         $options .= '"imagesLoaded": "true",';
@@ -93,17 +114,17 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
         $options .= '"cellSelector": ".slider-cell",';
         $options .= '"initialIndex": 0,';
         $options .= '"accessibility": "true",';
-        $options .= '"setGallerySize": ' . (boolval(esc_attr($cslider_options['cslider_setGallerySize'])) ? "true" : "false") . ',';
-        $options .= '"resize": ' . (boolval(esc_attr($cslider_options['cslider_resize'])) ? "true" : "false") . ',';
+        $options .= '"setGallerySize": ' . (boolval($cslider_setGallerySize) ? "true" : "false") . ',';
+        $options .= '"resize": ' . (boolval($cslider_resize) ? "true" : "false") . ',';
 
         // Cell
-        $options .= '"cellAlign": "' . esc_attr($cslider_options['cslider_cellAlign']) . '",';
-        $options .= '"contain": ' . (boolval(esc_attr($cslider_options['cslider_contain'])) ? "true" : "false") . ',';
-        $options .= '"percentPosition": ' . (boolval(esc_attr($cslider_options['cslider_percentPosition'])) ? "true" : "false") . ',';
+        $options .= '"cellAlign": "' . $cslider_cellAlign . '",';
+        $options .= '"contain": ' . (boolval($cslider_contain) ? "true" : "false") . ',';
+        $options .= '"percentPosition": ' . (boolval($cslider_percentPosition) ? "true" : "false") . ',';
 
         // UI
-        $options .= '"prevNextButtons": ' . (boolval(esc_attr($cslider_options['cslider_prevNextButtons'])) ? "true" : "false") . ',';
-        $options .= '"pageDots": ' . (boolval(esc_attr($cslider_options['cslider_pageDots'])) ? "true" : "false");
+        $options .= '"prevNextButtons": ' . (boolval($cslider_prevNextButtons) ? "true" : "false") . ',';
+        $options .= '"pageDots": ' . (boolval($cslider_pageDots) ? "true" : "false");
 
     $options .= ' }\' ';
 
@@ -155,8 +176,8 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
     }
 
     // Dynamic style 
-    $ds_minHeight = intval(esc_attr($cslider_options['cslider_minHeight']));
-    $ds_maxHeight = intval(esc_attr($cslider_options['cslider_maxHeight']));
+    $ds_minHeight = intval($cslider_minHeight);
+    $ds_maxHeight = intval($cslider_maxHeight);
 
     $style = "<style>";
     $style .=  ".cinza-slider-".$slider_id." {
@@ -166,7 +187,7 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
                 }
                 
                 .cinza-slider-".$slider_id." .slider-cell .slider-cell-image {
-                    object-fit: ". esc_attr($cslider_options['cslider_imgFit']) .";
+                    object-fit: ". $cslider_imgFit .";
                 }";
 
     $dynamic_minHeight = 'auto';
@@ -181,7 +202,7 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
                     max-height: ". $dynamic_maxHeight .";
                 }";
 
-    if (intval(esc_attr($cslider_options['cslider_fullWidth'])) > 0) {
+    if (boolval($cslider_fullWidth)) {
         $style .=  ".cinza-slider-".$slider_id." {
                         width: 100vw;
                         position: relative;
