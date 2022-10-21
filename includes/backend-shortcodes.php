@@ -152,7 +152,6 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
 
         $layer_img = '';
         if(!empty($field['cslider_img_id'])) {
-            //$layer_img = '<img class="slider-cell-image" '. src="'. $field['cslider_img'] .'" />';
             $layer_img = wp_get_attachment_image( intval($field['cslider_img_id']), 'full', "", ["class" => "slider-cell-image"] );
         }
 

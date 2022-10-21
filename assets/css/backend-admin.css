@@ -80,11 +80,6 @@ tbody .column-shortcode {
 	justify-content: space-between;
 }
 
-#cslider-shortcode .inside {
-    overflow: hidden;
-    padding: 12px;
-}
-
 #cslider-shortcode .cslider_shortcode_copy_input,
 tbody .column-shortcode .cslider_shortcode_copy_input {
 	width: calc(100% - 90px);

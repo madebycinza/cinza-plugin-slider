@@ -41,6 +41,10 @@
     font-weight: bold;
 }
 
+#cslider-optionset tbody > tr:first-of-type > td {
+	padding-top: 28px;
+}
+
 /* Fields */
 
 #cslider-fields p#add-slide-p {
@@ -178,7 +182,9 @@
 
 /* Documentation */
 
-#cslider-documentation .inside {
+#cslider-documentation .inside,
+#cslider-shortcode .inside,
+#cslider-credits .inside {
     overflow: hidden;
     padding: 12px;
     margin: 0;
@@ -187,6 +193,41 @@
 #cslider-documentation .button {
     width: 100%;
     text-align: center;
+}
+
+/* Credits */
+
+#cslider-credits .inside {
+    overflow: hidden;
+    padding: 12px;
+    margin: 0;
+}
+
+#cslider-credits a {
+	width: 100%;
+    box-sizing: border-box;
+	display: flex;
+    align-items: center;
+    padding: 5px;
+    border: 1px solid #2271b1;
+    border-radius: 3px;
+    background: #f6f7f7;
+    text-decoration: none !important;
+}
+
+#cslider-credits a:first-child {
+	margin-bottom: 10px;
+}
+
+#cslider-credits a:hover {
+    background: #f0f0f1;
+    border-color: #0a4b78;
+    color: #0a4b78;
+}
+
+#cslider-credits a img {
+	width: 50px;
+	margin-right: 10px;
 }
 
 /* Others */

@@ -151,6 +151,7 @@ function cslider_add_fields_meta_boxes() {
 	add_meta_box('cslider-static', 'Static Layer', 'cslider_meta_box_static', 'cinza_slider', 'normal', 'default');
 	add_meta_box('cslider-shortcode', 'Shortcode', 'cslider_meta_box_shortcode', 'cinza_slider', 'side', 'default');
 	add_meta_box('cslider-documentation', 'Documentation', 'cslider_meta_box_doc', 'cinza_slider', 'side', 'default');
+	add_meta_box('cslider-credits', 'Developers', 'cslider_meta_box_credits', 'cinza_slider', 'side', 'default');
 	remove_meta_box( 'rank_math_metabox' , 'cinza_slider' , 'normal' ); 
 }
 
@@ -594,9 +595,7 @@ function cslider_meta_box_display() {
 								<?php if(empty($cslider_img_preview)) { ?> 
 									<div class="cslider-img-preview-inner"></div> <?php
 								} else { ?>
-									<div class="cslider-img-preview-inner" 
-										 style="background-image: url('<?php echo esc_attr($cslider_img_preview); ?>'); background-color: #f6f7f7; background-size: <?php echo esc_attr($temp_imgFit); ?>;">
-									</div><?php
+									<div class="cslider-img-preview-inner" style="background-image: url('<?php echo esc_attr($cslider_img_preview); ?>'); background-color: #f6f7f7; background-size: <?php echo esc_attr($temp_imgFit); ?>;"></div><?php
 								} ?>
 							</div>
 							<label>Slide ID</label>
@@ -634,7 +633,7 @@ function cslider_meta_box_display() {
 					<td class="cslider-preview">
 						<label>Preview</label>
 						<div class="cslider-img-preview" style="background-image: url('<?php echo esc_attr($preview_placeholder); ?>');">
-							<div class="cslider-img-preview-inner" style="background-image: url(); background-size: <?php echo esc_attr($temp_imgFit); ?>;">
+							<div class="cslider-img-preview-inner" style="background-image: url(); background-size: <?php echo esc_attr($temp_imgFit); ?>;"></div>
 						</div>
 						<label>Slide ID</label>
 						<input type="text" class="cslider_cell_id" name="cslider_cell_id[]" value="<?php echo "slider-cell-" . esc_attr($id_count); ?>" readonly />
@@ -670,10 +669,10 @@ function cslider_meta_box_display() {
 				<td class="cslider-preview">
 					<label>Preview</label>
 					<div class="cslider-img-preview" style="background-image: url('<?php echo esc_attr($preview_placeholder); ?>');">
-						<div class="cslider-img-preview-inner" style="background-image: url(); background-size: <?php echo esc_attr($temp_imgFit); ?>;">
+						<div class="cslider-img-preview-inner" style="background-image: url(); background-size: <?php echo esc_attr($temp_imgFit); ?>;"></div>
 					</div>
 					<label>Slide ID</label>
-					<input type="text" class="cslider_cell_id" name="cslider_cell_id[]" value="<?php echo $existing_cell_id; ?>" readonly />
+					<input type="text" class="cslider_cell_id" name="cslider_cell_id[]" value="" readonly />
 					<div class="cslider-buttons">
 						<a class="button move-slide" href="#/"><span class="icon icon-move"></span>Move</a>
 						<a class="button delete-slide" href="#/"><span class="icon icon-bin"></span>Delete</a>
@@ -766,6 +765,24 @@ function cslider_meta_box_doc( $post ) {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Meta Box: _cslider_doc
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function cslider_meta_box_credits( $post ) {
+	$cinza_logo = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/cinza-icon-pink.png';
+	$razorfrog_logo = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/razorfrog-icon-turquoise.png';
+	
+	?><a href="https://profiles.wordpress.org/madebycinza/#content-plugins" target="_blank">
+		<img src="<?php echo $cinza_logo; ?>" />
+		<span>Cinza</span>
+	</a>
+	<a href="https://razorfrog.com/" target="_blank">
+		<img src="<?php echo $razorfrog_logo; ?>" />
+		<span>Razorfrog</span>
+	</a><?php
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Save Meta Boxes
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -846,11 +863,11 @@ function cslider_save_fields_meta_boxes($post_id) {
 	$new_options['cslider_freeScrollFriction'] = empty($cslider_freeScrollFriction) ? '0.075' : wp_strip_all_tags($cslider_freeScrollFriction);
 
 	// Get all _cslider_fields
-	$cslider_cells_id = $_POST['cslider_cell_id'];
-	$cslider_imgs_id = $_POST['cslider_img_id'];
-	$cslider_contents = $_POST['cslider_content'];
-	$cslider_links = $_POST['cslider_link'];
-	$cslider_link_targets = $_POST['cslider_link_target'];
+	$cslider_cells_id = isset($_POST['cslider_cell_id']) ? $_POST['cslider_cell_id'] : '';
+	$cslider_imgs_id = isset($_POST['cslider_img_id']) ? $_POST['cslider_img_id'] : '';
+	$cslider_contents = isset($_POST['cslider_content']) ? $_POST['cslider_content'] : '';
+	$cslider_links = isset($_POST['cslider_link']) ? $_POST['cslider_link'] : '';
+	$cslider_link_targets = isset($_POST['cslider_link_target']) ? $_POST['cslider_link_target'] : '';
 
 	$new_fields = array();
 	$old_fields = get_post_meta($post_id, '_cslider_fields', true);
@@ -884,8 +901,8 @@ function cslider_save_fields_meta_boxes($post_id) {
 		delete_post_meta( $post_id, '_cslider_fields', $old_fields );
 
 	// Save _cslider_static
-	$cslider_static_content = wp_filter_post_kses($_POST['cslider_static_content']);
-	$cslider_static_overlay = sanitize_text_field($_POST['cslider_static_overlay']);
+	$cslider_static_content = isset($_POST['cslider_static_content']) ? wp_filter_post_kses($_POST['cslider_static_content']) : '';
+	$cslider_static_overlay = isset($_POST['cslider_static_overlay']) ? sanitize_text_field($_POST['cslider_static_overlay']) : '';
 
 	$new = array();
 	$new['cslider_static_content'] = $cslider_static_content;
