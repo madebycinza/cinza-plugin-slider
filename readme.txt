@@ -2,9 +2,9 @@
 Contributors: madebycinza, razorfrog
 Tags: slider, slideshow, carousel, metafizzy, flickity
 Requires at least: 5.2
-Tested up to: 6.0
+Tested up to: 6.1
 Requires PHP: 7.2
-Stable tag: 1.1.2
+Stable tag: 1.1.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,6 +21,20 @@ Upload the Cinza Slider plugin to your WordPress site, activate it, and start cr
 2. Slide cell fields
 
 == Changelog ==
+
+= 1.1.4 =
+*Release Date - 9th December, 2022*
+
+* Added Gradient overlay browser compatibility 
+* Disabled single posts
+* Backend responsiveness improvements
+
+* WP 6.1 compatibility update
+
+= 1.1.3 =
+*Release Date - 7th November, 2022*
+
+* WP 6.1 compatibility update
 
 = 1.1.2 =
 *Release Date - 20th October, 2022*

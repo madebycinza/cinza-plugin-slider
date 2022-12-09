@@ -48,7 +48,7 @@ function cslider_register_post_type() {
 		'public'              => true,
 		'hierarchical'        => false,
 		'exclude_from_search' => true,
-		'publicly_queryable'  => true,
+		'publicly_queryable'  => false, // For single post
 		'show_ui'             => true,
 		'show_in_nav_menus'   => true,
 		'show_in_admin_bar'   => true,
@@ -717,11 +717,13 @@ function cslider_meta_box_static() {
 	// Set default values
 	$temp_static_content = '';
 	$temp_static_overlay = '';
+	$temp_static_gradient = '';
 	
 	// Get saved values
 	if ( !empty($cslider_static) ) {
-		$temp_static_content = esc_attr($cslider_static['cslider_static_content']);
-		$temp_static_overlay = esc_attr($cslider_static['cslider_static_overlay']);
+		$temp_static_content = isset($cslider_static['cslider_static_content']) ? esc_attr($cslider_static['cslider_static_content']) : '';
+		$temp_static_overlay = isset($cslider_static['cslider_static_overlay']) ? esc_attr($cslider_static['cslider_static_overlay']) : '';
+		$temp_static_gradient = isset($cslider_static['cslider_static_gradient']) ? esc_attr($cslider_static['cslider_static_gradient']) : '0';
 	}
 
 	?>
@@ -731,8 +733,14 @@ function cslider_meta_box_static() {
 				<td class="cslider-content">
 					<label>Content</label>
 					<textarea type="text" class="widefat cslider-content" name="cslider_static_content"><?php echo esc_html($temp_static_content); ?></textarea>
+					
 					<label>Overlay Color</label>
-					<input type="text" class="widefat cslider-overlay" name="cslider_static_overlay" value="<?php echo esc_attr($temp_static_overlay); ?>" />
+					<input type="text" class="widefat cslider-overlay" name="cslider_static_overlay" value="<?php echo esc_attr($temp_static_overlay); ?>" placeholder="rgba(0, 0, 0, 0.3)" />
+					
+					<div class="cslider-static-gradient-checkbox">
+						<input type="checkbox" name="cslider_static_gradient" id="cslider_static_gradient" value="1" <?php checked('1', $temp_static_gradient); ?> />
+						<label for="cslider_static_gradient">Max browser compatibility for gradients</label>
+					</div>
 				</td>
 			</tr>
 		</tbody>
@@ -903,10 +911,12 @@ function cslider_save_fields_meta_boxes($post_id) {
 	// Save _cslider_static
 	$cslider_static_content = isset($_POST['cslider_static_content']) ? wp_filter_post_kses($_POST['cslider_static_content']) : '';
 	$cslider_static_overlay = isset($_POST['cslider_static_overlay']) ? sanitize_text_field($_POST['cslider_static_overlay']) : '';
+	$cslider_static_gradient = isset($_POST['cslider_static_gradient']) ? sanitize_key($_POST['cslider_static_gradient']) : '';
 
 	$new = array();
 	$new['cslider_static_content'] = $cslider_static_content;
 	$new['cslider_static_overlay'] = $cslider_static_overlay;
+	$new['cslider_static_gradient'] = $cslider_static_gradient ? '1' : '0';
 
 	update_post_meta($post_id, '_cslider_static', $new);
 }

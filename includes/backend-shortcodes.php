@@ -203,16 +203,27 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
 
     if (boolval($cslider_fullWidth)) {
         $style .=  ".cinza-slider-".$slider_id." {
-                        width: 100vw;
+                        width: 100vw !important;
+                        max-width: 100vw !important;
                         position: relative;
                         left: 50%;
                         right: 50%;
-                        margin-left: -50vw;
-                        margin-right: -50vw;
+                        margin-left: -50vw !important;
+                        margin-right: -50vw !important;
                     }";
     }
 
     if(!empty($cslider_static['cslider_static_overlay'])) {
+
+	    $cslider_static_gradient = isset($cslider_static['cslider_static_gradient']) ? esc_attr($cslider_static['cslider_static_gradient']) : '0';
+	    if (boolval($cslider_static_gradient)) {
+		    $cslider_static_overlay = "background: -moz-". $cslider_static['cslider_static_overlay'] .";";
+		    $cslider_static_overlay .= "background: -webkit-". $cslider_static['cslider_static_overlay'] .";";
+		    $cslider_static_overlay .= "background: ". $cslider_static['cslider_static_overlay'] .";";   
+	    } else {
+		    $cslider_static_overlay = "background: ". $cslider_static['cslider_static_overlay'] .";";   
+	    }
+	    
         $style .=  ".cinza-slider-".$slider_id." .slider-cell:after {
                         content: '';
                         position: absolute;
@@ -221,8 +232,8 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
                         bottom: 0;
                         width: 100%;
                         height: 100%;
-                        background: ". $cslider_static['cslider_static_overlay'] .";
                         z-index: 1;
+                        ". $cslider_static_overlay ."
                     }";
     }
     $style .= "</style>";

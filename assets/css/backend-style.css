@@ -180,6 +180,12 @@
     padding: 0 !important;
 }
 
+#cslider-fieldset .slide-static .cslider-static-gradient-checkbox {
+	display: flex;
+	align-items: center;
+	margin: 15px 0 0;
+}
+
 /* Documentation */
 
 #cslider-documentation .inside,
