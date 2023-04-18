@@ -175,6 +175,8 @@ function cslider_meta_box_options( $post ) {
 	$temp_pageDots = isset($cslider_options['cslider_pageDots']) ? esc_attr($cslider_options['cslider_pageDots']) : '1';
 	$temp_draggable = isset($cslider_options['cslider_draggable']) ? esc_attr($cslider_options['cslider_draggable']) : '1';
 	$temp_hash = isset($cslider_options['cslider_hash']) ? esc_attr($cslider_options['cslider_hash']) : '0';
+	$temp_mfAccessibility = isset($cslider_options['cslider_mfAccessibility']) ? esc_attr($cslider_options['cslider_mfAccessibility']) : '1';
+	$temp_rfAccessibility = isset($cslider_options['cslider_rfAccessibility']) ? esc_attr($cslider_options['cslider_rfAccessibility']) : '0';
 	
 	$temp_animation = isset($cslider_options['cslider_animation']) ? esc_attr($cslider_options['cslider_animation']) : 'slide';
 	$temp_autoPlay = isset($cslider_options['cslider_autoPlay']) ? esc_attr($cslider_options['cslider_autoPlay']) : '0';
@@ -213,7 +215,7 @@ function cslider_meta_box_options( $post ) {
                     <input type="text" name="cslider_minHeight" id="cslider_minHeight" class="cslider-minHeight" value="<?php echo esc_attr($temp_minHeight); ?>" /> <span>px</span>
                 </td>
                 <td class="cslider-options col-3">
-					Sets the slider min-height in pixels. <em>Set value to zero to disable this option (<strong>Note: </strong>makes it easier to customize).</em>
+					Sets the slider min-height in pixels.</em>
                 </td>
             </tr>
 			<tr>
@@ -224,7 +226,7 @@ function cslider_meta_box_options( $post ) {
                     <input type="text" name="cslider_maxHeight" id="cslider_maxHeight" class="cslider-maxHeight" value="<?php echo esc_attr($temp_maxHeight); ?>" /> <span>px</span>
                 </td>
                 <td class="cslider-options col-3">
-					Sets the slider max-height in pixels. <em>Set value to zero to disable this option (<strong>Note: </strong>makes it easier to customize).</em>
+					Sets the slider max-height in pixels.</em>
                 </td>
             </tr>
 			<tr>
@@ -235,31 +237,32 @@ function cslider_meta_box_options( $post ) {
 					<input type="checkbox" name="cslider_fullWidth" id="cslider_fullWidth" class="widefat cslider-fullWidth" value="1" <?php checked('1', $temp_fullWidth); ?> />
 				</td>
                 <td class="cslider-options col-3">
-					Force full width.
+					Force full width. <em>(<strong>Note: </strong>CSS only method. Might not work correctly depending on your setup)</em>
                 </td>
 			</tr>
-			<tr>
+			<tr class="height-setting-row">
 				<td class="cslider-options col-1">
-					<label for="cslider_setGallerySize">setGallerySize</label>
+					<p><label for="cslider_setGallerySize">setGallerySize</label></p>
+					<p><label for="cslider_adaptiveHeight">adaptiveHeight</label></p>
 				</td>
 				<td class="cslider-options col-2">
-					<input type="checkbox" name="cslider_setGallerySize" id="cslider_setGallerySize" class="widefat cslider-setGallerySize" value="1" <?php checked('1', $temp_setGallerySize); ?> />
+					<p><input type="checkbox" name="cslider_setGallerySize" id="cslider_setGallerySize" class="widefat cslider-setGallerySize" value="1" <?php checked('1', $temp_setGallerySize); ?> /></p>
+					<p><input type="checkbox" name="cslider_adaptiveHeight" id="cslider_adaptiveHeight" class="widefat cslider-adaptiveHeight" value="1" <?php checked('1', $temp_adaptiveHeight); ?> /></p>
 				</td>
                 <td class="cslider-options col-3">
-					Sets the height of the slider to the height of the tallest cell.
+					<p><strong>setGallerySize OFF + adaptiveHeight OFF</strong><br />
+					The height of the slider and all cells will be fixed equal to the value set in minHeight.</p>
+					
+					<p><strong>setGallerySize OFF + adaptiveHeight ON</strong><br />
+					The height of the slider and all cells will be fixed equal to the value set in maxHeight.</p>
+					
+					<p><strong>setGallerySize ON + adaptiveHeight OFF</strong><br />
+					The height of the slider will be fixed and equal to the height of the tallest cell, limited by minHeight and maxHeight.</p>
+					
+					<p><strong>setGallerySize ON + adaptiveHeight ON</strong><br />
+					The height of the slider will be dynamic and change based on the height of the selected cell, limited by minHeight and maxHeight.</p>
                 </td>
 			</tr>
-            <tr>
-                <td class="cslider-options col-1">
-                    <label for="cslider_adaptiveHeight">adaptiveHeight</label>
-				</td>
-				<td class="cslider-options col-2">
-                    <input type="checkbox" name="cslider_adaptiveHeight" id="cslider_adaptiveHeight" class="widefat cslider-adaptiveHeight" value="1" <?php checked('1', $temp_adaptiveHeight); ?> />
-                </td>
-                <td class="cslider-options col-3">
-                    Changes height of slider to fit height of selected cell.
-                </td>
-            </tr>
 		</tbody>
 	</table>
 
@@ -267,7 +270,7 @@ function cslider_meta_box_options( $post ) {
 		<thead>
 			<tr>
 				<td class="cslider-options" colspan="3">
-					<p>Controls</p>
+					<p>Navigation</p>
 				</td>
 			</tr>
 		</thead>
@@ -302,7 +305,7 @@ function cslider_meta_box_options( $post ) {
                     <input type="checkbox" name="cslider_draggable" id="cslider_draggable" class="widefat cslider-draggable" value="1" <?php checked('1', $temp_draggable); ?> />
                 </td>
                 <td class="cslider-options col-3">
-					Enables dragging and flicking. <em><strong>Note: </strong>Enabling this feature will make static layer unselectable.</em>
+					Enables dragging and flicking. <em>(<strong>Note: </strong>Enabling this feature will make static layer unselectable)</em>
                 </td>
             </tr>
             <tr>
@@ -314,6 +317,28 @@ function cslider_meta_box_options( $post ) {
                 </td>
                 <td class="cslider-options col-3">
 					Enables hash navigation. See Flickity documentation for more details.</em>
+                </td>
+            </tr>
+            <tr>
+                <td class="cslider-options col-1">
+                    <label for="cslider_mfAccessibility">mfAccessibility</label>
+				</td>
+				<td class="cslider-options col-2">
+                    <input type="checkbox" name="cslider_mfAccessibility" id="cslider_mfAccessibility" class="widefat cslider-mfAccessibility" value="1" <?php checked('1', $temp_mfAccessibility); ?> />
+                </td>
+                <td class="cslider-options col-3">
+					Enables Metafizzy keyboard navigation. Users can tab to a slider, and pressing left & right keys to change cells.
+                </td>
+            </tr>
+            <tr>
+                <td class="cslider-options col-1">
+                    <label for="cslider_rfAccessibility">rfAccessibility</label>
+				</td>
+				<td class="cslider-options col-2">
+                    <input type="checkbox" name="cslider_rfAccessibility" id="cslider_rfAccessibility" class="widefat cslider-rfAccessibility" value="1" <?php checked('1', $temp_rfAccessibility); ?> />
+                </td>
+                <td class="cslider-options col-3">
+					Enables Razorfrog keyboard navigation style and script. <em>(<strong>Note:</strong> Made for sliders that display one slide cell at a time)</em>
                 </td>
             </tr>
 		</tbody>
@@ -701,7 +726,7 @@ function cslider_meta_box_display() {
 		</tbody>
 	</table>
 	
-	<p id="add-slide-p"><a id="add-slide" class="button button-primary" href="#">Add slide</a></p>
+	<p id="add-slide-p"><a id="add-slide" class="button button-primary" href="#"><span class="icon icon-cross"></span> Add slide</a></p>
 	<?php
 }
 
@@ -739,7 +764,7 @@ function cslider_meta_box_static() {
 					
 					<div class="cslider-static-gradient-checkbox">
 						<input type="checkbox" name="cslider_static_gradient" id="cslider_static_gradient" value="1" <?php checked('1', $temp_static_gradient); ?> />
-						<label for="cslider_static_gradient">Max browser compatibility for gradients</label>
+						<label for="cslider_static_gradient">Enable browser compatibility for gradients</label>
 					</div>
 				</td>
 			</tr>
@@ -759,7 +784,7 @@ function cslider_meta_box_shortcode( $post ) {
 	?>
 	<div class="cslider_shortcode_copy">
 		<input type="text" value="<?php echo $slider_SC; ?>" class="cslider_shortcode_copy_input" id="<?php echo $slider_ID; ?>" readonly />
-		<a class="preview button" onclick="cslider_copy_shortcode('<?php echo $slider_ID; ?>')"><span class="icon icon-edit-copy"></span> Copy</a>
+		<a class="preview button button-primary" onclick="cslider_copy_shortcode('<?php echo $slider_ID; ?>')"><span class="icon icon-edit-copy"></span> Copy</a>
 	</div>
 	<?php
 }
@@ -777,14 +802,19 @@ function cslider_meta_box_doc( $post ) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function cslider_meta_box_credits( $post ) {
+	$metafizzy_logo = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/metafizzy-icon.png';
 	$cinza_logo = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/cinza-icon-pink.png';
 	$razorfrog_logo = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/razorfrog-icon-turquoise.png';
 	
-	?><a href="https://cinza.io/" target="_blank">
+	?><a href="https://metafizzy.co/" class="button" target="_blank">
+		<img src="<?php echo $metafizzy_logo; ?>" />
+		<span>Metafizzy</span>
+	</a>
+	<a href="https://cinza.io/" class="button" target="_blank">
 		<img src="<?php echo $cinza_logo; ?>" />
 		<span>Cinza</span>
 	</a>
-	<a href="https://razorfrog.com/" target="_blank">
+	<a href="https://razorfrog.com/" class="button" target="_blank">
 		<img src="<?php echo $razorfrog_logo; ?>" />
 		<span>Razorfrog</span>
 	</a><?php
@@ -816,6 +846,8 @@ function cslider_save_fields_meta_boxes($post_id) {
 	$cslider_pageDots 			  = isset($_POST['cslider_pageDots']) ? sanitize_key($_POST['cslider_pageDots']) : '';
 	$cslider_draggable 			  = isset($_POST['cslider_draggable']) ? sanitize_key($_POST['cslider_draggable']) : '';
 	$cslider_hash	 			  = isset($_POST['cslider_hash']) ? sanitize_key($_POST['cslider_hash']) : '';
+	$cslider_mfAccessibility	  = isset($_POST['cslider_mfAccessibility']) ? sanitize_key($_POST['cslider_mfAccessibility']) : '';
+	$cslider_rfAccessibility	  = isset($_POST['cslider_rfAccessibility']) ? sanitize_key($_POST['cslider_rfAccessibility']) : '';
 	
 	$cslider_animation 			  = isset($_POST['cslider_animation']) ? sanitize_text_field($_POST['cslider_animation']) : '';
 	$cslider_autoPlay 			  = isset($_POST['cslider_autoPlay']) ? sanitize_text_field($_POST['cslider_autoPlay']) : '';
@@ -850,6 +882,8 @@ function cslider_save_fields_meta_boxes($post_id) {
 	$new_options['cslider_pageDots'] = $cslider_pageDots ? '1' : '0';
 	$new_options['cslider_draggable'] = $cslider_draggable ? '1' : '0';
 	$new_options['cslider_hash'] = $cslider_hash ? '1' : '0';
+	$new_options['cslider_mfAccessibility'] = $cslider_mfAccessibility ? '1' : '0';
+	$new_options['cslider_rfAccessibility'] = $cslider_rfAccessibility ? '1' : '0';
 	
 	$new_options['cslider_animation'] = wp_strip_all_tags($cslider_animation);
 	$new_options['cslider_autoPlay'] = empty($cslider_autoPlay) ? '0' : wp_strip_all_tags($cslider_autoPlay);

@@ -14,6 +14,7 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
 
 	// Enqueue scripts
     wp_enqueue_script('flickity');
+    wp_enqueue_script('cslider-frontend');
 	wp_enqueue_style('flickity');
     wp_enqueue_style('animate');
     wp_enqueue_style('cslider-frontend');
@@ -48,6 +49,8 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
 	$cslider_pageDots = isset($cslider_options['cslider_pageDots']) ? esc_attr($cslider_options['cslider_pageDots']) : '1';
 	$cslider_draggable = isset($cslider_options['cslider_draggable']) ? esc_attr($cslider_options['cslider_draggable']) : '1';
 	$cslider_hash = isset($cslider_options['cslider_hash']) ? esc_attr($cslider_options['cslider_hash']) : '0';
+	$cslider_mfAccessibility = isset($cslider_options['cslider_mfAccessibility']) ? esc_attr($cslider_options['cslider_mfAccessibility']) : '0';
+	$cslider_rfAccessibility = isset($cslider_options['cslider_rfAccessibility']) ? esc_attr($cslider_options['cslider_rfAccessibility']) : '0';
 	
 	$cslider_animation = isset($cslider_options['cslider_animation']) ? esc_attr($cslider_options['cslider_animation']) : 'slide';
 	$cslider_autoPlay = isset($cslider_options['cslider_autoPlay']) ? esc_attr($cslider_options['cslider_autoPlay']) : '0';
@@ -113,7 +116,6 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
         // Setup
         $options .= '"cellSelector": ".slider-cell",';
         $options .= '"initialIndex": 0,';
-        $options .= '"accessibility": "true",';
         $options .= '"setGallerySize": ' . (boolval($cslider_setGallerySize) ? "true" : "false") . ',';
         $options .= '"resize": ' . (boolval($cslider_resize) ? "true" : "false") . ',';
 
@@ -124,7 +126,8 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
 
         // UI
         $options .= '"prevNextButtons": ' . (boolval($cslider_prevNextButtons) ? "true" : "false") . ',';
-        $options .= '"pageDots": ' . (boolval($cslider_pageDots) ? "true" : "false");
+        $options .= '"pageDots": ' . (boolval($cslider_pageDots) ? "true" : "false") . ',';
+        $options .= '"accessibility": ' . (boolval($cslider_mfAccessibility) ? "true" : "false");
 
     $options .= ' }\' ';
 
@@ -175,6 +178,7 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
     }
 
     // Dynamic style 
+    $slider_classes = '';
     $ds_minHeight = intval($cslider_minHeight);
     $ds_maxHeight = intval($cslider_maxHeight);
 
@@ -193,13 +197,36 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
     $dynamic_maxHeight = 'auto';
     if ($ds_minHeight > 0) {$dynamic_minHeight = $ds_minHeight ."px";}
     if ($ds_maxHeight> 0) {$dynamic_maxHeight = $ds_maxHeight ."px";}
-    $style .=  ".cinza-slider-".$slider_id.", 
-                .cinza-slider-".$slider_id." .flickity-viewport, 
-                .cinza-slider-".$slider_id." .slider-cell, 
-                .cinza-slider-".$slider_id." .slider-cell .slider-cell-image {
-                    min-height: ". $dynamic_minHeight .";
-                    max-height: ". $dynamic_maxHeight .";
-                }";
+    
+    if (boolval($cslider_setGallerySize)==false && boolval($cslider_adaptiveHeight)==false) {
+	    // setGallerySize OFF + adaptiveHeight OFF
+	    $style .=  ".cinza-slider-".$slider_id.", 
+	                .cinza-slider-".$slider_id." .flickity-viewport, 
+	                .cinza-slider-".$slider_id." .slider-cell, 
+	                .cinza-slider-".$slider_id." .slider-cell .slider-cell-image {
+	                    min-height: ". $dynamic_minHeight .";
+	                    max-height: ". $dynamic_minHeight .";
+	                }";	    
+    } else if (boolval($cslider_setGallerySize)==false && boolval($cslider_adaptiveHeight)==true) {
+	    // setGallerySize OFF + adaptiveHeight ON
+	    $style .=  ".cinza-slider-".$slider_id.", 
+	                .cinza-slider-".$slider_id." .flickity-viewport, 
+	                .cinza-slider-".$slider_id." .slider-cell, 
+	                .cinza-slider-".$slider_id." .slider-cell .slider-cell-image {
+	                    min-height: ". $dynamic_maxHeight .";
+	                    max-height: ". $dynamic_maxHeight .";
+	                }";	
+    } else {
+	    // setGallerySize ON + adaptiveHeight OFF
+	    // setGallerySize ON + adaptiveHeight ON
+	    $style .=  ".cinza-slider-".$slider_id.", 
+	                .cinza-slider-".$slider_id." .flickity-viewport, 
+	                .cinza-slider-".$slider_id." .slider-cell, 
+	                .cinza-slider-".$slider_id." .slider-cell .slider-cell-image {
+	                    min-height: ". $dynamic_minHeight .";
+	                    max-height: ". $dynamic_maxHeight .";
+	                }";	
+    }
 
     if (boolval($cslider_fullWidth)) {
         $style .=  ".cinza-slider-".$slider_id." {
@@ -236,9 +263,38 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
                         ". $cslider_static_overlay ."
                     }";
     }
+    
+    if (boolval($cslider_rfAccessibility)) {
+	    $slider_classes .= "rfAccessibility";
+        $style .=  ".cinza-slider:focus,
+					.cinza-slider:focus-visible,
+					.cinza-slider .flickity-viewport:focus,
+					.cinza-slider .flickity-viewport:focus-visible,
+					.cinza-slider a.slider-cell-link:focus,
+					.cinza-slider a.slider-cell-link:focus-visible {
+					    outline: none !important;
+					}
+					
+					.cinza-slider:focus .focusable,
+					.cinza-slider:focus-visible .focusable {
+						background: pink;
+					}
+					
+					.cinza-slider a.slider-cell-link:focus,
+					.cinza-slider a.slider-cell-link:focus-visible {
+						background: rgba(255, 191, 202, 0.3);
+					}
+					
+					.cinza-slider .flickity-button:focus {
+					    outline: 0 !important;
+					    box-shadow: none !important;
+					    outline: none !important;
+					}";
+    }
+    
     $style .= "</style>";
 
     // Output
-    $o = '<div class="cinza-slider cinza-slider-'.$slider_id.' animate__animated animate__fadeIn" data-flickity='. $options .'>'. $static . $slides .'</div>'. $style;
+    $o = '<div class="cinza-slider cinza-slider-'.$slider_id.' '.$slider_classes.' animate__animated animate__fadeIn" data-flickity='. $options .'>'. $static . $slides .'</div>'. $style;
     return $o;
 }
