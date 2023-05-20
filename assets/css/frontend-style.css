@@ -33,13 +33,12 @@
     flex-wrap: wrap;
 }
 
+.cinza-slider .slider-cell>picture,
 .cinza-slider .slider-cell .slider-cell-image {
     width: 100%;
-    object-position: center;
-}
-
-.cinza-slider .slider-cell picture.slider-cell-image img {
 	height: 100%;
+    object-position: center;
+    display: block;
 }
 
 .cinza-slider .slider-cell-content-inner {
