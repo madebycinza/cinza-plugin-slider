@@ -65,6 +65,7 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
 	$cslider_contain = isset($cslider_options['cslider_contain']) ? esc_attr($cslider_options['cslider_contain']) : '1';
 	$cslider_percentPosition = isset($cslider_options['cslider_percentPosition']) ? esc_attr($cslider_options['cslider_percentPosition']) : '1';
 	
+	$cslider_lazyLoad = isset($cslider_options['cslider_lazyLoad']) ? esc_attr($cslider_options['cslider_lazyLoad']) : '0';
 	$cslider_watchCSS = isset($cslider_options['cslider_watchCSS']) ? esc_attr($cslider_options['cslider_watchCSS']) : '0';
 	$cslider_dragThreshold = isset($cslider_options['cslider_dragThreshold']) ? esc_attr($cslider_options['cslider_dragThreshold']) : '3';
 	$cslider_selectedAttraction = isset($cslider_options['cslider_selectedAttraction']) ? esc_attr($cslider_options['cslider_selectedAttraction']) : '0.025';
@@ -111,7 +112,7 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
         
         // Images
         $options .= '"imagesLoaded": "true",';
-        $options .= '"lazyLoad": "false",';
+		$options .= '"lazyLoad": ' . (boolval($cslider_lazyLoad) ? "true" : "false") . ',';
 
         // Setup
         $options .= '"cellSelector": ".slider-cell",';

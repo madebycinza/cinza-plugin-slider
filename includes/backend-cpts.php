@@ -191,6 +191,7 @@ function cslider_meta_box_options( $post ) {
 	$temp_contain = isset($cslider_options['cslider_contain']) ? esc_attr($cslider_options['cslider_contain']) : '1';
 	$temp_percentPosition = isset($cslider_options['cslider_percentPosition']) ? esc_attr($cslider_options['cslider_percentPosition']) : '1';
 	
+	$temp_lazyLoad = isset($cslider_options['cslider_lazyLoad']) ? esc_attr($cslider_options['cslider_lazyLoad']) : '0';
 	$temp_watchCSS = isset($cslider_options['cslider_watchCSS']) ? esc_attr($cslider_options['cslider_watchCSS']) : '0';
 	$temp_dragThreshold = isset($cslider_options['cslider_dragThreshold']) ? esc_attr($cslider_options['cslider_dragThreshold']) : '3';
 	$temp_selectedAttraction = isset($cslider_options['cslider_selectedAttraction']) ? esc_attr($cslider_options['cslider_selectedAttraction']) : '0.025';
@@ -509,6 +510,17 @@ function cslider_meta_box_options( $post ) {
 			</tr>
 		</thead>
 		<tbody>
+			<tr>
+                <td class="cslider-options col-1">
+                    <label for="cslider_lazyLoad">lazyLoad</label>
+				</td>
+				<td class="cslider-options col-2">
+                    <input type="checkbox" name="cslider_lazyLoad" id="cslider_lazyLoad" class="widefat cslider-lazyLoad" value="1" <?php checked('1', $temp_lazyLoad); ?> />
+                </td>
+                <td class="cslider-options col-3">
+                    Loads cell images when a cell is selected.
+                </td>
+            </tr>
 			<tr>
                 <td class="cslider-options col-1">
                     <label for="cslider_watchCSS">watchCSS</label>
@@ -862,6 +874,7 @@ function cslider_save_fields_meta_boxes($post_id) {
 	$cslider_contain 			  = isset($_POST['cslider_contain']) ? sanitize_key($_POST['cslider_contain']) : '';
 	$cslider_percentPosition 	  = isset($_POST['cslider_percentPosition']) ? sanitize_key($_POST['cslider_percentPosition']) : '';
 	
+	$cslider_lazyLoad 			  = isset($_POST['cslider_lazyLoad']) ? sanitize_key($_POST['cslider_lazyLoad']) : '';
 	$cslider_watchCSS 			  = isset($_POST['cslider_watchCSS']) ? sanitize_key($_POST['cslider_watchCSS']) : '';
 	$cslider_dragThreshold 		  = isset($_POST['cslider_dragThreshold']) ? sanitize_text_field($_POST['cslider_dragThreshold']) : '';
 	$cslider_selectedAttraction   = isset($_POST['cslider_selectedAttraction']) ? sanitize_text_field($_POST['cslider_selectedAttraction']) : '';
@@ -898,6 +911,7 @@ function cslider_save_fields_meta_boxes($post_id) {
 	$new_options['cslider_contain'] = $cslider_contain ? '1' : '0';
 	$new_options['cslider_percentPosition'] = $cslider_percentPosition ? '1' : '0';
 	
+	$new_options['cslider_lazyLoad'] = $cslider_lazyLoad ? '1' : '0';
 	$new_options['cslider_watchCSS'] = $cslider_watchCSS ? '1' : '0';
 	$new_options['cslider_dragThreshold'] = empty($cslider_dragThreshold) ? '3' : wp_strip_all_tags($cslider_dragThreshold);
 	$new_options['cslider_selectedAttraction'] = empty($cslider_selectedAttraction) ? '0.025' : wp_strip_all_tags($cslider_selectedAttraction);
