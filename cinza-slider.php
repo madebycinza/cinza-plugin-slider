@@ -4,7 +4,7 @@
  * Plugin Name:       Cinza Slider
  * Plugin URI:        https://cinza.io/plugin/cinza-slider/
  * Description:       A minimal slider plugin.
- * Version:           1.2.4
+ * Version:           1.2.5
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Cinza Web Design
@@ -50,18 +50,18 @@ function add_script_to_cslider_cpt() {
 	if ( !is_admin() ) return;
 
     // Admin
-    wp_register_style('cslider-admin', plugins_url('/assets/css/backend-admin.css', __FILE__), array(), '1.2.1', false);
+    wp_register_style('cslider-admin', plugins_url('/assets/css/backend-admin.css', __FILE__), array(), '1.2.4', false);
     wp_enqueue_style('cslider-admin');
  
     // Register scripts below only on cslider CPT pages only
 	if( $post_type != 'cinza_slider' ) return;
 
     // CSS
-    wp_register_style('cslider-backend-css', plugins_url('/assets/css/backend-style.css', __FILE__), array(), '1.2.1', false);
+    wp_register_style('cslider-backend-css', plugins_url('/assets/css/backend-style.css', __FILE__), array(), '1.2.4', false);
     wp_enqueue_style('cslider-backend-css');
 
     // JS
-    wp_enqueue_script('cslider-backend-js', plugins_url('/assets/js/backend-script.js', __FILE__), array('jquery'), '1.2.1', false);
+    wp_enqueue_script('cslider-backend-js', plugins_url('/assets/js/backend-script.js', __FILE__), array('jquery'), '1.2.4', false);
     wp_enqueue_media();
 }
 
