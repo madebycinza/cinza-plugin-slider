@@ -155,12 +155,17 @@ function cslider_shortcode( $atts = [], $content = null, $tag = 'cinzaslider' ) 
         }
 
         $layer_img = '';
+        
         if(!empty($field['cslider_img_id'])) {
+	        
+			$img_id = intval($field['cslider_img_id']);
+			$img_url = wp_get_attachment_image_url($img_id, 'full');
+			$img_alt = get_post_meta($img_id, '_wp_attachment_image_alt', true);
+	        
             if(boolval($cslider_lazyLoad)) {
-	            $layer_img = "<img class='slider-cell-image cs-lazyLoad-on' data-flickity-lazyload='". wp_get_attachment_image_url( intval($field['cslider_img_id']), 'full' ) ."' />";
+	            $layer_img = "<img class='slider-cell-image cs-lazyLoad-on' data-flickity-lazyload='{$img_url}' alt='{$img_alt}' />";
             } else {
-	            //$layer_img = wp_get_attachment_image( intval($field['cslider_img_id']), 'full', "", ["class" => "slider-cell-image cs-lazyLoad-off"] );
-	            $layer_img = "<img class='slider-cell-image cs-lazyLoad-off' src='". wp_get_attachment_image_url( intval($field['cslider_img_id']), 'full' )."' />";
+	            $layer_img = "<img class='slider-cell-image cs-lazyLoad-off' src='{$img_url}' alt='{$img_alt}' />";
             }
         }
 
