@@ -2,9 +2,9 @@
 Contributors: madebycinza, razorfrog
 Tags: slider, slideshow, carousel, metafizzy, flickity
 Requires at least: 5.2
-Tested up to: 6.2
+Tested up to: 6.4.2
 Requires PHP: 7.2
-Stable tag: 1.2.6
+Stable tag: 1.2.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,6 +23,12 @@ Upload the Cinza Slider plugin to your WordPress site, activate it, and start cr
 2. Slide cell fields
 
 == Changelog ==
+
+= 1.2.7 =
+*Release Date - 21st December, 2023*
+
+* Fixed rfAccessibility tab index
+* WP 6.4.2 compatibility test
 
 = 1.2.6 =
 *Release Date - 12th December, 2023*
@@ -57,13 +63,13 @@ Upload the Cinza Slider plugin to your WordPress site, activate it, and start cr
 * Updated how setGallerySize and adaptiveHeight work together
 * Updated backend style and made accessibility improvements
 * Convert backend checkboxes into toggles
-* WP 6.2 compatibility update
+* WP 6.2 compatibility test
 
 = 1.2.0 =
 *Release Date - 27th January, 2023*
 
 * Cinza website and demo URLs update
-* WP 6.1.1 compatibility update
+* WP 6.1.1 compatibility test
 
 = 1.1.4 =
 *Release Date - 9th December, 2022*
@@ -72,12 +78,12 @@ Upload the Cinza Slider plugin to your WordPress site, activate it, and start cr
 * Disabled single posts
 * Backend responsiveness improvements
 
-* WP 6.1 compatibility update
+* WP 6.1 compatibility test
 
 = 1.1.3 =
 *Release Date - 7th November, 2022*
 
-* WP 6.1 compatibility update
+* WP 6.1 compatibility test
 
 = 1.1.2 =
 *Release Date - 20th October, 2022*
@@ -114,7 +120,7 @@ Upload the Cinza Slider plugin to your WordPress site, activate it, and start cr
 = 1.0.7 =
 *Release Date - 17th June, 2022*
 
-* PHP 8 compatibility update
+* PHP 8 compatibility test
 * Added unique ID for each slider cell
 * updated shortcode validations
 
@@ -127,7 +133,7 @@ Upload the Cinza Slider plugin to your WordPress site, activate it, and start cr
 = 1.0.5 =
 *Release Date - 1st June, 2022*
 
-* WP 6.0 compatibility update
+* WP 6.0 compatibility test
 
 = 1.0.4 =
 *Release Date - 25th May, 2022*

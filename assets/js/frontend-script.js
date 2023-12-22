@@ -16,14 +16,14 @@ jQuery(document).ready(function($) {
 	    if ( $(this).attr('data-flickity').includes('"prevNextButtons": true') ) {
 		    // First, we check of the arrows are enabled
 		    // If they are, we will focus on them and ignore the dots
-	        $this.find(".flickity-prev-next-button").attr('tabindex', 1);
+	        $this.find(".flickity-prev-next-button").attr('tabindex', 0);
 	        $this.find(".flickity-prev-next-button").addClass('focusable');
 	        $this.find(".flickity-page-dots").attr('tabindex', -1);    
 	    }
 	    else if ( $(this).attr('data-flickity').includes('"pageDots": true') ) {
 		    // Second, since the arrows are disabled, we check if the dots are enabled
 		    // If they are, we will focus on them
-	        $this.find(".flickity-page-dots").attr('tabindex', 1);
+	        $this.find(".flickity-page-dots").attr('tabindex', 0);
 	        $this.find(".flickity-page-dots").addClass('focusable');
 	    }
 	});
