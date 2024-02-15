@@ -4,7 +4,7 @@
  * Plugin Name:       Cinza Slider
  * Plugin URI:        https://cinza.io/plugin/cinza-slider/
  * Description:       A minimal slider plugin.
- * Version:           1.2.7
+ * Version:           1.2.8
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Cinza Web Design
