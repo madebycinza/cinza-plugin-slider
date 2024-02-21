@@ -91,3 +91,14 @@
 a.slider-cell-link {
 	transition: 0.3s all ease-in-out;
 }
+
+.cinza-slider .slider-cell[aria-hidden=true] a[href],
+.cinza-slider .slider-cell[aria-hidden=true] area[href], 
+.cinza-slider .slider-cell[aria-hidden=true] input:not([disabled]), 
+.cinza-slider .slider-cell[aria-hidden=true] select:not([disabled]), 
+.cinza-slider .slider-cell[aria-hidden=true] textarea:not([disabled]), 
+.cinza-slider .slider-cell[aria-hidden=true] button:not([disabled]), 
+.cinza-slider .slider-cell[aria-hidden=true] [tabindex]:not([disabled]), 
+.cinza-slider .slider-cell[aria-hidden=true] [contenteditable=true]:not([disabled]){
+    visibility: hidden;
+}
